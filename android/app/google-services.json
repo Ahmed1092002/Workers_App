@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "999215647977",
+    "project_id": "jops-28d49",
+    "storage_bucket": "jops-28d49.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999215647977:android:03dddded7ea1c9cbacf478",
+        "android_client_info": {
+          "package_name": "com.example.untitled10"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999215647977-h4vhjnvvk1cerco455ap638deum0t8vm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN2bcwkzkmho306yhm_mQWvtkWXEZ91_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999215647977-67irodr4to30paqsnqoi910lvc0s3l6o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "999215647977-5dhqs37n32ur3raku792peojiovdf8am.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.jop.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
