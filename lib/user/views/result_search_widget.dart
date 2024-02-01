@@ -32,14 +32,12 @@ class ResultSearchWidget extends StatelessWidget {
                   },
                   child: NewJopContainer(
                     jopField: jops[index].jopField,
-                    salary: jops[index].Salary,
                     jopType: jops[index].jopType,
-                    imageUrl: jops[index].imageUrl,
                     companyName: jops[index].companyname,
                     location: jops[index].location,
                     experience: jops[index].Experience,
-                    companyLogo: jops[index].imageUrl,
                     name: jops[index].title,
+                    //todo;fix this
 
 
                   ),

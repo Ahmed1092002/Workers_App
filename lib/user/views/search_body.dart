@@ -6,8 +6,10 @@ import 'package:untitled10/src/app_root.dart';
 import 'package:untitled10/user/views/result_search_widget.dart';
 import 'package:untitled10/utils/navigator.dart';
 
+import '../../SharedWidget/working_feilds_dropdown_button_form_field.dart';
 import '../../company/blocs/JopCubit/jop_cubit.dart';
 import '../../main.dart';
+import '../../utils/consatants.dart';
 
 class SearchBody extends StatelessWidget {
    SearchBody({Key? key}) : super(key: key);
@@ -72,59 +74,43 @@ var box = Hive.box(boxName);
                     ),
                   ),
                 ),
-                TextFormField(
-                  controller: jopTypeController,
 
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(color: greenColor),
 
-                    labelText: 'Jop Type',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: greenColor),
-
-                    ),
-                  ),
+          getDropDownButtonFormField(
+            hint: 'Jop Type',
+            icon: Icons.work,
+            job: jobType,
+            Function: (  value){
+              jopTypeController.text = value;
+            },
+          ),
+                getDropDownButtonFormField(
+            hint: 'Jop Field',
+            icon: Icons.work,
+            job:Jobs,
+            Function: (  value){
+              jopFieldController.text = value;
+            },
+          ),
+                getDropDownButtonFormField(
+                  hint: 'Jop Salary',
+                  icon: Icons.work,
+                  job: jobSalary,
+                  Function: (  value){
+                    jopSalaryController.text = value;
+                  },
                 ),
-                TextFormField(
-                  controller: jopSalaryController,
-                  keyboardType: TextInputType.number,
-
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(color: greenColor),
-
-                    labelText: 'Jop Salary',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: greenColor),
-
-                    ),
-                  ),
+                getDropDownButtonFormField(
+                  hint: 'Jop Experience',
+                  icon: Icons.work,
+                  job: jobExperience,
+                  Function: (  value){
+                    jopExperienceController.text = value;
+                  },
                 ),
-                TextFormField(
-                  controller: jopFieldController,
 
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(color: greenColor),
 
-                    labelText: 'Jop Field',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: greenColor),
 
-                    ),
-                  ),
-                ),
-                TextFormField(
-                  controller: jopExperienceController,
-
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(color: greenColor),
-
-                    labelText: 'Jop Experience',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: greenColor),
-
-                    ),
-                  ),
-                ),
 
                 CustomButton(
                   buttonName: 'Search',

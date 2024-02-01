@@ -1,9 +1,13 @@
+
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:untitled10/data/company/company_model.dart';
 import 'package:untitled10/data/company/jop_model.dart';
@@ -12,6 +16,7 @@ import 'package:untitled10/data/users/projects.dart';
 import 'package:untitled10/data/users/skills.dart';
 import 'package:untitled10/data/users/work_experience.dart';
 import 'package:untitled10/main.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 part 'jop_state.dart';
 
@@ -27,37 +32,42 @@ class JopCubit extends Cubit<JopState> {
 
   addJop({required String jopTitle,
     required String jopDescription,
-    required int jopSalary,
+    required String jopSalary,
     required String jopLocation,
-    required String jopRequirements,
-    required String jopSkills,
+    required  String jobLevel,
+    required String jobShift,
+    required  List<String> jopSkills,
     required String jopExperience,
-required String companyname,
     required String jopType,
 required String JopField,
     String? jopid,
-    required String jopImage}) async {
+   }) async {
     String? uid = await storage.read(key: 'uid');
     String userType = await box.get('userType').toString();
     jop = JopsModel(
       companyUid: uid,
        date: now.toString(),
       description: jopDescription,
-      companyInfo: await box.get('companyInfo'),
+      companyInfo: await box.get('info'),
       Experience: jopExperience,
-      imageUrl: jopImage,
       location: jopLocation,
       jopType: jopType,
-      Requirements: jopRequirements,
       Salary: jopSalary,
+      country: await box.get('country'),
+
+
+
       Skills: jopSkills,
+      companyImageUrl: await box.get('image'),
+
+      jobLevel:jobLevel ,
+      jobShift: jobShift,
       title: jopTitle,
       workingField: userType,
       jopField: JopField,
       jopid: jopid,
       userEmail: box.get('email'),
-
-      companyname: companyname
+      companyname: box.get('name')
 
 
 
@@ -82,15 +92,16 @@ required String JopField,
 
   addJopToCompany({required String jopTitle,
     required String jopDescription,
-    required int jopSalary,
+    required String jopSalary,
     required String jopLocation,
-    required String jopRequirements,
-    required String jopSkills,
+    required List<String> jopSkills,
     required String jopExperience,
     required String jopType,
     required String JopField,
+    required String jobLevel,
+    required String jobShift,
 
-    required String jopImage}) async {
+   }) async {
     String? uid = await storage.read(key: 'uid');
     String userType = await box.get('userType').toString();
     jop = JopsModel(
@@ -99,11 +110,13 @@ required String JopField,
       jopType: jopType,
       description: jopDescription,
       Experience: jopExperience,
-      imageUrl: jopImage,
+
+
       location: jopLocation,
-      Requirements: jopRequirements,
       jopField: JopField,
       Salary: jopSalary,
+      jobLevel: jobLevel,
+      jobShift:jobShift ,
       Skills: jopSkills,
       title: jopTitle,
       workingField: userType,
@@ -118,18 +131,19 @@ required String JopField,
         .add(jop!.toJson()).then((value) {
           print (value.id);
           addJop(jopTitle: jopTitle,
-              companyname: box.get('name'),
               JopField: JopField,
               jopDescription: jopDescription,
               jopSalary: jopSalary,
+
               jopLocation: jopLocation,
-              jopRequirements: jopRequirements,
               jopSkills: jopSkills,
+              jobLevel: jobLevel,
+              jobShift: jobShift,
               jopExperience: jopExperience,
               jopType: jopType,
               jopid: value.id,
 
-              jopImage: jopImage);
+              );
 
 
       emit(AddjopJopToCompanySuccessState());
@@ -165,15 +179,19 @@ required String JopField,
     editJop({
       required String jopTitle,
       required String jopDescription,
-      required int jopSalary,
+      required String jopSalary,
       required String jopLocation,
-      required String jopRequirements,
-      required String jopSkills,
       required String jopExperience,
+      required List <String> jopSkills,
+      required String jopid,
+      required String jopShift,
       required String jopType,
       required String JopField,
-      required String jopid,
-      required String jopImage})async{
+      required String jobLevel,
+
+
+
+    })async{
       String? uid = await storage.read(key: 'uid');
       String userType = await box.get('userType').toString();
       jop = JopsModel(
@@ -182,14 +200,19 @@ required String JopField,
           jopType: jopType,
           description: jopDescription,
           Experience: jopExperience,
-          imageUrl: jopImage,
+          jobShift: jopShift,
+          companyImageUrl: await box.get('image'),
+          companyname: box.get('name') ,
+          country: await box.get('country'),
+          jopid: jopid,
+          jobLevel:jobLevel ,
           location: jopLocation,
-          Requirements: jopRequirements,
           jopField: JopField,
           Salary: jopSalary,
           Skills: jopSkills,
           title: jopTitle,
           workingField: userType,
+          companyInfo: await box.get('info'),
           userEmail: box.get('email')
 
       );
@@ -273,24 +296,57 @@ required String JopField,
 
 })
    async {
-     String? userUid = await storage.read(key: 'uid');
-     emit(ApplyingJopLoadingState());
+      String? UserUid = await storage.read(key: 'uid');
+      emit(ApplyingJopLoadingState());
+      // await FirebaseFirestore.instance.collection('users')
+      // .doc(UserUid)
+      // .collection('applyedJops')
+      // .doc(jopid)
+      // .get()
+      //     .then((value) {
+      //   if (value.exists) {
+      //     emit(ApplyingJopErrorState());
+      //   } else {
+      //     emit(ApplyingJopSuccessState());
+      //   }
+      // }).catchError((error) {
+      //   emit(ApplyingJopErrorState());
+      // });
+      //
 
-     var jobDoc = FirebaseFirestore.instance.collection('users').doc(userUid).collection('applyedJobs').doc(jopid);
-     var userDoc = FirebaseFirestore.instance.collection('users').doc(companyUid).collection('jops').doc(jopid).collection('applyedUsers').doc(userUid);
 
-     if ((await jobDoc.get()).exists) {
-       emit(ApplyingJopErrorState());
-       return;
-     }
 
-     try {
-       await userDoc.set({'uid': userUid});
-       await jobDoc.set({'jobId': jopid});
-       emit(ApplyingJopSuccessState());
-     } catch (error) {
-       emit(ApplyingJopErrorState());
-     }
+
+      await FirebaseFirestore.instance
+          .collection('users')
+      .doc(companyUid)
+          .collection('jops')
+          .doc(jopid)
+          .collection('applyedUsers')
+          .doc(UserUid)
+          .set({
+            'uid':UserUid
+          }).then((value) {
+            emit(ApplyingJopSuccessState());
+          }).catchError((error) {
+            emit(ApplyingJopErrorState());
+          });
+      await FirebaseFirestore.instance
+   .collection('users')
+          .doc(UserUid)
+          .collection('applyedJops')
+          .doc(jopid)
+          .set({
+        'jopid':jopid
+      }).then((value) {
+        emit(ApplyingJopSuccessState());
+      }).catchError((error) {
+        emit(ApplyingJopErrorState());
+      });
+
+
+
+
 
     }
 
@@ -452,7 +508,7 @@ List<UserModel> applyedUsers = [];
         query = query.where('jopType',isEqualTo: jopType);
       }
       else if (jopSalary!=null){
-        query = query.where('Salary',isLessThanOrEqualTo: jopSalary);
+        query = query.where('Salary',isEqualTo: jopSalary);
       }
       else if (jopField!=null){
         query = query.where('jopField',isEqualTo: jopField);
@@ -468,10 +524,10 @@ List<UserModel> applyedUsers = [];
         query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType);
       }
      else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null){
-        query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary);
+        query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
       }
      else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null){
-        query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
+        query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
       }
      else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null){
         query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField).where('Experience',isEqualTo: jopExperience);
@@ -481,37 +537,37 @@ List<UserModel> applyedUsers = [];
         query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType);
       }
      else if (jopLocation!=null&&jopType!=null&&jopSalary!=null){
-        query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary);
+        query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
       }
      else if (jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null){
-        query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
+        query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
       }
      else if (jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null) {
         query = query.where('location', isEqualTo: jopLocation).where(
             'jopType', isEqualTo: jopType)
-            .where('Salary',isLessThanOrEqualTo: jopSalary)
+            .where('Salary',isEqualTo: jopSalary)
             .where('jopField', isEqualTo: jopField)
             .where('Experience', isEqualTo: jopExperience);
       }
       // jopType
     else  if (jopType!=null&&jopSalary!=null){
-        query = query.where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary);
+        query = query.where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
       }
     else  if (jopType!=null&&jopSalary!=null&&jopField!=null){
-        query = query.where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
+        query = query.where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
       }
      else if (jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null) {
         query = query.where('jopType', isEqualTo: jopType)
-            .where('Salary',isLessThanOrEqualTo: jopSalary)
+            .where('Salary',isEqualTo: jopSalary)
             .where('jopField', isEqualTo: jopField)
             .where('Experience', isEqualTo: jopExperience);
       }
       //jop Salary
      else if (jopSalary!=null&&jopField!=null){
-        query = query.where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
+        query = query.where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
       }
      else if (jopSalary!=null&&jopField!=null&&jopExperience!=null) {
-        query = query.where('Salary',isLessThanOrEqualTo: jopSalary)
+        query = query.where('Salary',isEqualTo: jopSalary)
             .where('jopField', isEqualTo: jopField)
             .where('Experience', isEqualTo: jopExperience);
       }
@@ -535,27 +591,6 @@ List<UserModel> applyedUsers = [];
         emit(SearchJopFilterErrorState());
       });
 
-
-
-      // await FirebaseFirestore.instance
-      //     .collection('jops')
-      //     .where('title',isEqualTo: jopTitle)
-      //     .where('location',isEqualTo: jopLocation)
-      //     .where('jopType',isEqualTo: jopType)
-      //     .where('Salary',isEqualTo: jopSalary)
-      //     .where('jopField',isEqualTo: jopField)
-      //     .where('Experience',isEqualTo: jopExperience)
-      //     .get()
-      //     .then((value) {
-      //       jops.clear();
-      //   value.docs.forEach((element) {
-      //     print (element.data());
-      //     jops.add(JopsModel.fromJson(element.data(), element.id));
-      //   });
-      //   emit(SearchJopFilterSuccessState());
-      // }).catchError((error) {
-      //   emit(SearchJopFilterErrorState());
-      // });
     }
 
 
@@ -581,7 +616,7 @@ List<UserModel> applyedUsers = [];
       query = query.where('jopType',isEqualTo: jopType);
     }
     else if (jopSalary!=null){
-      query = query.where('Salary',isLessThanOrEqualTo: jopSalary);
+      query = query.where('Salary',isEqualTo: jopSalary);
     }
     else if (jopField!=null){
       query = query.where('jopField',isEqualTo: jopField);
@@ -597,50 +632,50 @@ List<UserModel> applyedUsers = [];
       query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType);
     }
     else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null){
-      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary);
+      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
     }
     else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null){
-      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
+      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
     }
     else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null){
-      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField).where('Experience',isEqualTo: jopExperience);
+      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField).where('Experience',isEqualTo: jopExperience);
     }
     //jop Location
     else if ( jopLocation!=null&&jopType!=null){
       query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType);
     }
     else if (jopLocation!=null&&jopType!=null&&jopSalary!=null){
-      query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary);
+      query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
     }
     else if (jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null){
-      query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
+      query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
     }
     else if (jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null) {
       query = query.where('location', isEqualTo: jopLocation).where(
           'jopType', isEqualTo: jopType)
-          .where('Salary',isLessThanOrEqualTo: jopSalary)
+          .where('Salary',isEqualTo: jopSalary)
           .where('jopField', isEqualTo: jopField)
           .where('Experience', isEqualTo: jopExperience);
     }
     // jopType
     else  if (jopType!=null&&jopSalary!=null){
-      query = query.where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary);
+      query = query.where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
     }
     else  if (jopType!=null&&jopSalary!=null&&jopField!=null){
-      query = query.where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
+      query = query.where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
     }
     else if (jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null) {
       query = query.where('jopType', isEqualTo: jopType)
-          .where('Salary',isLessThanOrEqualTo: jopSalary)
+          .where('Salary',isEqualTo: jopSalary)
           .where('jopField', isEqualTo: jopField)
           .where('Experience', isEqualTo: jopExperience);
     }
     //jop Salary
     else if (jopSalary!=null&&jopField!=null){
-      query = query.where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
+      query = query.where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
     }
     else if (jopSalary!=null&&jopField!=null&&jopExperience!=null) {
-      query = query.where('Salary',isLessThanOrEqualTo: jopSalary)
+      query = query.where('Salary',isEqualTo: jopSalary)
           .where('jopField', isEqualTo: jopField)
           .where('Experience', isEqualTo: jopExperience);
     }
@@ -658,6 +693,7 @@ List<UserModel> applyedUsers = [];
       jops.clear();
       value.docs.forEach((element) {
         jops.add(JopsModel.fromJson(element.data(), element.id));
+        print(element.data());
       });
       emit(SearchJopFilterSuccessState());
     }).catchError((error) {
@@ -666,27 +702,8 @@ List<UserModel> applyedUsers = [];
 
 
 
-    // await FirebaseFirestore.instance
-    //     .collection('jops')
-    //     .where('title',isEqualTo: jopTitle)
-    //     .where('location',isEqualTo: jopLocation)
-    //     .where('jopType',isEqualTo: jopType)
-    //     .where('Salary',isEqualTo: jopSalary)
-    //     .where('jopField',isEqualTo: jopField)
-    //     .where('Experience',isEqualTo: jopExperience)
-    //     .get()
-    //     .then((value) {
-    //       jops.clear();
-    //   value.docs.forEach((element) {
-    //     print (element.data());
-    //     jops.add(JopsModel.fromJson(element.data(), element.id));
-    //   });
-    //   emit(SearchJopFilterSuccessState());
-    // }).catchError((error) {
-    //   emit(SearchJopFilterErrorState());
-    // });
-  }
 
+  }
 
 
 

@@ -32,8 +32,6 @@ int numOfApplyedUsers = 0;
 
   @override
   Widget build(BuildContext context) {
-    var keys = widget.jopModel!.toJson().keys.where((element) => element!='jopid'&&element!='imageUrl'&&element!='companyname'&& element!='companyUid'&& element!='userEmail'&& element!='companyInfo').toList();
-    var values = widget.jopModel!.toJson().values.where((value) => value != widget.jopModel!.jopid&& value != widget.jopModel!.imageUrl&& value!=widget.jopModel!.companyname&& value!=widget.jopModel!.companyUid&& value!=widget.jopModel!.userEmail&& value!=widget.jopModel!.companyInfo).toList();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: backgroundColor,
@@ -46,6 +44,9 @@ int numOfApplyedUsers = 0;
                 title: 'Edit Jop',
                 jop: widget.jopModel,
               ));
+              print(widget.jopModel!.jopField);
+              print(widget.jopModel!.Salary);
+
             },
             icon: Icon(Icons.edit),
           ),
@@ -150,22 +151,79 @@ int numOfApplyedUsers = 0;
       body: TabBarView(
         controller: _tabController,
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: SingleChildScrollView(
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
+          ListView(
 
-                itemCount: keys.length,                itemBuilder: (context, index) {
-                  return JopDetailsScreanStateColumn(
-                    Title:'${keys[index]}',
-                Description: '${values[index]}',
-                  );
-                },
-              )
-            ),
+            children: [
+              JopDetailsScreanStateColumn(
+              Title: 'Jop Title',
+          Description: widget.jopModel!.title,
+              ),
+              JopDetailsScreanStateColumn(
+                Title: 'Jop Type',
+                Description: widget.jopModel!.jopType,
+              ),
+              JopDetailsScreanStateColumn(
+                Title: 'Jop Field',
+                Description: widget.jopModel!.jopField,
+              ),
+              JopDetailsScreanStateColumn(
+                Title: 'Jop Location',
+                Description: widget.jopModel!.location,
+              ),
+              JopDetailsScreanStateColumn(
+                Title: 'Jop Salary',
+                Description: widget.jopModel!.Salary,
+              ),
+              JopDetailsScreanStateColumn(
+                Title: 'Jop Experience',
+                Description: widget.jopModel!.Experience,
+              ),
+              JopDetailsScreanStateColumn(
+                Title: 'Jop Description',
+                Description: widget.jopModel!.description,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Jop Skills',style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 5,
+
+                  children: [
+                    for (var item in widget.jopModel!.Skills!)
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Container(padding: EdgeInsets.all(5) ,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5,),border: Border.all(color: greenColor)),child: Text('$item')),
+                      ),
+                  ],
+                ),
+              ),
+              JopDetailsScreanStateColumn(
+                Title: 'Jop Level',
+                Description: widget.jopModel!.jobLevel,
+              ),
+              JopDetailsScreanStateColumn(
+                Title: 'Jop Shift ',
+                Description: widget.jopModel!.jobShift,
+              ),
+              JopDetailsScreanStateColumn(
+                Title: 'Working Field',
+                Description: widget.jopModel!.workingField,
+              ),
+
+
+
+
+
+
+            ],
           ),
        BlocProvider(
   create: (context) => JopCubit()..getApplyedUsers(jopid: widget.jopModel!.jopid!),

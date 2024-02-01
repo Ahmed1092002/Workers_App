@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../src/app_root.dart';
+
 class CheckOutScreanTextFormField extends StatelessWidget {
   TextEditingController? controller = TextEditingController();
   String? hint;
@@ -21,7 +23,7 @@ class CheckOutScreanTextFormField extends StatelessWidget {
         controller: controller,
 maxLines: hint=='Job Description'? 5:1,
         style: TextStyle(
-          color: Colors.black,
+          color: greenColor,
         ),
         scribbleEnabled: true,
         keyboardType: hint == 'Job Salary' ? TextInputType.number : TextInputType.text,
@@ -36,20 +38,19 @@ maxLines: hint=='Job Description'? 5:1,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
             borderSide: BorderSide(
-              color: Colors.black,
+              color: greenColor,
             ),
           ),
           isDense: true,
-          isCollapsed: true,
 
 
 
 
           prefixIcon: Icon(icon),
-          prefixIconColor: Colors.black,
+          prefixIconColor: greenColor,
           label: Text(hint!),
           labelStyle: TextStyle(
-            color: Colors.black,
+            color: greenColor,
           ),
 
         ),

@@ -10,6 +10,8 @@ import 'package:untitled10/SharedWidget/custom_text_field.dart';
 import 'package:untitled10/user/views/complete_profile_user.dart';
 import 'package:untitled10/utils/navigator.dart';
 
+import '../SharedWidget/working_feilds_dropdown_button_form_field.dart';
+
 class CreateProfieScrean extends StatefulWidget {
   String? nameController ;
   String? emailController;
@@ -36,6 +38,7 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
   TextEditingController? workingFieldController= TextEditingController();
   TextEditingController? addressController= TextEditingController();
   TextEditingController? infoController= TextEditingController();
+  String?jobField;
 
   String? date;
   void _presentDatePicker() async {
@@ -68,18 +71,7 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
 
     });
   }
-List category = [
 
-  'Designer',
-  'Developer',
-  'Tester',
-  'Manager',
-  'Accountant',
-  'Secretary',
-  'Driver',
-  'Teacher',
-  'Doctor',
-  ];
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -256,11 +248,11 @@ List category = [
                     icon: Icons.location_on,
                     controller: addressController,
                   ),
-                  CustomTextField(
-                    hint: 'country',
-                    icon: Icons.location_city,
-                    controller: countryController,
-                  ),
+                  // CustomTextField(
+                  //   hint: 'country',
+                  //   icon: Icons.location_city,
+                  //   controller: countryController,
+                  // ),
                   SelectDateItem(
                     date: _selectedDate == null
                         ? 'Select Date'
@@ -268,6 +260,21 @@ List category = [
                     onTap: _presentDatePicker,
                     icon: Icons.date_range,
               
+                  ),
+                  WorkingFeildsDropdownButtonFormField(
+                    userType: widget.userType,
+
+                    onCountry: (value){
+                      countryController!.text=value;
+                    },
+                    screanName: 'Create Profile',
+                    onWorkFeilds: (value){
+                      workingFieldController!.text=value;
+                    },
+                    onJob: (value){
+                     jobField=value;
+                    },
+
                   ),
                   if (widget.userType=='users')
                   Row(
@@ -291,12 +298,11 @@ List category = [
                       Text('female',style: Theme.of(context).textTheme.bodyMedium,),
                     ],
                   ),
-              
-                  CustomTextField(
-                   hint :'Working Field',
-                    icon: Icons.work,
-                    controller: workingFieldController,
-                  ),
+                  // CustomTextField(
+                  //  hint :'Working Field',
+                  //   icon: Icons.work,
+                  //   controller: workingFieldController,
+                  // ),
                   if(widget.userType=='company')
                     CustomTextField(
                       hint: 'Company Information',

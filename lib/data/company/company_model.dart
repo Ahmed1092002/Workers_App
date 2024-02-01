@@ -6,6 +6,7 @@ class UserModel {
   String?email;
   String?phone;
   String ?workingField;
+  String ?jobField;
   String ?fcmToken;
   String ?date;
   String? gender;
@@ -22,6 +23,7 @@ class UserModel {
     this.fcmToken,
     this.gender,
     this.info,
+    this.jobField,
 
     this.country,
     this.email,
@@ -43,6 +45,7 @@ class UserModel {
       fcmToken: json['fcmToken'],
       gender: json['gender'],
       info: json['info'],
+      jobField: json['jobField'],
 
       country: json['country'],
       email: json['email'],
@@ -62,7 +65,7 @@ class UserModel {
         'fcmToken': fcmToken,
         'gender': gender,
         'info': info,
-
+        'jobField': jobField,
         'country': country,
         'email': email,
         'phone': phone,

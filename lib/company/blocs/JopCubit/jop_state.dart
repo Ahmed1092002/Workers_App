@@ -38,6 +38,13 @@ class SearchJopFilterSuccessState extends JopState {}
 class GetApplyedUserdataLoadingState extends JopState {}
 class GetApplyedUserdataSuccessState extends JopState {}
 class GetApplyedUserdataErrorState extends JopState {}
+class ProfileImagePickedSuccessState extends JopState {}
+class ProfileImagePickedErrorState extends JopState {}
+class uploadProfileImageLoadingState extends JopState {}
+class uploadProfileImageSuccessState extends JopState {}
+class uploadProfileImageErrorState extends JopState {}
+
+
 
 
 

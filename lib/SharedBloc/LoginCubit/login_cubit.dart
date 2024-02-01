@@ -50,12 +50,12 @@ class LoginCubit extends Cubit<LoginState> {
       box.put('name', user!.name);
       box.put('image', user!.image);
       box.put('email', user!.email);
-      box.put('phone', user!.phone);
-      box.put('address', user!.address);
       box.put('uid', user!.id);
       box.put('country', user!.country);
-      box.put('date', user!.date);
        box.put( 'userType', user!.userType);
+
+        box.put( 'info', user!.info);
+
       if (user!.userType == 'users') {
         navigateToScreenAndExit(context!, MainScrean());
       } else if (user!.userType == 'company') {

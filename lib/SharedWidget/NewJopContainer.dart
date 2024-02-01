@@ -6,13 +6,13 @@ import 'package:untitled10/src/app_root.dart';
 class NewJopContainer extends StatelessWidget {
   String? name;
   String? location;
-  int? salary;
+  String? salary;
   String? experience;
   String? jopType;
   String? companyName;
   String? companyLogo;
   String? jopField;
-  String?imageUrl;
+
 
    NewJopContainer({
     super.key,
@@ -23,7 +23,6 @@ class NewJopContainer extends StatelessWidget {
     this.location,
     this.salary,
     this.jopField,
-    this.imageUrl,
 
     this.name, });
 
@@ -43,29 +42,49 @@ color: backgroundColor,
           )
         ),
         child: ListTile(
-          leading:CircleAvatar(
-            radius: 30,
 
-
-            backgroundImage: CachedNetworkImageProvider(companyLogo!),
-          ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 companyName != null && companyName != 'null'
                     ? Text('$companyName')
                     : Container(),
+Wrap(
+  crossAxisAlignment: WrapCrossAlignment.center,
+  spacing: 5,
 
-                Text('$jopType'),
-                Text('$jopField'),
-                Row(
-mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('$location'),
-                    Text('$salary'),
-                    Text('$experience')
-                  ],
-                ),
+  children: [
+    Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(padding: EdgeInsets.all(5) ,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5,),border: Border.all(color: greenColor)),child: Text('$jopType')),
+    ),
+    SizedBox(height: 5,),
+    Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(padding: EdgeInsets.all(5) ,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5,),border: Border.all(color: greenColor)),child: Text('$jopField')),
+    ),
+    SizedBox(height: 5,),
+    Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(padding: EdgeInsets.all(5) ,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5,),border: Border.all(color: greenColor)),child: Text('$location')),
+    ),
+    SizedBox(height: 5,),
+    Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(padding: EdgeInsets.all(5) ,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5,),border: Border.all(color: greenColor)),child: Text('$salary')),
+    ),
+    SizedBox(height: 5,),
+    Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(padding: EdgeInsets.all(5) ,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5,),border: Border.all(color: greenColor)),child: Text('$experience')),
+    ),
+
+  ],
+),
+
+
+
+
 
               ],
             ),

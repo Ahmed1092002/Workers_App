@@ -2,21 +2,22 @@ class JopsModel {
    String? jopid;
    String? title;
    String? description;
-   String? imageUrl;
+    String? companyImageUrl;
    String? location;
-   int? Salary;
+   String? Salary;
    String ? jopType;
    String? userEmail;
-   String? Requirements;
-    String? Skills;
+    List<String>? Skills;
     String? Experience;
+    String? jobLevel;
+    String? jobShift;
     String ? companyUid;
     String ? workingField;
     String ? jopField;
     String ? companyname;
     String ? companyInfo;
 String ? date;
-
+String ?country;
 
 
 
@@ -26,22 +27,22 @@ String ? date;
     this.jopid,
     this.title,
     this.description,
-    this.imageUrl,
+    this.companyImageUrl,
+    this.jobLevel,
+    this.jobShift,
+    this.Experience,
+    this.Skills,
     this.location,
     this.Salary,
     this.userEmail,
     this.jopField,
     this.companyname,
     this.companyInfo,
-
-
-    this.Requirements,
-    this.Skills,
-    this.Experience,
     this.companyUid,
     this.workingField,
     this.date,
     this.jopType,
+    this.country
 
   });
 
@@ -49,21 +50,22 @@ String ? date;
     jopid = id;
     title = json['title'];
     description = json['description'];
-    imageUrl = json['imageUrl'];
     location = json['location'];
     Salary = json['Salary'];
     userEmail = json['userEmail'];
     jopType = json['jopType'];
-    jopField = json['jopField'];
+    jopField = json['jobField'];
     companyname = json['companyname'];
     companyInfo = json['companyInfo'];
-
-    Requirements = json['Requirements'];
-    Skills = json['Skills'];
+    Skills = json['Skills'].cast<String>();
+    companyImageUrl = json['companyImageUrl'];
+    jobLevel = json['jobLevel'];
+    jobShift = json['jobShift'];
     Experience = json['Experience'];
     companyUid = json['companyUid'];
     workingField = json['workingField'];
     date = json['date'];
+    country = json['country'];
   }
 
 
@@ -73,15 +75,19 @@ String ? date;
     data['jopid'] = this.jopid;
     data['title'] = this.title;
     data['description'] = this.description;
-    data['imageUrl'] = this.imageUrl;
+    data['companyImageUrl'] = this.companyImageUrl;
+    data['jobLevel'] = this.jobLevel;
+    data['jobShift'] = this.jobShift;
+
     data['location'] = this.location;
     data['Salary'] = this.Salary;
     data['userEmail'] = this.userEmail;
     data['jopType'] = this.jopType;
-    data['jopField'] = this.jopField;
-    data['Requirements'] = this.Requirements;
+    data['jobField'] = this.jopField;
     data['Skills'] = this.Skills;
 
+
+    data['country'] = this.country;
     data['companyname'] = this.companyname;
     data['Experience'] = this.Experience;
     data['companyUid'] = this.companyUid;

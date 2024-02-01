@@ -27,6 +27,7 @@ class CompanyProfileCubit extends Cubit<CompanyProfileState> {
     final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       profileImage = File(pickedFile.path);
+
       emit(ProfileImagePickedSuccessState());
 
     } else {
@@ -46,6 +47,7 @@ class CompanyProfileCubit extends Cubit<CompanyProfileState> {
           .then((value) {
         value.ref.getDownloadURL().then((value) {
           profileImageLink = value;
+          print(value);
 
           emit(uploadProfileImageSuccessState());
         });
@@ -73,7 +75,7 @@ class CompanyProfileCubit extends Cubit<CompanyProfileState> {
         .doc(uid)
         .get()
         .then((value) {
-
+print (value.data());
       user = UserModel.fromJson(value.data()!);
 //       box.put('name', user!.name);
 //       box.put('image', user!.image);
@@ -102,6 +104,7 @@ class CompanyProfileCubit extends Cubit<CompanyProfileState> {
     required String address,
     required String country,
     required String workingField,
+    required String jobField,
 
      String? image,
   }
@@ -119,6 +122,7 @@ class CompanyProfileCubit extends Cubit<CompanyProfileState> {
       'address': address,
       'country': country,
       'workingField': workingField,
+      'jobField': jobField,
       'image': image,
     }).then((value)  async {
       await box.put( 'name', name);

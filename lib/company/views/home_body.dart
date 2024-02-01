@@ -86,13 +86,14 @@ class _CompanyHomeBodyState extends State<CompanyHomeBody> {
                           child: NewJopContainer(
                             name: cubit.jops[index].title,
                             jopType: cubit.jops[index].jopType!.trim(),
-                            companyLogo: cubit.jops[index].imageUrl,
+                            companyLogo: cubit.jops[index].companyImageUrl,
                             experience: cubit.jops[index].Experience,
                             location: cubit.jops[index].location,
                             salary: cubit.jops[index].Salary,
+                      // todo:change this
                           jopField: cubit.jops[index].jopField,
 
-                            imageUrl: cubit.jops[index].imageUrl,
+
 
 
 

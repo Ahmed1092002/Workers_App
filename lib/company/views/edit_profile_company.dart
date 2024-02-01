@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled10/SharedWidget/custoButton.dart';
 import 'package:untitled10/SharedWidget/custom_text_field.dart';
+import 'package:untitled10/SharedWidget/working_feilds_dropdown_button_form_field.dart';
 import 'package:untitled10/company/blocs/CompanyProfileCubit/company_profile_cubit.dart';
 import 'package:untitled10/company/views/main_screan.dart';
 import 'package:untitled10/user/views/main_screan.dart';
@@ -19,6 +20,7 @@ class EditProfileCompany extends StatelessWidget {
 TextEditingController countryController = TextEditingController();
 TextEditingController workingFieldController = TextEditingController();
 TextEditingController infoController = TextEditingController();
+String?jobField='';
 
 
 
@@ -153,13 +155,9 @@ Row(
         icon: Icons.location_on,
       ),
     ),
-    Expanded(
-      child: CustomTextField(
-        controller: countryController,
-        hint: 'Country',
-        icon: Icons.flag,
-      ),
-    ),
+
+
+
   ],
 ),
               CustomTextField(
@@ -178,11 +176,28 @@ Row(
               //   hint: 'Country',
               //   icon: Icons.flag,
               // ),
-              CustomTextField(
-                controller: workingFieldController,
-                hint: 'Working Field',
-                icon: Icons.work,
+              WorkingFeildsDropdownButtonFormField(
+                userType: cubit.user!.userType!,
+                countryString: cubit.user!.country!,
+                job: cubit.user!.jobField!=null?cubit.user!.jobField:'select job',
+                workFeilds: cubit.user!.workingField!,
+                screanName: 'Edit Profile',
+
+                onWorkFeilds: (value) {
+                  workingFieldController.text = value;
+                },
+                onCountry: (value) {
+                  countryController.text = value;
+                },
+                onJob: (value) {
+                  if (value != null){
+                    jobField = value;
+                  }else {
+                    jobField = cubit.user!.jobField;
+                  }
+                },
               ),
+
 
 
               if (state is uploadProfileImageLoadingState || state is UpdateProfileDataLoadingState)
@@ -199,11 +214,12 @@ Row(
                       ) {
                         await cubit.updateProfileData(
                           image: cubit.user!.image!,
-                          info: cubit.user!.info!,
+                          info: infoController.text,
                           name: nameController.text,
                           phone: phoneController.text,
                           address: addressController.text,
                           country: countryController.text,
+                          jobField: jobField!,
                           workingField: workingFieldController.text,
                         ).whenComplete(() => navigateToScreenAndExit(context, CompanyMainScrean()));
                       }
@@ -218,8 +234,8 @@ Row(
                               image: cubit.profileImageLink!.isNotEmpty?cubit.profileImageLink:cubit.user!.image!,
 
                               name: nameController.text,
-                              info: cubit.user!.info!,
-
+                              info: infoController.text,
+                              jobField: jobField!,
                               phone: phoneController.text,
                               address: addressController.text,
                               country: countryController.text,
@@ -235,9 +251,10 @@ Row(
                     ) {
                       await cubit.updateProfileData(
                         image: cubit.user!.image!,
-                        info: cubit.user!.info!,
+                        info: infoController.text,
                         name: nameController.text,
                         phone: phoneController.text,
+                        jobField: jobField!,
                         address: addressController.text,
                         country: countryController.text,
                         workingField: workingFieldController.text,
@@ -252,9 +269,9 @@ Row(
                           cubit.updateProfileData(
 
                             image: cubit.profileImageLink!.isNotEmpty?cubit.profileImageLink:cubit.user!.image!,
-
+                            jobField: jobField!,
                             name: nameController.text,
-                            info: cubit.user!.info!,
+                            info: infoController.text,
 
                             phone: phoneController.text,
                             address: addressController.text,

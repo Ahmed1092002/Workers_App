@@ -72,7 +72,7 @@ class DetailsJopAndApplyedScrean extends StatelessWidget {
                             ),
                             child: CircleAvatar(
                               radius: 45,
-                              backgroundImage: NetworkImage(jops!.imageUrl!),
+                              backgroundImage: NetworkImage(jops!.companyImageUrl!),
                             ),
                           ),
 

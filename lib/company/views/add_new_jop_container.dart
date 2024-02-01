@@ -1,16 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:untitled10/SharedWidget/check_out_screan_text_form_field.dart';
+import 'package:untitled10/SharedWidget/circle_avatar_image.dart';
 import 'package:untitled10/SharedWidget/custoButton.dart';
+import 'package:untitled10/SharedWidget/working_feilds_dropdown_button_form_field.dart';
 import 'package:untitled10/company/blocs/JopCubit/jop_cubit.dart';
 import 'package:untitled10/company/views/main_screan.dart';
 import 'package:untitled10/data/company/jop_model.dart';
 import 'package:untitled10/main.dart';
 import 'package:untitled10/src/app_root.dart';
+import 'package:untitled10/utils/consatants.dart';
 import 'package:untitled10/utils/navigator.dart';
 
-class AddNewJopContainer extends StatelessWidget {
+class AddNewJopContainer extends StatefulWidget {
   String title;
   JopsModel? jop;
    AddNewJopContainer({
@@ -18,17 +22,77 @@ class AddNewJopContainer extends StatelessWidget {
     required this.title,
     this.jop,
   });
-  TextEditingController? jopTitlecontroller = TextEditingController();
-  TextEditingController? jopDescriptioncontroller = TextEditingController();
-  TextEditingController? jopLocationcontroller = TextEditingController();
-  TextEditingController? jopSalarycontroller = TextEditingController();
-  TextEditingController? jopRequirementscontroller = TextEditingController();
-  TextEditingController? jopSkillscontroller = TextEditingController();
-  TextEditingController? jopExperiencecontroller = TextEditingController();
-  TextEditingController? jopTypecontroller = TextEditingController();
-  TextEditingController? jopFieldcontroller = TextEditingController();
-  var box = Hive.box(boxName);
 
+  @override
+  State<AddNewJopContainer> createState() => _AddNewJopContainerState();
+}
+
+class _AddNewJopContainerState extends State<AddNewJopContainer> {
+  TextEditingController? jopTitlecontroller = TextEditingController();
+
+  TextEditingController? jopDescriptioncontroller =TextEditingController();
+
+  TextEditingController? jopLocationcontroller = TextEditingController();
+
+  String? jopSalarycontroller = '';
+
+  String? jopExperiencecontroller = '';
+
+  List<String>? jopSkills = [];
+
+  String? jopTypecontroller = '';
+
+  String? jopFieldcontroller = '';
+
+  String? jobShiftS = '';
+
+  String?jobLevelS = '';
+
+  Widget skillsWidget(List<String> skill) {
+    return Container(
+      margin: EdgeInsets.all(5),
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Wrap(
+        children: [
+          ...skill.map((e) => Container(
+            margin: EdgeInsets.all(5),
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              border: Border.all(color: greenColor),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(e),
+                SizedBox(
+                  width: 5,
+                ),
+                InkWell(
+                  onTap: () {
+                   setState(() {
+                     skill.remove(e);
+                   });
+                  },
+                  child: Icon(
+                    Icons.close,
+                    size: 15,
+                  ),
+                )
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+
+  var box = Hive.box(boxName);
 
   @override
   Widget build(BuildContext context) {
@@ -40,21 +104,26 @@ class AddNewJopContainer extends StatelessWidget {
   },
   builder: (context, state) {
     var cubit = JopCubit.get(context);
-    if (title == 'Edit Jop') {
-      jopTitlecontroller!.text = jop!.title!;
-      jopDescriptioncontroller!.text = jop!.description!;
-      jopLocationcontroller!.text = jop!.location!;
-      jopSalarycontroller!.text = jop!.Salary!.toString();
-      jopRequirementscontroller!.text = jop!.Requirements!;
-      jopSkillscontroller!.text = jop!.Skills!;
-      jopExperiencecontroller!.text = jop!.Experience!;
-      jopTypecontroller!.text = jop!.jopType!;
-      jopFieldcontroller!.text = jop!.jopField!;
+    if (widget.title == 'Edit Jop') {
+      jopTitlecontroller!.text= widget.jop!.title!;
+      jopDescriptioncontroller!.text= widget.jop!.description!;
+      jopLocationcontroller!.text= widget.jop!.location!;
+      jopSalarycontroller= widget.jop!.Salary!;
+      jopExperiencecontroller = widget.jop!.Experience!;
+      jopTypecontroller = widget.jop!.jopType!;
+      jopFieldcontroller= widget.jop!.jopField!;
+      jopSkills = widget.jop!.Skills;
+      jobShiftS = widget.jop!.jobShift!;
+      jobLevelS = widget.jop!.jobLevel!;
+
+
+
+
     }
     return Scaffold(
   appBar: AppBar(
           backgroundColor: greenColor,
-          title: Text(title),
+          title: Text(widget.title),
           centerTitle: true,
     iconTheme: IconThemeData(
           color: Colors.white, //change your color here
@@ -81,9 +150,9 @@ class AddNewJopContainer extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-
-
-
+                SizedBox(
+                  height: 20,
+                ),
 
                 CheckOutScreanTextFormField(
                   hint: 'Job Title',
@@ -91,66 +160,114 @@ class AddNewJopContainer extends StatelessWidget {
                   controller: jopTitlecontroller,
 
 
-                )
-                ,
+                ),
+
+                  Row(
+                    children: [
+                      Expanded(child: getDropDownButtonFormField(
+                        job:jobType ,
+icon: Icons.work,
+                        hint: 'job Type',
+                        jobString: widget.jop!.jopType  ,
+                        Function: (  value){
+                          jopTypecontroller = value;
+                        },
+                      ),),
+                      Expanded(child:     getDropDownButtonFormField(
+                        job: Jobs,
+                        hint: 'Job',
+                        jobString: widget.jop!.jopField,
+                        icon: Icons.work,
+                        Function: (  value){
+                          jopFieldcontroller = value;
+                        },
+
+                      ),),
+
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: getDropDownButtonFormField(
+                        job: jobLevel,
+                        hint: 'Job Level',
+                        icon: Icons.work,
+                        jobString: widget.jop!.jobLevel,
+                        Function: (  value){
+                          jobLevelS = value;
+                        }
+                      ),),
+                      Expanded(child:     getDropDownButtonFormField(
+                        job: jobShift,
+                        hint: 'Job Shift',
+                        icon: Icons.work,
+                        jobString: widget.jop!.jobShift,
+                        Function: (  value){
+                          jobShiftS = value;},
+                      ),),
+
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: getDropDownButtonFormField(
+                        job: jobExperience,
+                        hint: 'Job Experience',
+                        icon: Icons.work,
+                        jobString: widget.jop!.Experience,
+                        Function: (  value){
+                          jopExperiencecontroller = value;},
+                      ),),
+                      Expanded(child:     getDropDownButtonFormField(
+                        job: jobSalary,
+                        hint: 'Job Salary',
+                        icon: Icons.money,
+                        jobString: widget.jop!.Salary,
+                        Function: (  value){
+                          jopSalarycontroller = value;},
+                      ),),
+
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: getDropDownButtonFormField(
+                          job: jobSkills,
+                          jobString: ' job skills',
+                          icon: Icons.work,
+
+                          hint: 'Job Skills',
+                          Function: (  value){
+setState(() {
+  jopSkills!.add(value);});
+                          },
+                        ) ,
+                      ),
+                      Expanded(
+                      child:  CheckOutScreanTextFormField(
+                          hint: 'Job Location',
+                          icon: Icons.location_on,
+                          controller: jopLocationcontroller,
+
+                        ),
+                      )
+                    ],
+                  ),
+                skillsWidget(jopSkills!),
+
+
+
 
                 CheckOutScreanTextFormField(
                   hint: 'Job Description',
                   icon: Icons.description,
                   controller: jopDescriptioncontroller,
 
-
-                ),
-
-                CheckOutScreanTextFormField(
-                  hint: 'Job Location',
-                  icon: Icons.location_on,
-controller: jopLocationcontroller,
-
-                ),
-
-                CheckOutScreanTextFormField(
-                  hint: 'Job Salary',
-                  icon: Icons.attach_money,
-controller: jopSalarycontroller,
-
-
                 ),
 
 
-                CheckOutScreanTextFormField(
-                  hint: 'Job Requirements',
-                  icon: Icons.list_alt,
-controller: jopRequirementscontroller,
-
-                ),
-
-                CheckOutScreanTextFormField(
-                  hint: 'Job Skills',
-                  icon: Icons.list_alt,
-controller: jopSkillscontroller,
-
-                ),
-
-                CheckOutScreanTextFormField(
-                  hint: 'Jop Experience',
-                  icon: Icons.list_alt,
-controller: jopExperiencecontroller,
-
-
-                ),
-                CheckOutScreanTextFormField(
-hint: 'Jop Type',
-                  icon: Icons.list_alt,
-controller: jopTypecontroller,
-
-                ),
-                CheckOutScreanTextFormField(
-                  hint: 'Jop Field',
-                  icon: Icons.list_alt,
-controller: jopFieldcontroller,
-
-                  ),
                 if (state is AddJopLoadingState || state is AddjopJopToCompanyLoadingState)
                   Center(
                     child: CircularProgressIndicator(
@@ -159,42 +276,46 @@ controller: jopFieldcontroller,
                   )
                 else
                 CustomButton(
-                  buttonName: 'Add New Jop',
+                  buttonName: widget.title == 'Add New Jop' ? 'Add Jop' : 'Edit Jop',
                   onPressed: () async {
-        if (title == 'Add New Jop')
+        if (widget.title == 'Add New Jop')
           {
             cubit.addJopToCompany(
-              jopImage: box.get('image'),
-              JopField: jopFieldcontroller!.text ,
+              JopField: jopFieldcontroller! ,
+              jobShift: jobShiftS!,
+        jobLevel: jobLevelS!,
+
 
 
               jopTitle: jopTitlecontroller!.text,
               jopDescription: jopDescriptioncontroller!.text,
               jopLocation: jopLocationcontroller!.text,
-              jopSalary: int.parse(jopSalarycontroller!.text),
-              jopRequirements: jopRequirementscontroller!.text,
-              jopSkills: jopSkillscontroller!.text,
-              jopExperience: jopExperiencecontroller!.text,
-              jopType: jopTypecontroller!.text,
+              jopSalary: jopSalarycontroller!,
+              jopSkills: jopSkills!,
+              jopExperience: jopExperiencecontroller!,
+              jopType: jopTypecontroller!,
             );
             Future.delayed(Duration(seconds: 2)).whenComplete(() =>   navigateToScreenAndExit(context, CompanyMainScrean()));
 
 
-          }else {
+          }
+        else {
 
             cubit.editJop(
 
               jopTitle: jopTitlecontroller!.text,
               jopDescription: jopDescriptioncontroller!.text,
               jopLocation: jopLocationcontroller!.text,
-              jopSalary: int.parse(jopSalarycontroller!.text),
-              jopRequirements: jopRequirementscontroller!.text,
-              jopSkills: jopSkillscontroller!.text,
-              jopExperience: jopExperiencecontroller!.text,
-              jopType: jopTypecontroller!.text,
-              JopField: jopFieldcontroller!.text,
-              jopid: jop!.jopid!,
-              jopImage: box.get('image'),
+              jopSalary: jopSalarycontroller!,
+              jopSkills: jopSkills!,
+              jobLevel: jobLevelS!,
+
+
+              jopShift: widget.jop!.jobShift!,
+              jopExperience: jopExperiencecontroller!,
+              jopType: jopTypecontroller!,
+              JopField: jopFieldcontroller!,
+              jopid: widget.jop!.jopid!,
             );
             Future.delayed(Duration(seconds: 2)).whenComplete(() =>   navigateToScreenAndExit(context, CompanyMainScrean()));
         }

@@ -73,15 +73,12 @@ class _ApplyedJopsState extends State<ApplyedJops> {
                               padding: const EdgeInsets.all(8.0),
                               child: NewJopContainer(
                                 jopField: cubit.jops[index].jopField,
-                                salary: cubit.jops[index].Salary,
                                 jopType: cubit.jops[index].jopType,
-                                imageUrl: cubit.jops[index].imageUrl,
                                 companyName: cubit.jops[index].companyname,
                                 location: cubit.jops[index].location,
                                 experience: cubit.jops[index].Experience,
-                                companyLogo: cubit.jops[index].imageUrl,
                                 name: cubit.jops[index].title,
-
+//todo;fix this
 
                               ),
                             );

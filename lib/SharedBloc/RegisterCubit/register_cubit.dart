@@ -82,7 +82,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     String? address,
     String? profileImageLink,
     String?info,
-
+    String?jobField,
     String? country,
     String? phone,
     String? workingField,
@@ -102,13 +102,19 @@ class RegisterCubit extends Cubit<RegisterState> {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password)
         .then((value) async =>    {
 
-    await  createNewUser(email: email,Info: info ,image: profileImageLink, name: name, uid: value.user!.uid, userType: userType, address: address,  country: country, phone: phone, workingField: workingField, date: date),
+    await  createNewUser(email: email,Info: info ,image: profileImageLink, name: name, uid: value.user!.uid, userType: userType, address: address,  country: country, phone: phone, workingField: workingField, date: date,jobField: jobField),
       await  storage.write(key: 'uid', value: value.user!.uid),
       await  box.put('userType', userType),
    await box.put('name', user!.name),
    await box.put('image', user!.image),
    await box.put('email', user!.email),
    await box.put('info', user!.info),
+    await box.put('phone', user!.phone),
+    await box.put('address', user!.address),
+    await box.put('country', user!.country),
+    await box.put('date', user!.date),
+    await box.put('workingField', user!.workingField),
+    await box.put('jobField', user!.jobField),
 
 
 
@@ -132,6 +138,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     String? address,
     String? profileImageLink,
     String? Info,
+    String? jobField,
 
     String? country,
     String? phone,
@@ -165,6 +172,7 @@ class RegisterCubit extends Cubit<RegisterState> {
            userType: userType,
            address: address,
            country: country,
+           jobField: jobField,
            Info: Info,
            phone: value.user!.phoneNumber,
            workingField: workingField, date: date);
@@ -198,6 +206,8 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   Future createNewUser(
       {String? email,
+        String?jobField,
+
 
         String? name,
         String ? userType,
@@ -217,6 +227,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     user = UserModel(
       email: email,
 image: image,
+      jobField: jobField,
       name: name,
       userType: userType,
       address: address,
@@ -246,6 +257,7 @@ print (user!.toJson());
     String?workingField,
     String?date,
     String?gender,
+    String?jobField,
     String?info,
     String?image,
     String?uid,
@@ -263,12 +275,19 @@ print (user!.toJson());
       'image':image,
       'gender':gender,
       'userType':userType,
+      'jobField':jobField,
       'info':info,
 
     }).then((value) async {
       await  box.put('userType', userType);
       await box.put('image', image);
-
+      await box.put('phone', phone);
+      await box.put('address', address);
+      await box.put('country', country);
+      await box.put('workingField', workingField);
+      await box.put('date', date);
+      await box.put('gender', gender);
+      await box.put('jobField', jobField);
       await  box.put('info', info);
       emit(UserCreateSuccessState());
 
