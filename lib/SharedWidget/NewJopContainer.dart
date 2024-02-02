@@ -47,7 +47,7 @@ color: backgroundColor,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 companyName != null && companyName != 'null'
-                    ? Text('$companyName')
+                    ? Text('$companyName',style: Theme.of(context).textTheme.bodyLarge,)
                     : Container(),
 Wrap(
   crossAxisAlignment: WrapCrossAlignment.center,

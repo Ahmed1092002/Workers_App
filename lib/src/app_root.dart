@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled10/SharedViews/spalsh_screan.dart';
+import 'package:untitled10/SharedViews/splash.dart';
 import 'package:untitled10/user/views/complete_profile_user.dart';
 import 'package:untitled10/user/views/main_screan.dart';
 
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      home: SpalshScrean(),
+      home: SecondClass(),
     );
   }
 }

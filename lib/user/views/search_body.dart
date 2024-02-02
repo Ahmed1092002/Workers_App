@@ -51,59 +51,89 @@ var box = Hive.box(boxName);
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                TextFormField(
-                  controller: jopTitleController,
-                  decoration: InputDecoration(
-                    labelText: 'Jop Title',
-                    labelStyle: TextStyle(color: greenColor),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: greenColor),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: jopTitleController,
+                    decoration: InputDecoration(
+                      labelText: 'Jop Title',
+                      labelStyle: TextStyle(color: greenColor),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: greenColor),
+                      ),
                     ),
                   ),
                 ),
-                TextFormField(
-                  controller: jopLocationController,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: jopLocationController,
 
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(color: greenColor),
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(color: greenColor),
 
-                    labelText: 'Jop Location',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: greenColor),
+                      labelText: 'Jop Location',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: greenColor),
 
+                      ),
                     ),
                   ),
                 ),
 
+Row(
+  children: [
+    Expanded(child:    getDropDownButtonFormField(
+      hint: 'Jop Type',
+      icon: Icons.work,
+      context: context,
+      job: jobType,
+      Function: (  value){
+        jopTypeController.text = value;
+      },
+    ),),
+    Expanded(child:    getDropDownButtonFormField(
+      hint: 'Jop Field',
+      context: context,
+      icon: Icons.work,
+      job:Jobs,
+      Function: (  value){
+        jopFieldController.text = value;
+      },
+    ),),
+  ],
 
-          getDropDownButtonFormField(
-            hint: 'Jop Type',
-            icon: Icons.work,
-            job: jobType,
-            Function: (  value){
-              jopTypeController.text = value;
-            },
-          ),
-                getDropDownButtonFormField(
-            hint: 'Jop Field',
-            icon: Icons.work,
-            job:Jobs,
-            Function: (  value){
-              jopFieldController.text = value;
-            },
-          ),
-                getDropDownButtonFormField(
-                  hint: 'Jop Salary',
-                  icon: Icons.work,
-                  job: jobSalary,
-                  Function: (  value){
-                    jopSalaryController.text = value;
-                  },
+),
+                Row(
+                  children: [
+                    Expanded(child:    getDropDownButtonFormField(
+                      hint: 'Jop Salary',
+                      icon: Icons.work,
+                      job: jobSalary,
+                      context: context,
+                      Function: (  value){
+                        jopSalaryController.text = value;
+                      },
+                    ),),
+                    Expanded(child:    getDropDownButtonFormField(
+                      hint: 'Jop Experience',
+                      icon: Icons.work,
+                      job: jobExperience,
+                      context: context,
+                      Function: (  value){
+                        jopExperienceController.text = value;
+                      },
+                    ),),
+                  ],
                 ),
+
+
+
                 getDropDownButtonFormField(
-                  hint: 'Jop Experience',
+                  hint: 'Jop Shift',
                   icon: Icons.work,
                   job: jobExperience,
+                  context: context,
                   Function: (  value){
                     jopExperienceController.text = value;
                   },
@@ -116,18 +146,18 @@ var box = Hive.box(boxName);
                   buttonName: 'Search',
                   onPressed: () async {
                     String salaryText = jopSalaryController.text;
-                    int? jopSalary;
 
-                    if (salaryText.isNotEmpty && int.tryParse(salaryText) != null) {
-                      jopSalary = int.parse(salaryText);
-                    }
+print (salaryText);
+print (jopSalaryController.text);
+
                     var userType = await box.get('userType');
+                    print (userType);
                     if (userType == 'company') {
                      JopCubit.get(context).searchMyJopsFilter(
                         jopTitle: jopTitleController.text,
                         jopLocation: jopLocationController.text,
                         jopType: jopTypeController.text,
-                        jopSalary: jopSalary,
+                        jopSalary: jopSalaryController.text,
                         jopExperience: jopExperienceController.text,
                         jopField: jopFieldController.text,
                       ).whenComplete(() {
@@ -141,7 +171,7 @@ var box = Hive.box(boxName);
                         jopTitle: jopTitleController.text,
                         jopLocation: jopLocationController.text,
                         jopType: jopTypeController.text,
-                        jopSalary: jopSalary,
+                        jopSalary: jopSalaryController.text,
                         jopExperience: jopExperienceController.text,
                         jopField: jopFieldController.text,
 

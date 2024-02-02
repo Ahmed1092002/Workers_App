@@ -492,7 +492,7 @@ List<UserModel> applyedUsers = [];
    Future searchJopFilter({ String? jopTitle,
      String? jopLocation ,
      String? jopType
-    , int? jopSalary,
+    , String? jopSalary,
      String? jopField,
      String? jopExperience})async{
       emit(SearchJopFilterLoadingState());
@@ -598,7 +598,7 @@ List<UserModel> applyedUsers = [];
   Future searchMyJopsFilter({ String? jopTitle,
     String? jopLocation ,
     String? jopType
-    , int? jopSalary,
+    , String? jopSalary,
     String? jopField,
     String? jopExperience})async{
      String? uid = await storage.read(key: 'uid');
@@ -621,7 +621,7 @@ List<UserModel> applyedUsers = [];
     else if (jopField!=null){
       query = query.where('jopField',isEqualTo: jopField);
     }
-    else if (jopExperience!=null){
+    else if (jopExperience!.isNotEmpty){
       query = query.where('Experience',isEqualTo: jopExperience);
     }
     //jop title

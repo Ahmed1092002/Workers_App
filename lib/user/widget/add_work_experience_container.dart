@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled10/data/users/work_experience.dart';
 import 'package:untitled10/src/app_root.dart';
+import 'package:untitled10/user/widget/add_or_edit_experience_model_bottom_sheet.dart';
 
 import '../../SharedWidget/select_date_item.dart';
 
@@ -31,177 +32,159 @@ List workExperience = [];
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Add work Experience'),
+          Text('Add work Experience',style: TextStyle(
+            color: greenColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),),
           for(var i = 0; i < workExperience.length; i++)
            Padding(
              padding: const EdgeInsets.all(8.0),
-             child: Container(
-                width: MediaQuery.of(context).size.width ,
-                height: MediaQuery.of(context).size.height * 0.2,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: Colors.green,
-                      width: 2,
-                    )),
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-      
-                    Text('Company Name : ${workExperience[i].company}'),
-                    Text('Position : ${workExperience[i].position}'),
-                    Text('Start Date : ${workExperience[i].startDate}'),
-                    Text('End Date : ${workExperience[i].endDate}'),
-                    Text('Period : ${workExperience[i].period}'),
-                    Text('Description : ${workExperience[i].description}'),
-      
-      
-                  ],
-                ),
-              ),
+             child: Row(
+               crossAxisAlignment: CrossAxisAlignment.start,
+
+               children: [
+                 Container(
+                    width: MediaQuery.of(context).size.width*0.79 ,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
+                        border: Border.all(
+                          color: Colors.green,
+                          width: 2,
+                        )),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Text('Company Name :',style: TextStyle(
+                            color: greenColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                          Text('${workExperience[i].company}',),
+                          Divider(),
+                          Text('Position : ',style: TextStyle(
+                            color: greenColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                          Text('${workExperience[i].position}'),
+                          Divider(),
+
+                          Text('Start Date :',style: TextStyle(
+                            color: greenColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                          Text(' ${workExperience[i].startDate}'),
+                          Divider(),
+
+                          Text('End Date :',style: TextStyle(
+                            color: greenColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                          Text('${workExperience[i].endDate}'),
+                          Divider(),
+
+                          Text('Period :',style: TextStyle(
+                            color: greenColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                          Text('${workExperience[i].period}'),
+                          Divider(),
+
+                          Text('Description : ',style: TextStyle(
+                            color: greenColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                          Text('${workExperience[i].description}'),
+
+
+                        ],
+                      ),
+                    ),
+                  ),
+                 Container(
+                   decoration: BoxDecoration(
+                     color: greenColor,
+                     borderRadius: BorderRadius.only(
+                       topRight: Radius.circular(10),
+                       bottomRight: Radius.circular(10),
+                     )
+
+                   ),
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     mainAxisAlignment: MainAxisAlignment.start,
+                     children: [
+                       IconButton(onPressed: (){
+                         setState(() {
+                           showModalBottomSheet(context: context,
+                               barrierColor: Colors.black.withOpacity(0.5),
+                               isScrollControlled: true,
+                               showDragHandle: true,
+                               useSafeArea: true,
+
+                               barrierLabel: 'edit',builder: (context) {
+                                 return AddOrEditExperienceModelBottomSheet(
+                                   onEdit: (workExperienceOPject) {
+                                     setState(() {
+                                       workExperience[i] = workExperienceOPject;
+                                       widget.onAdd!(workExperience);
+                                     });
+                                     Navigator.pop(context);
+                                   },
+                                   workExperienceModel: workExperience[i],
+                                 );
+                               });
+                         });
+                       }, icon: Icon(Icons.edit,color: Colors.white,)),
+                       IconButton(onPressed: (){
+                         setState(() {
+                           workExperience.removeAt(i);
+                           widget.onAdd!(workExperience);
+                         });
+                       }, icon: Icon(Icons.delete,color: Colors.white,)),
+                     ],
+                   ),
+                 ),
+               ],
+             ),
            ),
       
       
           CircleAvatar(
             radius: 20,
-            backgroundColor: Colors.green,
+            backgroundColor: greenColor,
       
       
             child: IconButton(onPressed: (){
               setState(() {
                 showModalBottomSheet(context: context,
-                    backgroundColor: backgroundColor,
+                    barrierColor: Colors.black.withOpacity(0.5),
                     isScrollControlled: true,
-                    builder: (context){
-                      return Container(
-                      height: MediaQuery.of(context).viewInsets.bottom==0?MediaQuery.of(context).size.height :MediaQuery.of(context).size.height * 1.5,
-                        padding: EdgeInsets.all(20),
-      
-                        child: Column(
-                          children: [
+                    showDragHandle: true,
+                    useSafeArea: true,
 
-
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Company Name',
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.green),
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  if (workExperienceModel == null) {
-                                    workExperienceModel = WorkExperience();
-                                  }
-                                  workExperienceModel!.company = value;
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Position',
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  if (workExperienceModel == null) {
-                                    workExperienceModel = WorkExperience();
-                                  }
-                                  workExperienceModel!.position = value;
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Period',
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  if (workExperienceModel == null) {
-                                    workExperienceModel = WorkExperience();
-                                  }
-                                  workExperienceModel!.period = value;
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Start Date',
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  if (workExperienceModel == null) {
-                                    workExperienceModel = WorkExperience();
-                                  }
-                                  workExperienceModel!.startDate = value;
-                                },
-                              ),
-                            ),
-                            // SelectDateItem(
-                            //   icon: Icons.date_range,
-                            //   date: 'Start Date',
-                            //
-                            // ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'End Date',
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  if (workExperienceModel == null) {
-                                    workExperienceModel = WorkExperience();
-                                  }
-                                  workExperienceModel!.endDate = value;
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Description',
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (value) {
-                                  if (workExperienceModel == null) {
-                                    workExperienceModel = WorkExperience();
-                                  }
-                                  workExperienceModel!.description = value;
-                                },
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
-                              children: [
-                                ElevatedButton(onPressed: (){
-                                  setState(() {
-                                    workExperience.add(workExperienceModel);
-                                    widget.onAdd!(workExperience);
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Text('Added'),
-                                    ));
-                                    Navigator.pop(context);
-                                  });
-                                }, child: Text('Add',style: TextStyle(color: Colors.white),)),
-                                ElevatedButton(onPressed: (){
-                                  Navigator.pop(context);
-                                }, child: Text('Cancel',style: TextStyle(color: Colors.white),)),
-                              ],
-                            )
-
-
-                          ],
-                        ),
+                    barrierLabel: 'add',builder: (context) {
+                      return AddOrEditExperienceModelBottomSheet(
+                        onAdd: (workExperienceOPject) {
+                          setState(() {
+                            workExperience.add(workExperienceOPject);
+                            widget.onAdd!(workExperience);
+                          });
+                          Navigator.pop(context);
+                        },
                       );
                     });
               });

@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:untitled10/SharedWidget/select_date_item.dart';
 import 'package:untitled10/data/users/education.dart';
+import 'package:untitled10/user/widget/add_or_edit_education_model_bottom_sheet.dart';
 
 import '../../src/app_root.dart';
 
 class AddEducationContainer extends StatefulWidget {
   Function(List)? onAdd;
-  Education? educationModel;
-  Function(Education)? onEdit;
-  Function(Education)? onAddItem;
+
 
   AddEducationContainer({
-this.onAddItem,
-    this.educationModel,
-    this.onEdit,
+
     super.key,
     this.onAdd   ,
   });
@@ -78,166 +75,173 @@ List<Education> education = [];
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Add Education'),
+            Text('Add Education',style: TextStyle(
+              color: greenColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),),
             for(var i = 0; i < education.length; i++)
              Padding(
                padding: const EdgeInsets.all(8.0),
-               child: Container(
-                  width: MediaQuery.of(context).size.width ,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.green,
-                        width: 2,
-                      )),
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+               child: Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 crossAxisAlignment: CrossAxisAlignment.start,
 
-                      Text('School Name : ${education[i].name}'),
-                      Text('Degree : ${education[i].degree}'),
-                      Text('Field Of Study : ${education[i].field}'),
-                      Text('Start Date : ${education[i].from}'),
-                      Text('End Date : ${education[i].to}'),
-                      Text('Description : ${education[i].description}'),
+                 children: [
+                 Container(
+                   width: MediaQuery.of(context).size.width*0.79 ,
+                   decoration: BoxDecoration(
+                       color: Colors.white,
+                       borderRadius: BorderRadius.only(
+                         topLeft: Radius.circular(10),
+                         bottomLeft: Radius.circular(10),
+                       ),
+                       border: Border.all(
+                         color: Colors.green,
+                         width: 2,
+                       )),
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: Column(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+
+                         Text('School/University Name :',style: TextStyle(
+                           color: greenColor,
+                           fontSize: 20,
+                           fontWeight: FontWeight.bold,
+                         ),),
+                         Text('${education[i].name}',),
+                         Divider(),
+                         Text('Field : ',style: TextStyle(
+                           color: greenColor,
+                           fontSize: 20,
+                           fontWeight: FontWeight.bold,
+                         ),),
+                         Text('${education[i].field}'),
+                         Divider(),
 
 
-                    ],
-                  ),
-                ),
+                         Text('Degree : ',style: TextStyle(
+                           color: greenColor,
+                           fontSize: 20,
+                           fontWeight: FontWeight.bold,
+                         ),),
+                         Text('${education[i].degree}'),
+                         Divider(),
+                         Text('Start Date :',style: TextStyle(
+                           color: greenColor,
+                           fontSize: 20,
+                           fontWeight: FontWeight.bold,
+                         ),),
+                         Text('${education[i].from}'),
+                         Divider(),
+                         Text('End Date :',style: TextStyle(
+                           color: greenColor,
+                           fontSize: 20,
+                           fontWeight: FontWeight.bold,
+                         ),),
+                         Text('${education[i].to}'),
+                         Divider(),
+                         Text('Description :',style: TextStyle(
+                           color: greenColor,
+                           fontSize: 20,
+                           fontWeight: FontWeight.bold,
+                         ),),
+                         Text('${education[i].description}'),
+                         Divider(),
+                         Text('Grede :',style: TextStyle(
+                           color: greenColor,
+                           fontSize: 20,
+                           fontWeight: FontWeight.bold,
+                         ),),
+                         Text('${education[i].grade}'),
+                       ],
+                     ),
+                   ),
+                 ),
+
+                   Container(
+                     decoration: BoxDecoration(
+                         color: greenColor,
+                         borderRadius: BorderRadius.only(
+                           topRight: Radius.circular(10),
+                           bottomRight: Radius.circular(10),
+                         )
+
+                     ),
+                     child: Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       mainAxisAlignment: MainAxisAlignment.start,
+                       children: [
+                         IconButton(onPressed: (){
+                           setState(() {
+                             showModalBottomSheet(context: context,
+                                 barrierColor: Colors.black.withOpacity(0.5),
+                                 isScrollControlled: true,
+                                 showDragHandle: true,
+                                 useSafeArea: true,
+
+                                 barrierLabel: 'edit',builder: (context) {
+                                   return AddOrEditEducationModelBottomSheet(
+                                     onEdit: (workExperienceOPject) {
+                                       setState(() {
+                                         education[i] = workExperienceOPject;
+                                         widget.onAdd!(education);
+                                       });
+                                       Navigator.pop(context);
+                                     },
+                                     educationModel: education[i],
+                                   );
+                                 });
+                           });
+                         }, icon: Icon(Icons.edit,color: Colors.white,)),
+                         IconButton(onPressed: (){
+                           setState(() {
+                             education.removeAt(i);
+                             widget.onAdd!(education);
+                           });
+                         }, icon: Icon(Icons.delete,color: Colors.white,)),
+                       ],
+                     ),
+                   ),
+
+
+
+                 ],
+               ),
              ),
             CircleAvatar(
               radius: 20,
-              backgroundColor: Colors.green,
+              backgroundColor: greenColor,
 
 
               child: IconButton(onPressed: (){
                 setState(() {
                   showModalBottomSheet(context: context,
-                      backgroundColor: backgroundColor,
+                      barrierColor: Colors.black.withOpacity(0.5),
                       isScrollControlled: true,
-                      builder: (context){
-                        return Container(
-                          height: MediaQuery.of(context).viewInsets.bottom==0?MediaQuery.of(context).size.height :MediaQuery.of(context).size.height * 1.5,
-                          padding: EdgeInsets.all(20),
-
-                          child: Column(
-                            children: [
-
-
-                         Padding(padding: EdgeInsets.all(10),
-                         child: TextFormField(
-                           decoration: InputDecoration(
-                             labelText: 'School Name',
-                             border: OutlineInputBorder(),
-                           ),
-                           onChanged: (value){
-                             educationModel!.name = value;
-                           },
-                         ),
-                         ),
-                              Padding(padding: EdgeInsets.all(10),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Degree',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  onChanged: (value){
-                                    educationModel!.degree = value;
-                                  },
-                                ),
-                              ),
-                              Padding(padding: EdgeInsets.all(10),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Field Of Study',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  onChanged: (value){
-                                    educationModel!.field = value;
-                                  },
-                                ),
-                              ),
-                              Padding(padding: EdgeInsets.all(10),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Start Date',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  onChanged: (value){
-                                    educationModel!.from = value;
-                                  },
-                                ),
-                              ),
-                              // SelectDateItem(
-                              //   icon: Icons.timer_outlined,
-                              //   date: educationModel!.from==null?'Start Date':educationModel!.from!,
-                              //   onTap: () async {
-                              //
-                              //
-                              //
-                              //     educationModel!.from = await _presentDatePicker();
-                              //
-                              //   },
-                              // ),
-                              // SelectDateItem(
-                              //   icon: Icons.timer_off_outlined,
-                              //   date: _selectedDate == null ? 'End Date' : formattedDate!,
-                              //   onTap: () async {
-                              //     await _presentDatePicker();
-                              //     setState(() {
-                              //       endDate = formattedDate;
-                              //       educationModel!.to = formattedDate;
-                              //     });
-                              //   },
-                              // ),
-
-                              Padding(padding: EdgeInsets.all(10),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Description',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  onChanged: (value){
-                                    educationModel!.description = value;
-                                  },
-                                ),
-                         ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
-                                children: [
-                                  ElevatedButton(onPressed: (){
-                                    setState(() {
-                                      education.add(educationModel!);
-                                      widget.onAdd!(education);
-                                      widget.onAddItem!(educationModel!);
-                                      widget.onEdit!(educationModel!);
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                        content: Text('Added'),
-                                      ));
-                                      Navigator.pop(context);
-                                    });
-                                  }, child: Text('Add',style: TextStyle(color: Colors.white),)),
-                                  ElevatedButton(onPressed: (){
-                                    Navigator.pop(context);
-                                  }, child: Text('Cancel',style: TextStyle(color: Colors.white),)),
-                                ],
-                              )
-
-
-                            ],
-                          ),
+                      showDragHandle: true,
+                      useSafeArea: true,
+                      barrierLabel: 'add',builder: (context) {
+                        return AddOrEditEducationModelBottomSheet(
+                          onAddItem: ( educationItem) {
+                            setState(() {
+                              education.add(educationItem);
+                              widget.onAdd!(education);
+                            });
+                            Navigator.pop(context);
+                          },
                         );
                       });
+
                 });
 
 
               },
                   color: Colors.white,
-                  icon: Icon(Icons.add)),
+                  icon: Icon(Icons.add,  color: Colors.white,)),
 
             ),
           ],

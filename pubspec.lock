@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  awesome_bottom_bar:
+    dependency: "direct main"
+    description:
+      name: awesome_bottom_bar
+      sha256: dd42e6767ae22cf5eb47695991e7a3f964ccba3b403a93837c20eb4f74e4ad0f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.4"
   bloc:
     dependency: "direct main"
     description:
@@ -606,6 +614,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  flutter_staggered_animations:
+    dependency: "direct main"
+    description:
+      name: flutter_staggered_animations
+      sha256: "81d3c816c9bb0dca9e8a5d5454610e21ffb068aedb2bde49d2f8d04f75538351"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -632,6 +648,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      sha256: f0b8d115a13ecf827013ec9fc883390ccc0e87a96ed5347a3114cac177ef18e8
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
   google_identity_services_web:
     dependency: transitive
     description:
@@ -1120,6 +1144,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  shimmer:
+    dependency: "direct main"
+    description:
+      name: shimmer
+      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1205,6 +1237,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  stylish_bottom_bar:
+    dependency: "direct main"
+    description:
+      name: stylish_bottom_bar
+      sha256: "54970e4753b4273239b6dea0d1175c56beabcf39b5c65df4cbf86f1b86568d2b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   synchronized:
     dependency: transitive
     description:
@@ -1349,6 +1389,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  water_drop_nav_bar:
+    dependency: "direct main"
+    description:
+      name: water_drop_nav_bar
+      sha256: f8be3696ce184f043ffdcb28b17418a4e46c83678b5d8d270b6393a9e5d5f36b
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0+5"
   web:
     dependency: transitive
     description:

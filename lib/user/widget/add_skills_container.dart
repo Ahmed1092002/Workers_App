@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled10/data/users/skills.dart';
+import 'package:untitled10/src/app_root.dart';
+import 'package:untitled10/user/widget/add_or_edit_skills_bottom_m_odel_sheet.dart';
 
 class AddSkillsContainer extends StatefulWidget {
   Function(List)? onAdd;
@@ -26,7 +28,12 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Add Skills'),
+            Text('Add Skills', style: TextStyle(
+              color: greenColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+
+            )),
             Wrap(
               children: skills.map((skill) {
                 return Padding(
@@ -38,12 +45,33 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: Colors.green,
+                        color: greenColor,
                         width: 2,
                       ),
                     ),
                     alignment: Alignment.center,
-                    child: Text('Skill Name : ${skill.name}'),
+                    child: Row(
+
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: greenColor,
+                          ),
+                          child: IconButton(
+                              onPressed: (){
+                            setState(() {
+                              skills.remove(skill);
+                            });
+                          },
+                              icon: Icon(Icons.delete,color: Colors.red,)),
+                        ),
+                      SizedBox(width: 10,),
+
+
+                        Text(' ${skill.name}'),
+
+                      ],
+                    ),
                   ),
                 );
               }).toList(),
@@ -55,28 +83,14 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
 
               child: IconButton(onPressed: (){
                 showDialog(context: context, builder: (context){
-                  return AlertDialog(
-                    title: Text('Add Skill'),
-                    content: TextField(
-                      onChanged: (value){
-                        skillsModel = SKills(name: value);
-                      },
-                    ),
-                    actions: [
-                      TextButton(onPressed: (){ Navigator.pop(context);}, child: Text('Cancel',style: TextStyle(color: Colors.red),)),
-                      TextButton(onPressed: (){
-                        setState(() {
+                  return AddOrEditSkillsBottomModelSheet(
+                    onAdd: (value) {
+                      setState(() {
+                        skills.add(value);
+                      });
+                    },
+                    skillsModel: skillsModel,
 
-                          skills.add(skillsModel!);
-                          widget.onAdd!(skills);
-                          Navigator.pop(context);
-                        });
-
-
-
-                      },
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),child: Text('Add',style: TextStyle(color: Colors.white),)),
-                    ],
                   );
                 });
 

@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
       style: Theme.of(context).elevatedButtonTheme.style,
       child: Text(
         buttonName!,
-        style: TextStyle(fontSize: 20, color: Colors.white),
+        style: TextStyle(fontSize: 20, color: Colors.white,fontWeight: FontWeight.bold),
       ),
     );
   }

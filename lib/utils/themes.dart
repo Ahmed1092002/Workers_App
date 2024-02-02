@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled10/src/app_root.dart';
 import 'package:untitled10/src/app_root.dart';
 
@@ -48,13 +49,21 @@ ThemeData lightTheme = ThemeData(
 
 
   textTheme:  TextTheme(
-    bodyLarge: TextStyle(
+    bodyLarge: GoogleFonts.poppins(
       fontSize: 16,
-      fontWeight: FontWeight.bold,
       color: greenColor,
+      fontWeight: FontWeight.bold,
+
+
     ),
-    bodyMedium: TextStyle(
-      fontSize: 16,
+    bodySmall: GoogleFonts.poppins(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: grayColor,
+    ),
+
+    bodyMedium: GoogleFonts.poppins(
+      fontSize: 14,
       fontWeight: FontWeight.bold,
       color: grayColor,
     ),
@@ -67,6 +76,7 @@ ThemeData lightTheme = ThemeData(
           vertical: 10,
         ),
       ),
+
       backgroundColor: MaterialStateColor.resolveWith((states) => greenColor),
       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(

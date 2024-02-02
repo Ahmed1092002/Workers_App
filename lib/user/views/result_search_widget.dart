@@ -6,10 +6,15 @@ import '../../SharedWidget/NewJopContainer.dart';
 import '../../utils/navigator.dart';
 import 'details_jop_and_applyed_screan.dart';
 
-class ResultSearchWidget extends StatelessWidget {
+class ResultSearchWidget extends StatefulWidget {
   List<JopsModel> jops;
    ResultSearchWidget({Key? key, required this.jops}) : super(key: key);
 
+  @override
+  State<ResultSearchWidget> createState() => _ResultSearchWidgetState();
+}
+
+class _ResultSearchWidgetState extends State<ResultSearchWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,16 +32,18 @@ class ResultSearchWidget extends StatelessWidget {
                 child: GestureDetector(
                   onTap: (){
                     navigateToScreen(context, DetailsJopAndApplyedScrean(
-                      jops: jops[index],
+                      jops: widget.jops[index],
                     ));
                   },
                   child: NewJopContainer(
-                    jopField: jops[index].jopField,
-                    jopType: jops[index].jopType,
-                    companyName: jops[index].companyname,
-                    location: jops[index].location,
-                    experience: jops[index].Experience,
-                    name: jops[index].title,
+                    jopField: widget.jops[index].jopField,
+                    jopType: widget.jops[index].jopType,
+                    companyName: widget.jops[index].companyname,
+                    location: widget.jops[index].location,
+                    experience: widget.jops[index].Experience,
+                    name: widget.jops[index].title,
+                    salary:widget.jops[index].Salary ,
+
                     //todo;fix this
 
 
@@ -44,7 +51,7 @@ class ResultSearchWidget extends StatelessWidget {
                 ),
               );
             },
-            itemCount: jops.length),
+            itemCount: widget.jops.length),
       ),
 
       appBar: AppBar(

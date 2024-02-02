@@ -167,16 +167,19 @@ class _AddNewJopContainerState extends State<AddNewJopContainer> {
                       Expanded(child: getDropDownButtonFormField(
                         job:jobType ,
 icon: Icons.work,
-                        hint: 'job Type',
-                        jobString: widget.jop!.jopType  ,
+                        context: context,
+                        hint: jopTypecontroller == null || jopTypecontroller == '' ? 'Job Type' : jopTypecontroller,
+                        jobString: jopTypecontroller,
+
                         Function: (  value){
                           jopTypecontroller = value;
                         },
                       ),),
                       Expanded(child:     getDropDownButtonFormField(
                         job: Jobs,
-                        hint: 'Job',
-                        jobString: widget.jop!.jopField,
+                        hint: jopFieldcontroller == null || jopFieldcontroller == '' ? 'Job Field' : jopFieldcontroller
+                        ,context: context,
+                        jobString: jopFieldcontroller,
                         icon: Icons.work,
                         Function: (  value){
                           jopFieldcontroller = value;
@@ -190,18 +193,20 @@ icon: Icons.work,
                     children: [
                       Expanded(child: getDropDownButtonFormField(
                         job: jobLevel,
-                        hint: 'Job Level',
+                        hint:jobLevelS == null || jobLevelS == '' ? 'Job Level' : jobLevelS,
+                          context: context,
                         icon: Icons.work,
-                        jobString: widget.jop!.jobLevel,
+                        jobString: jobLevelS,
                         Function: (  value){
                           jobLevelS = value;
                         }
                       ),),
                       Expanded(child:     getDropDownButtonFormField(
                         job: jobShift,
-                        hint: 'Job Shift',
+                        hint: jobShiftS == null || jobShiftS == '' ? 'Job Shift' : jobShiftS,
                         icon: Icons.work,
-                        jobString: widget.jop!.jobShift,
+                        context: context,
+                        jobString: jobShiftS,
                         Function: (  value){
                           jobShiftS = value;},
                       ),),
@@ -212,17 +217,19 @@ icon: Icons.work,
                     children: [
                       Expanded(child: getDropDownButtonFormField(
                         job: jobExperience,
-                        hint: 'Job Experience',
+                        hint: jopExperiencecontroller == null || jopExperiencecontroller == '' ? 'Job Experience' : jopExperiencecontroller,
                         icon: Icons.work,
-                        jobString: widget.jop!.Experience,
+                        context: context,
+                        jobString: jopExperiencecontroller,
                         Function: (  value){
                           jopExperiencecontroller = value;},
                       ),),
                       Expanded(child:     getDropDownButtonFormField(
                         job: jobSalary,
-                        hint: 'Job Salary',
+                        hint: jopSalarycontroller == null || jopSalarycontroller == '' ? 'Job Salary' : jopSalarycontroller,
+                        context: context,
                         icon: Icons.money,
-                        jobString: widget.jop!.Salary,
+                        jobString: jopSalarycontroller,
                         Function: (  value){
                           jopSalarycontroller = value;},
                       ),),
@@ -236,6 +243,7 @@ icon: Icons.work,
                         child: getDropDownButtonFormField(
                           job: jobSkills,
                           jobString: ' job skills',
+                          context: context,
                           icon: Icons.work,
 
                           hint: 'Job Skills',
@@ -249,6 +257,7 @@ setState(() {
                       child:  CheckOutScreanTextFormField(
                           hint: 'Job Location',
                           icon: Icons.location_on,
+
                           controller: jopLocationcontroller,
 
                         ),

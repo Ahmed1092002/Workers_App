@@ -34,11 +34,11 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   DateTime? _selectedDate;
   TextEditingController? phoneController= TextEditingController();
-  TextEditingController? countryController= TextEditingController();
-  TextEditingController? workingFieldController= TextEditingController();
+  String? countryController='';
+  String? workingFieldController='';
   TextEditingController? addressController= TextEditingController();
   TextEditingController? infoController= TextEditingController();
-  String?jobField;
+  String?jobField='';
 
   String? date;
   void _presentDatePicker() async {
@@ -265,14 +265,16 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
                     userType: widget.userType,
 
                     onCountry: (value){
-                      countryController!.text=value;
+                      countryController=value;
                     },
                     screanName: 'Create Profile',
                     onWorkFeilds: (value){
-                      workingFieldController!.text=value;
+                      workingFieldController=value;
+                      print (workingFieldController!);
                     },
                     onJob: (value){
                      jobField=value;
+                     print (jobField);
                     },
 
                   ),
@@ -339,13 +341,14 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
                                       date: date,
                                       phone: phoneController!.text,
                                       address: addressController!.text,
-                                      country: countryController!.text,
-                                      workingField: workingFieldController!.text,
+                                      country: countryController!,
+                                      workingField: workingFieldController!,
                                       gender: cubit.gender,
                                       uid: widget.id,
                                       info:infoController!.text,
                                       userType: widget.userType,
                                       image: cubit.profileImageLink,
+                            jobField: jobField,
 
 
 
@@ -382,8 +385,10 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
                                                   .register(
                                                       profileImageLink: cubit
                                                           .profileImageLink,
-                                          info: infoController!
-                                                          .text,
+                                          info: infoController!.text,
+                                                          jobField:jobField,
+
+
                                                       email: widget
                                                           .emailController!,
                                                       password: widget
@@ -393,12 +398,12 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
                                                       address: addressController!
                                                           .text,
                                                       country: countryController!
-                                                          .text,
+                                                          ,
                                                       phone:
                                                           phoneController!.text,
                                                       workingField:
                                                           workingFieldController!
-                                                              .text,
+                                                              ,
                                                       date: date,
                                                       name: widget
                                                           .nameController!)

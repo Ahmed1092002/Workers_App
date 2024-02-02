@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../data/users/work_experience.dart';
 import '../../src/app_root.dart';
-
+final formatter =DateFormat.yMd();
 class AddOrEditExperienceModelBottomSheet extends StatefulWidget {
   Function(WorkExperience)? onAdd;
   WorkExperience? workExperienceModel;
@@ -20,9 +21,74 @@ class _AddOrEditExperienceModelBottomSheetState
   TextEditingController companyController = TextEditingController();
   TextEditingController positionController = TextEditingController();
   TextEditingController periodController = TextEditingController();
-  TextEditingController startDateController = TextEditingController();
-  TextEditingController endDateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  String? formattedDate;
+  Future _presentStartDatePicker() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 100, now.month, now.day);
+    final packeddate = await showDatePicker(
+        context: context,
+        initialDate: now,
+        firstDate: firstDate,
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Colors.white,
+                onPrimary:greenColor,
+                surface: greenColor,
+
+                onSurface: Colors.white,
+              ),
+              dialogBackgroundColor: Colors.white,
+            ),
+            child: child!,
+          );
+        },
+
+        lastDate: now);
+    setState(() {
+      startDate = packeddate;
+      formattedDate = '${startDate!.year}/${startDate!.month}/${startDate!.day}';
+
+    });
+
+
+  }
+  Future _presentEndDatePicker() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 100, now.month, now.day);
+    final packeddate = await showDatePicker(
+        context: context,
+        initialDate: now,
+        firstDate: firstDate,
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Colors.white,
+                onPrimary:greenColor,
+                surface: greenColor,
+
+                onSurface: Colors.white,
+              ),
+              dialogBackgroundColor: Colors.white,
+            ),
+            child: child!,
+          );
+        },
+
+        lastDate: now);
+    setState(() {
+      endDate = packeddate;
+      formattedDate = '${endDate!.year}/${endDate!.month}/${endDate!.day}';
+
+    });
+
+
+  }
+  DateTime?startDate;
+  DateTime?endDate;
   @override
   initState(){
     super.initState();
@@ -31,8 +97,10 @@ class _AddOrEditExperienceModelBottomSheetState
       companyController.text=widget.workExperienceModel!.company!;
       positionController.text=widget.workExperienceModel!.position!;
       periodController.text=widget.workExperienceModel!.period!;
-      startDateController.text=widget.workExperienceModel!.startDate!;
-      endDateController.text=widget.workExperienceModel!.endDate!;
+        formattedDate=widget.workExperienceModel!.startDate!;
+        startDate=formatter.parse(formattedDate!);
+        formattedDate=widget.workExperienceModel!.endDate!;
+        endDate=formatter.parse(formattedDate!);
       descriptionController.text=widget.workExperienceModel!.description!;
     }
   }
@@ -45,6 +113,7 @@ class _AddOrEditExperienceModelBottomSheetState
       color:backgroundColor,
 
       child: Column(
+
         children: [
 
 
@@ -52,10 +121,22 @@ class _AddOrEditExperienceModelBottomSheetState
             padding: const EdgeInsets.all(5.0),
             child: TextFormField(
               controller: companyController,
+              cursorColor: greenColor,
+
+
               decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
+
                 labelText: 'Company Name',
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green),
+                  borderSide: BorderSide(color: greenColor),
                 ),
               ),
               onChanged: (value) {
@@ -70,8 +151,16 @@ class _AddOrEditExperienceModelBottomSheetState
             padding: const EdgeInsets.all(5.0),
             child: TextFormField(
               controller: positionController,
+              cursorColor: greenColor,
+
               decoration: InputDecoration(
-                labelText: 'Position',
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),                labelText: 'Position',
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) {
@@ -86,7 +175,16 @@ class _AddOrEditExperienceModelBottomSheetState
             padding: const EdgeInsets.all(5.0),
             child: TextFormField(
               controller: periodController,
+              cursorColor: greenColor,
+
               decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
                 labelText: 'Period',
                 border: OutlineInputBorder(),
               ),
@@ -101,47 +199,17 @@ class _AddOrEditExperienceModelBottomSheetState
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: TextFormField(
-              controller: startDateController,
-              decoration: InputDecoration(
-                labelText: 'Start Date',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                if (workExperienceModel == null) {
-                  workExperienceModel = WorkExperience();
-                }
-                workExperienceModel!.startDate = value;
-                widget.workExperienceModel!.startDate = value;
-              },
-            ),
-          ),
-          // SelectDateItem(
-          //   icon: Icons.date_range,
-          //   date: 'Start Date',
-          //
-          // ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: TextFormField(
-              controller: endDateController,
-              decoration: InputDecoration(
-                labelText: 'End Date',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                if (workExperienceModel == null) {
-                  workExperienceModel = WorkExperience();
-                }
-                workExperienceModel!.endDate = value;
-                widget.workExperienceModel!.endDate = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: TextFormField(
+              cursorColor: greenColor,
+
               controller: descriptionController,
               decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
                 labelText: 'Description',
                 border: OutlineInputBorder(),
               ),
@@ -154,11 +222,63 @@ class _AddOrEditExperienceModelBottomSheetState
               },
             ),
           ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('Start Date',style: TextStyle(color: greenColor),),
+              IconButton(
+                onPressed:_presentStartDatePicker,
+                icon: Icon(Icons.calendar_today,color: greenColor,),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(startDate == null
+                  ? 'No Date Chosen'
+                  : formatter.format(startDate!),
+                  style: startDate == null
+                      ? TextStyle(color: Colors.red)
+                      : TextStyle(color: greenColor)
+
+
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('End Date',style: TextStyle(color: greenColor),),
+              IconButton(
+                onPressed:_presentEndDatePicker,
+                icon: Icon(Icons.calendar_today,color: greenColor,),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(endDate == null
+                  ? 'No Date Chosen'
+                  : formatter.format(endDate!),
+                  style: endDate == null
+                      ? TextStyle(color: Colors.red)
+                      : TextStyle(color: greenColor)
+
+              ),
+            ],
+          ),
+
+
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
             children: [
               ElevatedButton(onPressed: (){
                 setState(() {
+                  workExperienceModel!.startDate = formatter.format(startDate!);
+                  workExperienceModel!.endDate = formatter.format(endDate!);
+
 if (widget.workExperienceModel != null) {
   widget.onEdit!(workExperienceModel!);
 

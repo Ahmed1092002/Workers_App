@@ -53,6 +53,9 @@ class LoginCubit extends Cubit<LoginState> {
       box.put('uid', user!.id);
       box.put('country', user!.country);
        box.put( 'userType', user!.userType);
+        box.put( 'jobField', user!.jobField);
+        box.put( 'workingField', user!.workingField);
+
 
         box.put( 'info', user!.info);
 

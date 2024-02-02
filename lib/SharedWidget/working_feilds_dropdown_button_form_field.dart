@@ -38,10 +38,12 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
         getDropDownButtonFormField(
           job: WorkingFeilds,
           hint:   'Working Feilds',
+          context: context,
+
           icon: Icons.work,
           jobString: workFeilds,
           Function: (  value){
-            onJob!(value);
+            onWorkFeilds!(value);
 
         },
         ),
@@ -51,6 +53,7 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
           hint:   'Job Field',
           icon: Icons.work,
           jobString: job,
+          context: context,
           Function: (  value){
             onJob!(value);
 
@@ -62,6 +65,7 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
           hint:   'Country',
           icon: Icons.flag,
           jobString: countryString,
+            context: context,
           Function: (  value){
             onCountry!(value);
         },
@@ -71,7 +75,7 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
     );
   }
 }
- Widget getDropDownButtonFormField({List<String>? job ,String? jobString,Function(String)? Function,String? hint,IconData? icon}){
+ Widget getDropDownButtonFormField({List<String>? job ,String? jobString,Function(String)? Function,String? hint,IconData? icon,BuildContext? context}) {
   final jobList= job!.toSet().toList();
   int selectedIndex = 0;
   return Padding(
@@ -81,14 +85,16 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
 
       borderRadius: BorderRadius.circular(5),
       isDense: true,
+
       dropdownColor: backgroundColor,
       menuMaxHeight: 300,
       isExpanded: true,
 
+
       items: job
           .map((e) => DropdownMenuItem(
 
-        child:  Text(e,style: TextStyle(color: Colors.black,fontSize: 14 ),),
+        child:   Text(e,style: Theme.of(context!).textTheme.bodySmall,),
         value: e,
         onTap: (){
           selectedIndex=jobList.indexOf(e);
@@ -98,7 +104,8 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
       ))
           .toList(),
 
-      hint: jobString == null ? Text('select $hint',style: TextStyle(color: Colors.black,fontSize: 14 ),):Text(jobString.toString(),style: TextStyle(color: Colors.black,fontSize: 14 ),),
+      hint:      Text('$hint',style: Theme.of(context!).textTheme.bodySmall),
+
 
       decoration: InputDecoration(
         prefixIcon: Icon(icon,color: greenColor,),
@@ -107,18 +114,23 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
         ),
         isDense: true,
         isCollapsed: true,
-        contentPadding: EdgeInsets.all(10),
-        focusedBorder: OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: BorderSide(
             color: greenColor,
           ),
         ),
+
+        contentPadding: EdgeInsets.all(12),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: BorderSide(
+            color: greenColor,
+
+          ),
+        ),
       ),
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 20,
-      ),
+      style: Theme.of(context!).textTheme.bodySmall,
       icon: Icon(Icons.arrow_drop_down),
       iconSize: 30,
 

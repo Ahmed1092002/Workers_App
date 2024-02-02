@@ -24,7 +24,7 @@ class CircleAvatarImage extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: CircleAvatar(
-        radius: 45,
+        radius: 55,
         backgroundImage: NetworkImage(imageUrl!),
       ),
     );

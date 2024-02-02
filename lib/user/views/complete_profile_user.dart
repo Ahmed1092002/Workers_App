@@ -12,6 +12,7 @@ import 'package:untitled10/user/views/main_screan.dart';
 import 'package:untitled10/utils/navigator.dart';
 
 import '../../data/users/projects.dart';
+import '../../src/app_root.dart';
 import '../widget/add_projects_container.dart';
 
 class CompleteProfileUser extends StatefulWidget {
@@ -76,7 +77,17 @@ class _CompleteProfileUserState extends State<CompleteProfileUser> {
         appBar: AppBar(
           title: Text('Complete Profile'),
           centerTitle: true,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+            color: greenColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          iconTheme: IconThemeData(
+            color: greenColor, //change your color here
+          ),
         ),
+
         body: BlocConsumer<CreateProfileUserCubit, CreateProfileUserState>(
   listener: (context, state) {
     // TODO: implement listener
@@ -96,14 +107,19 @@ class _CompleteProfileUserState extends State<CompleteProfileUser> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: Colors.green,
+                          color:  greenColor,
+
                           width: 2,
                         )),
                     alignment: Alignment.center,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+
+
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height * 0.8,
                           decoration: BoxDecoration(
@@ -112,43 +128,28 @@ class _CompleteProfileUserState extends State<CompleteProfileUser> {
                           ),
                           child: widgetList[current],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            current == 0
-                                ? Container()
-                                : CustomButton(
-                                    buttonName: 'Back',
-                                    onPressed: () {
-                                      setState(() {
-                                        current--;
-                                      });
-                                    },
-                                  ),
-                            CustomButton(
-                              buttonName: 'Continue',
-                              onPressed: () {
-                                setState(() {
-                                  current++;
-                                  print(current);
-                                  if (current == 1) {
-                                    cubit.addExperience(workExperience );
-                                  } else if (current == 2) {
-                                    cubit.addEducation( education);
-                                  } else if (current == 3) {
-                                    cubit.addSkills( skills);
-                                  } else   if (current == 4) {
-                                    cubit.addProjects(projects);
+                        CustomButton(
+                          buttonName: 'Continue',
+                          onPressed: () {
+                            setState(() {
+                              current++;
+                              print(current);
+                              if (current == 1) {
+                                cubit.addExperience(workExperience );
+                              } else if (current == 2) {
+                                cubit.addEducation( education);
+                              } else if (current == 3) {
+                                cubit.addSkills( skills);
+                              } else   if (current < 3) {
+                                cubit.addProjects(projects);
 
-                                    navigateToScreenAndExit(
-                                        context, MainScrean());
+                                navigateToScreenAndExit(
+                                    context, MainScrean());
 
 
-                                  }
-                                });
-                              },
-                            ),
-                          ],
+                              }
+                            });
+                          },
                         )
                       ],
                     ),

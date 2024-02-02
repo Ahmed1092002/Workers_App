@@ -45,7 +45,17 @@ backgroundColor: backgroundColor,
             padding: const EdgeInsets.all(5.0),
             child: TextField(
               controller: nameController,
+              cursorColor: greenColor,
+
+
               decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
                 labelText: 'Project Name',
                 border: OutlineInputBorder(),
               ),
@@ -63,7 +73,10 @@ backgroundColor: backgroundColor,
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: TextField(
+              cursorColor: greenColor,
+
               controller: urlController,
+
               onChanged: (value){
                 if(projectsModel == null){
                   projectsModel = Projects();
@@ -71,6 +84,13 @@ backgroundColor: backgroundColor,
                 projectsModel!.url = value;
               },
               decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
                 labelText: 'Project Link',
                 border: OutlineInputBorder(),
               ),
@@ -79,6 +99,8 @@ backgroundColor: backgroundColor,
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: TextField(
+              cursorColor: greenColor,
+
               controller: descriptionController,
               onChanged: (value){
                 if(projectsModel == null){
@@ -87,6 +109,13 @@ backgroundColor: backgroundColor,
                 projectsModel!.description = value;
               },
               decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
                 labelText: 'Project Description',
                 border: OutlineInputBorder(),
               ),

@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:untitled10/data/users/education.dart';
 
 import '../../src/app_root.dart';
+import 'add_or_edit_experience_model_bottom_sheet.dart';
+List<String> grades = [
+  'Good',
+  'Very Good',
+  'Excellent',
+  'Very Excellent',
+];
 
 class AddOrEditEducationModelBottomSheet extends StatefulWidget {
   Education? educationModel;
@@ -14,13 +21,11 @@ class AddOrEditEducationModelBottomSheet extends StatefulWidget {
 }
 
 class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationModelBottomSheet> {
-  DateTime? _selectedDate;
 
-  String? formattedDate;
   Education? educationModel = Education() ;
 
-
-  Future _presentDatePicker() async {
+  String? formattedDate;
+  Future _presentStartDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 100, now.month, now.day);
     final packeddate = await showDatePicker(
@@ -45,18 +50,48 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
 
         lastDate: now);
     setState(() {
-      _selectedDate = packeddate;
-      formattedDate = _selectedDate != null ? '${_selectedDate!.year}/${_selectedDate!.month}/${_selectedDate!.day}' : null;
+      startDate = packeddate;
+      formattedDate = '${startDate!.year}/${startDate!.month}/${startDate!.day}';
+
     });
 
 
   }
+  Future _presentEndDatePicker() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 100, now.month, now.day);
+    final packeddate = await showDatePicker(
+        context: context,
+        initialDate: now,
+        firstDate: firstDate,
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Colors.white,
+                onPrimary:greenColor,
+                surface: greenColor,
 
-  String?startDate;
+                onSurface: Colors.white,
+              ),
+              dialogBackgroundColor: Colors.white,
+            ),
+            child: child!,
+          );
+        },
 
-  String?endDate;
-  TextEditingController _startDateController = TextEditingController();
-  TextEditingController _endDateController = TextEditingController();
+        lastDate: now);
+    setState(() {
+      endDate = packeddate;
+      formattedDate = '${endDate!.year}/${endDate!.month}/${endDate!.day}';
+
+    });
+
+
+  }
+  DateTime?startDate;
+  DateTime?endDate;
+  @override
   TextEditingController _nameController = TextEditingController();
   TextEditingController _degreeController = TextEditingController();
   TextEditingController _fieldController = TextEditingController();
@@ -67,8 +102,12 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
   void initState() {
     if (widget.educationModel != null) {
       educationModel = widget.educationModel;
-      _startDateController.text = widget.educationModel!.from!;
       _nameController.text = widget.educationModel!.name!;
+
+      formattedDate = widget.educationModel!.from!;
+      startDate = formatter.parse(formattedDate!);
+      formattedDate = widget.educationModel!.to!;
+      endDate = formatter.parse(formattedDate!);
       _degreeController.text = widget.educationModel!.degree!;
       _fieldController.text = widget.educationModel!.field!;
       _descriptionController.text = widget.educationModel!.description!;
@@ -91,8 +130,18 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
           Padding(padding: EdgeInsets.all(10),
             child: TextFormField(
               controller: _nameController,
+              cursorColor: greenColor,
+
               decoration: InputDecoration(
-                labelText: 'School Name',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
+
+                labelText: 'School / University Name',
                 border: OutlineInputBorder(),
               ),
               onChanged: (value){
@@ -104,8 +153,17 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
           ),
           Padding(padding: EdgeInsets.all(10),
             child: TextFormField(
+              cursorColor: greenColor,
+
               decoration: InputDecoration(
                 labelText: 'Degree',
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
                 border: OutlineInputBorder(),
               ),
               controller: _degreeController,
@@ -117,8 +175,17 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
           ),
           Padding(padding: EdgeInsets.all(10),
             child: TextFormField(
+              cursorColor: greenColor,
+
               controller: _fieldController,
               decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
                 labelText: 'Field Of Study',
                 border: OutlineInputBorder(),
               ),
@@ -128,46 +195,22 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               },
             ),
           ),
-          Padding(padding: EdgeInsets.all(10),
-            child: TextFormField(
-              controller: _startDateController,
-              decoration: InputDecoration(
-                labelText: 'Start Date',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value){
-                educationModel!.from = value;
-                widget.educationModel!.from = value;
-              },
-            ),
-          ),
-          // SelectDateItem(
-          //   icon: Icons.timer_outlined,
-          //   date: educationModel!.from==null?'Start Date':educationModel!.from!,
-          //   onTap: () async {
-          //
-          //
-          //
-          //     educationModel!.from = await _presentDatePicker();
-          //
-          //   },
-          // ),
-          // SelectDateItem(
-          //   icon: Icons.timer_off_outlined,
-          //   date: _selectedDate == null ? 'End Date' : formattedDate!,
-          //   onTap: () async {
-          //     await _presentDatePicker();
-          //     setState(() {
-          //       endDate = formattedDate;
-          //       educationModel!.to = formattedDate;
-          //     });
-          //   },
-          // ),
+
+
+
+
 
           Padding(padding: EdgeInsets.all(10),
-            child: TextFormField(
+            child: TextFormField(              cursorColor: greenColor,
+
               controller: _descriptionController,
-              decoration: InputDecoration(
+              decoration: InputDecoration(  focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: greenColor),
+              ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
                 labelText: 'Description',
                 border: OutlineInputBorder(),
               ),
@@ -177,11 +220,78 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               },
             ),
           ),
+          Padding(padding: EdgeInsets.all(10),
+            child: TextFormField(              cursorColor: greenColor,
+
+              controller: _gradeController,
+              decoration: InputDecoration(  focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: greenColor),
+              ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: greenColor),
+                ),
+                labelStyle: TextStyle(color: greenColor),
+                labelText: 'Grade',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value){
+                educationModel!.grade = value;
+                widget.educationModel!.description = value;
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('Start Date',style: TextStyle(color: greenColor),),
+              IconButton(
+                onPressed:_presentStartDatePicker,
+                icon: Icon(Icons.calendar_today,color: greenColor,),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(startDate == null
+                  ? 'No Date Chosen'
+                  : formatter.format(startDate!),
+                  style: startDate == null
+                      ? TextStyle(color: Colors.red)
+                      : TextStyle(color: greenColor)
+
+
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('End Date',style: TextStyle(color: greenColor),),
+              IconButton(
+                onPressed:_presentEndDatePicker,
+                icon: Icon(Icons.calendar_today,color: greenColor,),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(endDate == null
+                  ? 'No Date Chosen'
+                  : formatter.format(endDate!),
+                  style: endDate == null
+                      ? TextStyle(color: Colors.red)
+                      : TextStyle(color: greenColor)
+
+              ),
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
             children: [
               ElevatedButton(onPressed: (){
                 setState(() {
+                  educationModel!.from = formatter.format(startDate!);
+                  educationModel!.to = formatter.format(endDate!);
                   if (widget.educationModel == null) {
                         widget.onAddItem!(educationModel!);
                       }

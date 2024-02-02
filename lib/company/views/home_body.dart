@@ -27,17 +27,24 @@ class _CompanyHomeBodyState extends State<CompanyHomeBody> {
   create: (context) => JopCubit()..getAllJopsOfComapny(),
   child: BlocConsumer<JopCubit, JopState>(
   listener: (context, state) {
+    if (state is GetAllJopsLoadingState) {
+       Center(child: CircularProgressIndicator());
+
+    }
 
   },
   builder: (context, state) {
     var cubit = JopCubit.get(context);
-    if (cubit.jops.isEmpty) {
+    if(state is GetAllJopsLoadingState){
+      return Center(child: CircularProgressIndicator());
+    }if (cubit.jops.isEmpty) {
       return Center(child: Text('No Jops Yet',style: TextStyle(
         color: greenColor,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),));
     }
+
 
 
     return Container(

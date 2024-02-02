@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:untitled10/SharedWidget/working_feilds_dropdown_button_form_field.dart';
 import 'package:untitled10/data/users/skills.dart';
+import 'package:untitled10/utils/consatants.dart';
 
 import '../../src/app_root.dart';
 
 class AddOrEditSkillsBottomModelSheet extends StatefulWidget {
   Function(SKills)? onAdd;
-  Function(SKills)? onEdit;
   SKills? skillsModel;
-   AddOrEditSkillsBottomModelSheet({Key? key,this.onAdd,this.onEdit,this.skillsModel }) : super(key: key);
+   AddOrEditSkillsBottomModelSheet({Key? key,this.onAdd,this.skillsModel }) : super(key: key);
 
 
   @override
@@ -31,23 +32,29 @@ class _AddOrEditSkillsBottomModelSheetState extends State<AddOrEditSkillsBottomM
     return AlertDialog(
       backgroundColor: backgroundColor,
       title: Text('Add Skill'),
-      content: TextField(
-        onChanged: (value){
-          skillsModel = SKills(name: value);
+      content:getDropDownButtonFormField(
+        hint: 'Select Skill',
+        job: jobSkills,
+        jobString: nameController.text,
+        Function: (value) {
+          setState(() {
+            skillsModel = SKills(name: value);
+          });
         },
+        context: context,
+
+
       ),
       actions: [
         TextButton(onPressed: (){ Navigator.pop(context);}, child: Text('Cancel',style: TextStyle(color: Colors.red),)),
         TextButton(onPressed: (){
           setState(() {
-if (widget.skillsModel!=null) {
-  widget.onEdit!(skillsModel!);
-}
-if (widget.skillsModel == null) {
+
+
   widget.onAdd!(skillsModel!);
-}
 
 
+Navigator.pop(context);
 
           });
 

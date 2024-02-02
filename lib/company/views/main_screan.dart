@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:awesome_bottom_bar/tab_item.dart';
+import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,6 +22,26 @@ import 'package:untitled10/utils/navigator.dart';
 import '../../user/views/search_body.dart';
 import 'home_body.dart';
 
+
+const List<TabItem> items = [
+  TabItem(
+    icon: Icons.home,
+    title: 'Home',
+  ),
+  TabItem(
+    icon: Icons.chat,
+    title: 'chat',
+  ),
+  TabItem(
+    icon: Icons.search,
+    title: 'Search',
+  ),
+  TabItem(
+    icon: Icons.person,
+    title: 'Profile',
+  ),
+];
+
 class CompanyMainScrean extends StatefulWidget {
   const CompanyMainScrean({Key? key}) : super(key: key);
 
@@ -27,28 +50,29 @@ class CompanyMainScrean extends StatefulWidget {
 }
 
 class _CompanyMainScreanState extends State<CompanyMainScrean> {
-  static final ValueNotifier<ThemeMode> themeNotifier =
-  ValueNotifier(ThemeMode.light);
-  final _controller15 = ValueNotifier<bool>(false);
   var box = Hive.box(boxName);
-  var storage =FlutterSecureStorage();
+  var storage = FlutterSecureStorage();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
   ConnectivityResult _connectivityStatus = ConnectivityResult.none;
 
   @override
   void initState() {
     super.initState();
-    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
       setState(() {
         _connectivityStatus = result;
       });
     });
   }
+
   @override
   void dispose() {
     _connectivitySubscription.cancel();
     super.dispose();
   }
+
   List bodies = [
     CompanyHomeBody(),
     Center(
@@ -67,356 +91,159 @@ class _CompanyMainScreanState extends State<CompanyMainScrean> {
     });
   }
 
+  int visit = 0;
+  double height = 30;
+  Color colorSelect = const Color(0XFF0686F8);
+  Color color = const Color(0XFF7AC0FF);
+  Color color2 = const Color(0XFF96B1FD);
+  Color bgColor = const Color(0XFF1752FE);
   @override
   Widget build(BuildContext context) {
-return Scaffold(
-  extendBody: true,
-
-  appBar: AppBar(
-    leading: IconButton(
-      onPressed: () {
-        showMenu(
-            context: context,
-
-            position: RelativeRect.fromLTRB(0, 70, 0, 0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            useRootNavigator: true,
-            color: backgroundColor,
-
-
-            items: [
-
-              // PopupMenuItem(
-              //   child: Column(
-              //     children: [
-              //       Row(
-              //
-              //         children: [
-              //           Text('Switch Mode'),
-              //           AdvancedSwitch(
-              //             activeChild: Icon(
-              //               Icons.terrain,
-              //               color: Colors.blue,
-              //             ),
-              //
-              //             inactiveChild: Icon(Icons.cloud),
-              //             activeColor: Colors.yellowAccent,
-              //             inactiveColor: Colors.deepPurple,
-              //             width: 60,
-              //             borderRadius: BorderRadius.circular(5),
-              //
-              //             controller: _controller15,
-              //           ),
-              //
-              //
-              //         ],
-              //       ),
-              //       Divider(
-              //         color: grayColor,
-              //       )
-              //     ],
-              //   ),
-              // ),
-              PopupMenuItem(
-                  onTap: ()  {
-
-
-                    navigateToScreen(context, EditProfileCompany()  );
-                  },
-                  child: Column(
+    return Scaffold(
+      extendBody: true,
+      appBar: AppBar(
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            showMenu(
+                context: context,
+                position: RelativeRect.fromLTRB(0, 70, 0, 0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                useRootNavigator: true,
+                color: backgroundColor,
+                items: [
+                  // PopupMenuItem(
+                  //   child: Column(
+                  //     children: [
+                  //       Row(
+                  //
+                  //         children: [
+                  //           Text('Switch Mode'),
+                  //           AdvancedSwitch(
+                  //             activeChild: Icon(
+                  //               Icons.terrain,
+                  //               color: Colors.blue,
+                  //             ),
+                  //
+                  //             inactiveChild: Icon(Icons.cloud),
+                  //             activeColor: Colors.yellowAccent,
+                  //             inactiveColor: Colors.deepPurple,
+                  //             width: 60,
+                  //             borderRadius: BorderRadius.circular(5),
+                  //
+                  //             controller: _controller15,
+                  //           ),
+                  //
+                  //
+                  //         ],
+                  //       ),
+                  //       Divider(
+                  //         color: grayColor,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  PopupMenuItem(
+                      onTap: () {
+                        navigateToScreen(context, EditProfileCompany());
+                      },
+                      child: Column(
+                        children: [
+                          Text(
+                            'Edit profile',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          Divider(
+                            color: grayColor,
+                          )
+                        ],
+                      )),
+                  PopupMenuItem(
+                      child: Column(
                     children: [
-                      Text('edit profile'),
+                      Text(
+                        'Change Password',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                       Divider(
                         color: grayColor,
                       )
                     ],
                   )),
-              PopupMenuItem(child: Column(
-                children: [
-                  Text('Change Password'),
-                  Divider(
-                    color: grayColor,
-                  )
-                ],
-              )),
 
-              PopupMenuItem(
-                onTap: () async {
-                  final googleSignIn = GoogleSignIn();
-                  final signedInAccounts = googleSignIn.currentUser?.email;
+                  PopupMenuItem(
+                    onTap: () async {
+                      final googleSignIn = GoogleSignIn();
+                      final signedInAccounts = googleSignIn.currentUser?.email;
 
-                  if (signedInAccounts != null && signedInAccounts.contains(await box.get('email'))) {
+                      if (signedInAccounts != null &&
+                          signedInAccounts.contains(await box.get('email'))) {
+                        await googleSignIn.signOut();
+                        await googleSignIn.disconnect();
+                      }
+                      await storage.deleteAll();
+                      await box.clear();
+                      await FirebaseAuth.instance.signOut();
 
-                    await googleSignIn.signOut();
-                    await googleSignIn.disconnect();
-                  }
-                  await storage.deleteAll();
-                  await  box.clear();
-                  await FirebaseAuth.instance.signOut();
-
-
-                  navigateToScreen(context, LoginScrean());
-                },
-                child: Column(
-                  children: [
-                    Text('Log Out'),
-                    Divider(
-                      color: grayColor,
-                    )
-                  ],
-                ),
-              ),
-
-            ]);
-      },
-      icon: Icon(Icons.menu),
-    ),
-    actions: [
-      IconButton(
-        onPressed: () {},
-        icon: Icon(Icons.notifications),
+                      navigateToScreen(context, LoginScrean());
+                    },
+                    child: Column(
+                      children: [
+                        Text(
+                          'Log Out',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        Divider(
+                          color: grayColor,
+                        )
+                      ],
+                    ),
+                  ),
+                ]);
+          },
+          icon: Icon(Icons.menu),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.notifications),
+          ),
+          IconButton(
+            onPressed: () {
+              navigateToScreen(
+                  context,
+                  AddNewJopContainer(
+                    title: 'Add New Jop',
+                  ));
+            },
+            icon: Icon(Icons.add),
+          ),
+        ],
       ),
-      IconButton(
-        onPressed: () {
-          navigateToScreen(context, AddNewJopContainer(
-            title: 'Add New Jop',
-          ));
-        },
-        icon: Icon(Icons.add),
+      body: bodies[_selectedTab],
+      bottomNavigationBar: BottomBarInspiredOutside(
+        items: items,
+        backgroundColor: Color(0xFFD8D8D8),
+        color: grayColor,
+        isAnimated: true,
+        curve: Curves.easeInOutCubic,
+        colorSelected: Colors.white,
+        indexSelected: _selectedTab,
+        onTap: (int index) => setState(() {
+          _selectedTab = index;
+        }),
+        top: -25,
+        chipStyle: ChipStyle(
+          color: Colors.white,
+          background: greenColor,
+        ),
+        radius: 30,
+        animated: true,
+        itemStyle: ItemStyle.circle,
       ),
-    ],
-  ),
-  body: bodies[_selectedTab],
-  bottomNavigationBar: Padding(
-    padding: EdgeInsets.only(
-      bottom: 20,
-    ),
-    child: DotNavigationBar(
-      paddingR: EdgeInsets.all(5),
-      marginR: EdgeInsets.all(1),
-      currentIndex: _selectedTab,
-      dotIndicatorColor: grayColor,
-      backgroundColor: Color(0xFFD8D8D8),
-      unselectedItemColor: grayColor,
-      enableFloatingNavBar: true,
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeInOutCubic,
-      borderRadius: 30,
-      selectedItemColor: greenColor,
-      onTap: _handleIndexChanged,
-      items: [
-        /// Home
-        DotNavigationBarItem(
-          icon: Icon(Icons.home),
-        ),
-
-        /// Likes
-        DotNavigationBarItem(
-          icon: Icon(Icons.chat),
-        ),
-
-        /// Search
-        DotNavigationBarItem(
-          icon: Icon(Icons.search),
-        ),
-
-        /// Profile
-        DotNavigationBarItem(
-          icon: Icon(Icons.person),
-        ),
-      ],
-    ),
-  ),
-);
-    // return StreamBuilder<ConnectivityResult>(
-    //     stream: Connectivity().onConnectivityChanged,
-    //   builder: (context, snapshot) {
-    //       if (snapshot.hasData){
-    //         final ConnectivityResult connectivityResult = snapshot.data!;
-    //         if (connectivityResult == ConnectivityResult.wifi) {
-    //           return Scaffold(
-    //             extendBody: true,
-    //
-    //             appBar: AppBar(
-    //               leading: IconButton(
-    //                 onPressed: () {
-    //                   showMenu(
-    //                       context: context,
-    //
-    //                       position: RelativeRect.fromLTRB(0, 70, 0, 0),
-    //                       shape: RoundedRectangleBorder(
-    //                         borderRadius: BorderRadius.circular(10),
-    //                       ),
-    //                       useRootNavigator: true,
-    //                       color: backgroundColor,
-    //
-    //
-    //                       items: [
-    //
-    //                         // PopupMenuItem(
-    //                         //   child: Column(
-    //                         //     children: [
-    //                         //       Row(
-    //                         //
-    //                         //         children: [
-    //                         //           Text('Switch Mode'),
-    //                         //           AdvancedSwitch(
-    //                         //             activeChild: Icon(
-    //                         //               Icons.terrain,
-    //                         //               color: Colors.blue,
-    //                         //             ),
-    //                         //
-    //                         //             inactiveChild: Icon(Icons.cloud),
-    //                         //             activeColor: Colors.yellowAccent,
-    //                         //             inactiveColor: Colors.deepPurple,
-    //                         //             width: 60,
-    //                         //             borderRadius: BorderRadius.circular(5),
-    //                         //
-    //                         //             controller: _controller15,
-    //                         //           ),
-    //                         //
-    //                         //
-    //                         //         ],
-    //                         //       ),
-    //                         //       Divider(
-    //                         //         color: grayColor,
-    //                         //       )
-    //                         //     ],
-    //                         //   ),
-    //                         // ),
-    //                         PopupMenuItem(
-    //                             onTap: ()  {
-    //
-    //
-    //                               navigateToScreen(context, EditProfileCompany()  );
-    //                             },
-    //                             child: Column(
-    //                               children: [
-    //                                 Text('edit profile'),
-    //                                 Divider(
-    //                                   color: grayColor,
-    //                                 )
-    //                               ],
-    //                             )),
-    //                         PopupMenuItem(child: Column(
-    //                           children: [
-    //                             Text('Change Password'),
-    //                             Divider(
-    //                               color: grayColor,
-    //                             )
-    //                           ],
-    //                         )),
-    //
-    //                         PopupMenuItem(
-    //                           onTap: () async {
-    //                             final googleSignIn = GoogleSignIn();
-    //                             final signedInAccounts = googleSignIn.currentUser?.email;
-    //
-    //                             if (signedInAccounts != null && signedInAccounts.contains(await box.get('email'))) {
-    //
-    //                               await googleSignIn.signOut();
-    //                               await googleSignIn.disconnect();
-    //                             }
-    //                             await storage.deleteAll();
-    //                             await  box.clear();
-    //                             await FirebaseAuth.instance.signOut();
-    //
-    //
-    //                             navigateToScreen(context, LoginScrean());
-    //                           },
-    //                           child: Column(
-    //                             children: [
-    //                               Text('Log Out'),
-    //                               Divider(
-    //                                 color: grayColor,
-    //                               )
-    //                             ],
-    //                           ),
-    //                         ),
-    //
-    //                       ]);
-    //                 },
-    //                 icon: Icon(Icons.menu),
-    //               ),
-    //               actions: [
-    //                 IconButton(
-    //                   onPressed: () {},
-    //                   icon: Icon(Icons.notifications),
-    //                 ),
-    //                 IconButton(
-    //                   onPressed: () {
-    //                     navigateToScreen(context, AddNewJopContainer(
-    //                       title: 'Add New Jop',
-    //                     ));
-    //                   },
-    //                   icon: Icon(Icons.add),
-    //                 ),
-    //               ],
-    //             ),
-    //             body: bodies[_selectedTab],
-    //             bottomNavigationBar: Padding(
-    //               padding: EdgeInsets.only(
-    //                 bottom: 20,
-    //               ),
-    //               child: DotNavigationBar(
-    //                 paddingR: EdgeInsets.all(5),
-    //                 marginR: EdgeInsets.all(1),
-    //                 currentIndex: _selectedTab,
-    //                 dotIndicatorColor: grayColor,
-    //                 backgroundColor: Color(0xFFD8D8D8),
-    //                 unselectedItemColor: grayColor,
-    //                 enableFloatingNavBar: true,
-    //                 duration: Duration(milliseconds: 500),
-    //                 curve: Curves.easeInOutCubic,
-    //                 borderRadius: 30,
-    //                 selectedItemColor: greenColor,
-    //                 onTap: _handleIndexChanged,
-    //                 items: [
-    //                   /// Home
-    //                   DotNavigationBarItem(
-    //                     icon: Icon(Icons.home),
-    //                   ),
-    //
-    //                   /// Likes
-    //                   DotNavigationBarItem(
-    //                     icon: Icon(Icons.chat),
-    //                   ),
-    //
-    //                   /// Search
-    //                   DotNavigationBarItem(
-    //                     icon: Icon(Icons.search),
-    //                   ),
-    //
-    //                   /// Profile
-    //                   DotNavigationBarItem(
-    //                     icon: Icon(Icons.person),
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //           );
-    //
-    //         }else {
-    //           return Scaffold(
-    //             body: Center(
-    //               child: Text('No WiFi connection'),
-    //             ),
-    //           );
-    //         }
-    //
-    //
-    //
-    //
-    //         }else {
-    //           return Scaffold(
-    //             body: Center(
-    //               child: Text('No Internet connection'),
-    //             ),
-    //           );
-    //         }
-    //   }
-    // );
+    );
   }
 }
+
