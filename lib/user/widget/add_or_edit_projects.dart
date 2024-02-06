@@ -127,15 +127,25 @@ backgroundColor: backgroundColor,
         TextButton(onPressed: (){ Navigator.pop(context);}, child: Text('Cancel',style: TextStyle(color: Colors.red),)),
         TextButton(onPressed: (){
 
-          setState(() {
-            if (widget.projectsModel != null) {
-              widget.onEdit!(projectsModel!);
-            }
-            if (widget.projectsModel == null) {
-              widget.onAdd!(projectsModel!);
-            }
+          if (nameController.text.isEmpty || urlController.text.isEmpty || descriptionController.text.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please Fill All Fields')));
+            return;
+          }else {
 
-          });
+            setState(() {
+              if (widget.projectsModel != null) {
+                widget.onEdit!(projectsModel!);
+              }
+              if (widget.projectsModel == null) {
+                widget.onAdd!(projectsModel!);
+              }
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added Successfully')));
+
+            });
+
+          }
+
+
 
 
 

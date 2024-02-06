@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:untitled10/SharedViews/ChatScreen.dart';
 import 'package:untitled10/src/app_root.dart';
 import 'package:untitled10/utils/navigator.dart';
@@ -27,9 +29,24 @@ class ChatBody extends StatelessWidget {
             builder: (context, state) {
               var cubit = ChatCubit.get(context);
               if (cubit.userModel == null || cubit.userModel!.isEmpty) {
-                return Center(child: Text('No Chats Yet'));
+                return  Container(
+                  child: state is GetChatLoadingState ?Center(
+                    child: LoadingAnimationWidget.twoRotatingArc(
+                      color: greenColor,
+                      size: 100,
+                    ),
+                  ): Center(
+                    child: Text('No Chats Yet',
+                      style: TextStyle(
+                        color: greenColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                );
               }
-              return ListView.builder(
+              return  ListView.builder(
                 itemCount: cubit.userModel!.length ?? 0,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -45,15 +62,29 @@ class ChatBody extends StatelessWidget {
 
                       ),
                       child: ListTile(
+                        contentPadding: EdgeInsets.all(5),
+                        leading: CachedNetworkImage(
+                          imageUrl: cubit.userModel![index].image.toString(),
+                          imageBuilder: (context, imageProvider) => CircleAvatar(
+                            backgroundImage: imageProvider,
+                            radius: 30,
+                          ),
+                          placeholder: (context, url) => LoadingAnimationWidget.twoRotatingArc(
+                            color: greenColor,
+                            size: 100,
 
-                        leading: CircleAvatar(
-                          radius: 25,
-                          backgroundImage: NetworkImage(
-                              cubit.userModel![index].image.toString()),
-
+                          ),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
                         ),
-                        title: Text(cubit.userModel![index].name.toString()),
+                        title: Text(cubit.userModel![index].name.toString(),
+                          style: TextStyle(
+                            color: greenColor,
+
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         onTap: () {
+
                           navigateToScreen(context, ChatScreen(
                             userModel: cubit.userModel![index],
                           ));

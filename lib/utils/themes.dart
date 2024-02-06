@@ -85,6 +85,48 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
+  dialogBackgroundColor: backgroundColor,
+  timePickerTheme: TimePickerThemeData(
+    backgroundColor: backgroundColor,
+    dialHandColor: greenColor,
+    dialBackgroundColor: backgroundColor,
+    dayPeriodColor: greenColor,
+    dayPeriodTextColor: greenColor,
+    hourMinuteColor: greenColor,
+    hourMinuteTextColor: greenColor,
+    dayPeriodBorderSide: BorderSide(
+      color: greenColor,
+    ),
+    hourMinuteTextStyle: TextStyle(
+      color: greenColor,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  dataTableTheme: DataTableThemeData(
+    dataTextStyle: TextStyle(
+      color: greenColor,
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+    ),
+    headingRowColor: MaterialStateColor.resolveWith((states) => backgroundColor),
+    headingTextStyle: TextStyle(
+      color: greenColor,
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  fontFamily: GoogleFonts.poppins().fontFamily,
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: backgroundColor,
+    selectedItemColor: greenColor,
+    unselectedItemColor: grayColor,
+  ),
+  indicatorColor: greenColor,
+  progressIndicatorTheme: ProgressIndicatorThemeData(
+    color: greenColor,
+  ),
+
 );
 
 // ThemeData darkTheme = ThemeData(

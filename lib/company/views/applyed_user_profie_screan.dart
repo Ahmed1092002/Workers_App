@@ -1,42 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:untitled10/SharedViews/ChatScreen.dart';
+import 'package:untitled10/company/views/about_and_skills_body.dart';
+import 'package:untitled10/company/views/eduction_body.dart';
+import 'package:untitled10/company/views/experienc_body.dart';
+import 'package:untitled10/company/views/project_body.dart';
 import 'package:untitled10/src/app_root.dart';
 import 'package:untitled10/utils/navigator.dart';
-import 'package:url_launcher/url_launcher.dart';
 
+import '../../SharedWidget/custoButton.dart';
 import '../../data/company/company_model.dart';
+import '../../data/company/jop_model.dart';
 import '../../data/users/education.dart';
 import '../../data/users/projects.dart';
 import '../../data/users/skills.dart';
 import '../../data/users/work_experience.dart';
+import '../blocs/JopCubit/jop_cubit.dart';
 
 class ApplyedUserProfieScrean extends StatefulWidget {
-  List<WorkExperience>? workExperience ;
-  List <Education>?education;
-  List<SKills>? skills  ;
-  List<Projects>? projects  ;
+  List<WorkExperience>? workExperience;
+  List<Education>? education;
+  List<SKills>? skills;
+  List<Projects>? projects;
   UserModel? userModel;
+  JopsModel? jopModel;
 
-   ApplyedUserProfieScrean({Key? key, this.workExperience, this.education, this.skills, this.projects, this.userModel}) : super(key: key);
+  ApplyedUserProfieScrean({Key? key,
+    this.workExperience,
+    this.education,
+    this.skills,
+    this.projects,
+    this.jopModel,
+    this.userModel})
+      : super(key: key);
 
   @override
-  State<ApplyedUserProfieScrean> createState() => _ApplyedUserProfieScreanState();
+  State<ApplyedUserProfieScrean> createState() =>
+      _ApplyedUserProfieScreanState();
 }
 
-class _ApplyedUserProfieScreanState extends State<ApplyedUserProfieScrean>  with SingleTickerProviderStateMixin {
+class _ApplyedUserProfieScreanState extends State<ApplyedUserProfieScrean>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5,vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        backgroundColor: Colors.white,
+        backgroundColor: backgroundColor,
         title: Text('User Profile'),
         centerTitle: true,
         titleTextStyle: TextStyle(
@@ -47,11 +65,15 @@ class _ApplyedUserProfieScreanState extends State<ApplyedUserProfieScrean>  with
         actions: [
           IconButton(
             onPressed: () {
-              print ('${ widget.userModel!.id}');
-              print ('${ widget.userModel!.name}');
-navigateToScreen(context, ChatScreen(userModel: widget.userModel,));
+              print('${widget.userModel!.id}');
+              print('${widget.userModel!.name}');
+              navigateToScreen(
+                  context,
+                  ChatScreen(
+                    userModel: widget.userModel,
+                  ));
             },
-            icon: Icon(Icons.chat),
+            icon: Icon(Ionicons.chatbubble_ellipses),
           ),
         ],
         iconTheme: IconThemeData(
@@ -76,286 +98,187 @@ navigateToScreen(context, ChatScreen(userModel: widget.userModel,));
             _tabController.animateTo(index);
           },
           isScrollable: true,
+
           indicatorPadding: EdgeInsets.all(5),
           splashBorderRadius: BorderRadius.circular(10),
           tabs: [
-            Tab(
-              child: Text(
-                'About',
-                style: TextStyle(
-                  color: greenColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Tab(
-              child: Text(
-                'Work Experience',
-                style: TextStyle(
-                  color: greenColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Tab(
-              child: Text(
-                'Education',
-                style: TextStyle(
-                  color: greenColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Tab(
-              child: Text(
-                'Skills',
-                style: TextStyle(
-                  color: greenColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Tab(
-              child: Text(
-                'Projects',
-                style: TextStyle(
-                  color: greenColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
 
+            Tab(
+              child: Row(
+                children: [
+                  Icon(
+                    Ionicons.person,
+                    color: greenColor,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'About',
+                    style: TextStyle(
+                      color: greenColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Tab(
+              child: Row(
+                children: [
+                  Icon(
+                    Ionicons.business,
+                    color: greenColor,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Work Experience',
+                    style: TextStyle(
+                      color: greenColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Tab(
+
+              child: Row(
+
+                children: [
+                  Icon(
+                    Ionicons.school,
+                    color: greenColor,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Education',
+                    style: TextStyle(
+                      color: greenColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Tab(
+              child: Row(
+                children: [
+                  Icon(
+                    Ionicons.cube,
+                    color: greenColor,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Projects',
+                    style: TextStyle(
+                      color: greenColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
+      body: Column(
         children: [
-      Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: greenColor,
-              width: 2,
-            )
-        ),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height*0.2,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            Row (
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: greenColor,
-                      width: 2,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: CircleAvatar(
-                    radius: 45,
-                    backgroundImage: NetworkImage(widget.userModel!.image!),
-                  ),
+                AboutAndSkillsBody(
+                  userModel: widget.userModel!,
+                  skills: widget.skills,
                 ),
-
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Name: ${widget.userModel!.name!}"),
-                    Text("email : ${widget.userModel!.email!}"),
-                    Text("phone number : ${widget.userModel!.phone!}"),
-                    Text("address : ${widget.userModel!.address!}"),
-                    Text("country : ${widget.userModel!.country!}"),
-                    Text("Birth Date : ${widget.userModel!.date!}"),
-                    Text("gender : ${widget.userModel!.gender!}"),
-                  ],
+                ExperiencBody(workExperience: widget.workExperience),
+                EductionBody(
+                  education: widget.education,
+                ),
+                ProjectBody(
+                  projects: widget.projects,
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("info "),
+          ),
+          BlocProvider(
+            create: (context) => JopCubit(),
+            child: BlocConsumer<JopCubit, JopState>(
+              listener: (context, state) {
+                // TODO: implement listener
+              },
+              builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CustomButton(
+                        buttonName: 'Accept',
+
+                        onPressed: () {
+                          JopCubit.get(context).acceptUser(
+                            jopid: widget.jopModel!.jopid!,
+                            userUid: widget.userModel!,
+                          );
+                          if (state is AcceptUserSuccessState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text('User Accepted'),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          JopCubit.get(context).rejectUser(
+                            jopid: widget.jopModel!.jopid!,
+                            userUid: widget.userModel!,
+                          );
+                          if (state is RejectUserSuccessState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text('User Rejected'),
+                              ),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+
+                        ),
+                        child: Text('Reject',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,)),
+
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: greenColor,
-                    width: 2,
-                  )
-                ),
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(" ${widget.userModel!.info!}"),
-                  ],
-                ),
-              ),
-            )
-
-
-
-          ],
-        ),
-
-      ),
-    )         ,
-
-          ListView.builder(
-            itemCount: widget.workExperience!.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: greenColor,
-                      width: 2,
-                    )
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height*0.2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("company: ${widget.workExperience![index].company!}"),
-                      Text("position: ${widget.workExperience![index].position!}"),
-                      Text(" start date: ${widget.workExperience![index].startDate!}"),
-                      Text(" end date: ${widget.workExperience![index].endDate!}"),
-                      Text(" period: ${widget.workExperience![index].period!}"),
-                      Text(" description: ${widget.workExperience![index].description!}"),
-                    ],
-                  ),
-
-                ),
-              );
-            },
           ),
-          ListView.builder(
-            itemCount: widget.education!.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: greenColor,
-                      width: 2,
-                    )
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height*0.2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("academic : ${widget.education![index].name!}"),
-                      Text('degree: ${widget.education![index].degree!}'),
-                      Text("from: ${widget.education![index].from!}"),
-                      // Text(widget.education![index].to!),
-                      Text(" description: ${widget.education![index].description!}"),
-
-                    ],
-                  ),
-
-                ),
-              );
-            },
-          ),
-          ListView.builder(
-            itemCount: widget.skills!.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: greenColor,
-                      width: 2,
-                    )
-                  ),
-
-                  height: 50,
-                  child: Text(widget.skills![index].name!),
-
-                ),
-              );
-            },
-          ),
-          ListView.builder(
-            itemCount: widget.projects!.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: greenColor,
-                      width: 2,
-                    )
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height*0.2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("project name: ${widget.projects![index].name!}"),
-                      Text(" project description: ${widget.projects![index].description!}"),
-                      TextButton(onPressed: () async{
-                        final Uri _url = Uri.parse('https://flutter.dev');
-                        if (!await launchUrl(_url)) {
-                          throw Exception('Could not launch $_url');
-                        }
-
-
-                      }, child: Text('https://google.com')),
-
-                      Text(" project url: ${widget.projects![index].url!}"),
-
-                    ],
-                  ),
-
-                ),
-              );
-            },
-          ),
-
-
         ],
       ),
-
-
-
     );
   }
 }

@@ -71,19 +71,90 @@ class EditExperinceScrean extends StatelessWidget {
           print (cubit.workExperience[index].id);
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.green,
-                    width: 2,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+
+                Container(
+                  width: MediaQuery.of(context).size.width*0.84 ,
+
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color:greenColor,
+                        width: 2,
+                      ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                    ),),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      Text('Company Name :',style: TextStyle(
+                        color: greenColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                      Text('${cubit.workExperience[index].company}',),
+                      Divider(),
+                      Text('Position : ',style: TextStyle(
+                        color: greenColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                      Text('${cubit.workExperience[index].position}'),
+                      Divider(),
+
+                      Text('Start Date :',style: TextStyle(
+                        color: greenColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                      Text(' ${cubit.workExperience[index].startDate}'),
+                      Divider(),
+
+                      Text('End Date :',style: TextStyle(
+                        color: greenColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                      Text('${cubit.workExperience[index].endDate}'),
+                      Divider(),
+
+                      Text('Period :',style: TextStyle(
+                        color: greenColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                      Text('${cubit.workExperience[index].period}'),
+                      Divider(),
+
+                      Text('Description : ',style: TextStyle(
+                        color: greenColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                      Text('${cubit.workExperience[index].description}'),
+
+                    ],
                   ),
-                  borderRadius: BorderRadius.circular(20)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: greenColor,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      )
+
+                  ),
+                  child: Column(
                     children: [
                       IconButton(
                         onPressed: () {
@@ -117,7 +188,7 @@ class EditExperinceScrean extends StatelessWidget {
                         },
                         icon: Icon(
                           Icons.edit,
-                          color: greenColor,
+                          color: Colors.white,
                         ),
                       ),
                       IconButton(
@@ -135,22 +206,8 @@ class EditExperinceScrean extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Divider(),
-                  Text('Company Name : ${cubit.workExperience[index].company}'),
-                  Divider(),
-                  Text('Position : ${cubit.workExperience[index].position}'),
-                  Divider(),
-                  Text('Start Date : ${cubit.workExperience[index].startDate}'),
-                  Divider(),
-                  Text('End Date : ${cubit.workExperience[index].endDate}'),
-                  Divider(),
-                  Text('Period : ${cubit.workExperience[index].period}'),
-                  Divider(),
-                  Text('Description : ${cubit.workExperience[index].description}'),
-
-
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

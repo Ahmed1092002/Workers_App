@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,10 @@ import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:stylish_bottom_bar/helpers/bottom_bar.dart';
+import 'package:stylish_bottom_bar/model/bar_items.dart';
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:untitled10/SharedViews/chat_bpdy.dart';
 import 'package:untitled10/src/app_root.dart';
 import 'package:untitled10/user/views/applyed_jops.dart';
@@ -19,6 +25,27 @@ import '../../SharedViews/login_screan.dart';
 import '../../main.dart';
 import '../../utils/navigator.dart';
 import 'home_body.dart';
+
+const List<TabItem> items = [
+  TabItem(
+    icon: Ionicons.home,
+    title: 'Home',
+  ),
+  TabItem(
+    icon: Ionicons.chatbox,
+    title: 'chat',
+  ),
+  TabItem(
+    icon: Ionicons.search,
+    title: 'Search',
+  ),
+  TabItem(
+    icon: Ionicons.person,
+    title: 'Profile',
+  ),
+];
+
+
 class MainScrean extends StatefulWidget {
   const MainScrean({Key? key}) : super(key: key);
 
@@ -86,48 +113,8 @@ return Scaffold(
             ),
             useRootNavigator: true,
             items:[
-              // PopupMenuItem(
-              //   child: Column(
-              //     children: [
-              //       Row(
-              //
-              //         children: [
-              //           Text('Switch Mode'),
-              //           AdvancedSwitch(
-              //             activeChild: Icon(
-              //               Icons.terrain,
-              //               color: Colors.blue,
-              //             ),
-              //             inactiveChild: Icon(Icons.cloud),
-              //             activeColor: Colors.yellowAccent,
-              //             inactiveColor: Colors.deepPurple,
-              //             width: 60,
-              //             borderRadius: BorderRadius.circular(5),
-              //
-              //             controller: _controller15,
-              //           ),
-              //
-              //
-              //         ],
-              //       ),
-              //       Divider(
-              //         color: grayColor,
-              //       )
-              //     ],
-              //   ),
-              // ),
-              PopupMenuItem(
-                onTap: (){
-                  navigateToScreen(context, ApplyedJops());
-                },
-                child: Column(
-                  children: [
-                    Text('applyed jobs'),
-                    Divider(
-                      color: grayColor,
-                    )
-                  ],
-                ),),
+
+
 
               PopupMenuItem(
                 onTap: (){
@@ -135,7 +122,7 @@ return Scaffold(
                 },
                 child:  Column(
                   children: [
-                    Text('Settings'),
+                    Text('Settings',),
                     Divider(
                       color: grayColor,
                     )
@@ -180,259 +167,82 @@ return Scaffold(
 
             ] );
       },
-      icon: Icon(Icons.menu),
+      icon: Icon(Ionicons.menu_outline),
     ),
 
     actions: [
       IconButton(
-        onPressed: () {},
-        icon: Icon(Icons.notifications),
+        onPressed: () {
+        },
+        color: greenColor,
+        icon: Icon(Ionicons.notifications_outline),
       ),
 
     ],
   ),
   body: bodies[_selectedTab],
-  bottomNavigationBar: Padding(
-    padding: EdgeInsets.only(bottom: 20,),
-    child: DotNavigationBar(
-      paddingR: EdgeInsets.all(5),
-      marginR: EdgeInsets.all(1),
-      currentIndex: _selectedTab,
-      dotIndicatorColor: grayColor,
-      backgroundColor: Color(0xFFD8D8D8),
-      unselectedItemColor: grayColor,
-      enableFloatingNavBar: true,
-
-
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeInOutCubic,
-
-
-
-      borderRadius: 30,
-      selectedItemColor: greenColor,
-
-
-      onTap: _handleIndexChanged,
-      items: [
-        /// Home
-        DotNavigationBarItem(
-          icon: Icon(Icons.home),
-        ),
-
-        /// Likes
-        DotNavigationBarItem(
-          icon: Icon(Icons.chat),
-        ),
-
-        /// Search
-        DotNavigationBarItem(
-          icon: Icon(Icons.search),
-        ),
-
-        /// Profile
-        DotNavigationBarItem(
-          icon: Icon(Icons.person),
-        ),
-      ],
+  bottomNavigationBar: BottomBarInspiredOutside(
+    items: items,
+    backgroundColor: Color(0xFFD8D8D8),
+    color: grayColor,
+    isAnimated: true,
+    curve: Curves.easeInOutCubic,
+    colorSelected: Colors.white,
+    indexSelected: _selectedTab,
+    onTap: (int index) => setState(() {
+      _selectedTab = index;
+    }),
+    top: -25,
+    chipStyle: ChipStyle(
+      color: Colors.white,
+      background: greenColor,
     ),
+    radius: 30,
+    animated: true,
+    itemStyle: ItemStyle.circle,
   ),
 );
-//     return StreamBuilder<ConnectivityResult>(
-//       stream: Connectivity().onConnectivityChanged,
-//       builder: (context, snapshot) {
-//         if (snapshot.hasData){
-//           final ConnectivityResult connectivityResult = snapshot.data!;
-//
-//           if (connectivityResult == ConnectivityResult.wifi) {
-//             // WiFi connection is available
-//             return Scaffold(
-//               extendBody: true,
-//               resizeToAvoidBottomInset: false,
-//               appBar: AppBar(
-//                 backgroundColor: backgroundColor,
-//                 leading: IconButton(
-//                   onPressed: () {
-//
-//                     showMenu(context: context,
-//                         position: RelativeRect.fromLTRB(0, 70, 0, 0),
-//                         color: backgroundColor,
-//                         shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(10),
-//
-//                         ),
-//                         useRootNavigator: true,
-//                         items:[
-//                           // PopupMenuItem(
-//                           //   child: Column(
-//                           //     children: [
-//                           //       Row(
-//                           //
-//                           //         children: [
-//                           //           Text('Switch Mode'),
-//                           //           AdvancedSwitch(
-//                           //             activeChild: Icon(
-//                           //               Icons.terrain,
-//                           //               color: Colors.blue,
-//                           //             ),
-//                           //             inactiveChild: Icon(Icons.cloud),
-//                           //             activeColor: Colors.yellowAccent,
-//                           //             inactiveColor: Colors.deepPurple,
-//                           //             width: 60,
-//                           //             borderRadius: BorderRadius.circular(5),
-//                           //
-//                           //             controller: _controller15,
-//                           //           ),
-//                           //
-//                           //
-//                           //         ],
-//                           //       ),
-//                           //       Divider(
-//                           //         color: grayColor,
-//                           //       )
-//                           //     ],
-//                           //   ),
-//                           // ),
-//                           PopupMenuItem(
-//                             onTap: (){
-//                               navigateToScreen(context, ApplyedJops());
-//                             },
-//                             child: Column(
-//                               children: [
-//                                 Text('applyed jobs'),
-//                                 Divider(
-//                                   color: grayColor,
-//                                 )
-//                               ],
-//                             ),),
-//
-//                           PopupMenuItem(
-//                             onTap: (){
-//                               navigateToScreen(context, SettingsScrean());
-//                             },
-//                             child:  Column(
-//                               children: [
-//                                 Text('Settings'),
-//                                 Divider(
-//                                   color: grayColor,
-//                                 )
-//                               ],
-//                             ),),
-//
-//                           PopupMenuItem(child: Column(
-//                             children: [
-//                               Text('Change Password'),
-//                               Divider(
-//                                 color: grayColor,
-//                               )
-//                             ],
-//                           )),
-//
-//                           PopupMenuItem(
-//                             onTap: () async {
-//                               final googleSignIn = GoogleSignIn();
-//                               final signedInAccounts = googleSignIn.currentUser?.email;
-//
-//                               if (signedInAccounts != null && signedInAccounts.contains(await box.get('email'))) {
-//
-//                                 await googleSignIn.signOut();
-//                                 await googleSignIn.disconnect();
-//                               }
-//                               await storage.deleteAll();
-//                               await  box.clear();
-//                               await FirebaseAuth.instance.signOut();
-//
-//
-//                               navigateToScreen(context, LoginScrean());
-//                             },
-//                             child: Column(
-//                               children: [
-//                                 Text('Log Out'),
-//                                 Divider(
-//                                   color: grayColor,
-//                                 )
-//                               ],
-//                             ),
-//                           ),
-//
-//                         ] );
-//                   },
-//                   icon: Icon(Icons.menu),
-//                 ),
-//
-//                 actions: [
-//                   IconButton(
-//                     onPressed: () {},
-//                     icon: Icon(Icons.notifications),
-//                   ),
-//
-//                 ],
-//               ),
-//               body: bodies[_selectedTab],
-//               bottomNavigationBar: Padding(
-//                 padding: EdgeInsets.only(bottom: 20,),
-//                 child: DotNavigationBar(
-//                   paddingR: EdgeInsets.all(5),
-//                   marginR: EdgeInsets.all(1),
-//                   currentIndex: _selectedTab,
-//                   dotIndicatorColor: grayColor,
-//                   backgroundColor: Color(0xFFD8D8D8),
-//                   unselectedItemColor: grayColor,
-//                   enableFloatingNavBar: true,
-//
-//
-//                   duration: Duration(milliseconds: 500),
-//                   curve: Curves.easeInOutCubic,
-//
-//
-//
-//                   borderRadius: 30,
-//                   selectedItemColor: greenColor,
-//
-//
-//                   onTap: _handleIndexChanged,
-//                   items: [
-//                     /// Home
-//                     DotNavigationBarItem(
-//                       icon: Icon(Icons.home),
-//                     ),
-//
-//                     /// Likes
-//                     DotNavigationBarItem(
-//                       icon: Icon(Icons.chat),
-//                     ),
-//
-//                     /// Search
-//                     DotNavigationBarItem(
-//                       icon: Icon(Icons.search),
-//                     ),
-//
-//                     /// Profile
-//                     DotNavigationBarItem(
-//                       icon: Icon(Icons.person),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             );
-//           }else {
-//             // WiFi connection is not available
-//             return Scaffold(
-//               body: Center(
-//                 child: Text('No WiFi connection'),
-//               ),
-//             );
-//           }
-//         }else {
-//     // Connection status is not available yet
-//     return Scaffold(
-//     body: Center(
-//     child: CircularProgressIndicator(),
-//     ),
-//     );
-//
-//       }
-// }
-//     );
+
   }
 }
+
+// floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+// bottomNavigationBar: AnimatedBottomNavigationBar(
+// icons: [
+// Ionicons.home_outline,
+//
+// Ionicons.person_outline,
+// ],
+// activeIndex: _selectedTab,
+// gapLocation: GapLocation.center,
+// backgroundColor: Color(0xFFD8D8D8),
+// activeColor: greenColor,
+// inactiveColor: grayColor,
+// iconSize: 30,
+// splashColor: greenColor,
+//
+//
+//
+// leftCornerRadius: 32,
+// rightCornerRadius: 32,
+// onTap: (index) => _handleIndexChanged(index),
+//
+// //other params
+// ),
+// floatingActionButton: FloatingActionButton(
+// shape: CircleBorder(
+//
+// eccentricity: 0.5,
+//
+//
+//
+// ),
+//
+//
+// onPressed: () {
+// navigateToScreen(context, ChatBody());
+// },
+// child: Icon(Ionicons.search_outline, color: backgroundColor,),
+// backgroundColor: greenColor,
+// ),
+// floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,

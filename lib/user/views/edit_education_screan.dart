@@ -70,19 +70,94 @@ class EditEducationScrean extends StatelessWidget {
                   print (cubit.education[index].id);
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                       padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: Colors.green,
-                            width: 2,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Container(
+                          width: MediaQuery.of(context).size.width*0.84 ,
+                           padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.green,
+                                width: 2,
+                              ),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                            ),),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              Text('School/University Name :',style: TextStyle(
+                                color: greenColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),),
+                              Text('${cubit.education[index].name}',),
+                              Divider(),
+                              Text('Field : ',style: TextStyle(
+                                color: greenColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),),
+                              Text('${cubit.education[index].field}'),
+                              Divider(),
+
+
+                              Text('Degree : ',style: TextStyle(
+                                color: greenColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),),
+                              Text('${cubit.education[index].degree}'),
+                              Divider(),
+                              Text('Start Date :',style: TextStyle(
+                                color: greenColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),),
+                              Text('${cubit.education[index].from}'),
+                              Divider(),
+                              Text('End Date :',style: TextStyle(
+                                color: greenColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),),
+                              Text('${cubit.education[index].to}'),
+                              Divider(),
+                              Text('Description :',style: TextStyle(
+                                color: greenColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),),
+                              Text('${cubit.education[index].description}'),
+                              Divider(),
+                              Text('Grede :',style: TextStyle(
+                                color: greenColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),),
+                              Text('${cubit.education[index].grade}'),
+                            ],
                           ),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: greenColor,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                              )
+
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               IconButton(
                                 onPressed: () {
@@ -93,36 +168,36 @@ class EditEducationScrean extends StatelessWidget {
                                       useSafeArea: true,
                                       barrierLabel: 'edit',
                                       builder: (context) {
-                                    return AddOrEditEducationModelBottomSheet(
-                                      onEdit: ( education) {
-                                        cubit.editEducation(education: education, id: cubit.education[index].id.toString());
-                                        cubit.education.clear();
-                                        cubit.getEducation();
-                                        Navigator.pop(context);
-                                      },
-                                      educationModel: Education(
-                                        id: cubit.education[index].id,
-                                        name: cubit.education[index].name,
-                                        degree: cubit.education[index].degree,
-                                        from: cubit.education[index].from,
-                                        to: cubit.education[index].to,
-                                        field: cubit.education[index].field,
-                                        grade: cubit.education[index].grade,
-                                        description: cubit.education[index].description,
-                                      ),
-                                    );
-                                  });
+                                        return AddOrEditEducationModelBottomSheet(
+                                          onEdit: ( education) {
+                                            cubit.editEducation(education: education, id: cubit.education[index].id.toString());
+                                            cubit.education.clear();
+                                            cubit.getEducation();
+                                            Navigator.pop(context);
+                                          },
+                                          educationModel: Education(
+                                            id: cubit.education[index].id,
+                                            name: cubit.education[index].name,
+                                            degree: cubit.education[index].degree,
+                                            from: cubit.education[index].from,
+                                            to: cubit.education[index].to,
+                                            field: cubit.education[index].field,
+                                            grade: cubit.education[index].grade,
+                                            description: cubit.education[index].description,
+                                          ),
+                                        );
+                                      });
                                 },
                                 icon: Icon(
                                   Icons.edit,
-                                  color: greenColor,
+                                  color: Colors.white,
                                 ),
                               ),
                               IconButton(
                                 onPressed: () {
 
                                   cubit.deleteEducation(
-                                     id: cubit.education[index].id.toString());
+                                      id: cubit.education[index].id.toString());
                                   cubit.education.clear();
                                   cubit.getEducation();
                                 },
@@ -133,22 +208,8 @@ class EditEducationScrean extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Divider(),
-                          Text('School Name : ${cubit.education[index].name} '),
-                          Divider(),
-                          Text('Degree : ${cubit.education[index].degree}'),
-                          Divider(),
-                          Text('Start Date : ${cubit.education[index].from}'),
-                          Divider(),
-                          Text('End Date : ${cubit.education[index].to}'),
-                          Divider(),
-                          Text('Period : ${cubit.education[index].field}'),
-                          Divider(),
-                          Text('Grade : ${cubit.education[index].grade}'),
-                          Divider(),
-                          Text('Description : ${cubit.education[index].description}'),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                 },

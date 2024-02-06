@@ -24,6 +24,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   List<SKills> skills =[] ;
   List<Projects> projects=[]  ;
   var box = Hive.box(boxName);
+  double ? percent;
 
 
   getProfileData()async{
@@ -124,6 +125,84 @@ class UserProfileCubit extends Cubit<UserProfileState> {
 
 
   }
+  List<String> Completed=[];
+  completeProfile()async {
+    percent = 0;
+    await getProfileData();
+    await getWorkExperience();
+    await getEducation();
+    await getSkills();
+    await getProjects();
+    if (userModel!.name!.isNotEmpty && userModel!.email!.isNotEmpty &&
+        userModel!.phone!.isNotEmpty && userModel!.address!.isNotEmpty &&
+        userModel!.country!.isNotEmpty && userModel!.workingField!.isNotEmpty &&
+        userModel!.jobField!.isNotEmpty) {
+      percent =percent! + 0.20;
+      print(percent);
+    }else {
+      Completed.add('Profile is not completed');
+    }
+    if (workExperience.isNotEmpty) {
+      percent =percent! + 0.20;
+      print(percent);
+
+    }else {
+      Completed.add('Work Experience is not completed');
+    }
+    if (education.isNotEmpty) {
+      percent =percent! + 0.20;
+      print(percent);
+
+    }else {
+      Completed.add('Education is not completed');
+    }
+    if (skills.isNotEmpty) {
+      percent =percent! + 0.20;
+      print(percent);
+
+    }
+    else {
+      Completed.add('Skills is not completed');
+    }
+    if (projects.isNotEmpty) {
+      percent =percent! + 0.20;
+      print(percent);
+
+    }
+    else {
+      Completed.add('Projects is not completed');
+    }
+
+    emit(CompleteProfileSuccessState());
+
+    // for (var item in workExperience) {
+    //   if (item.company!.isNotEmpty && item.position!.isNotEmpty &&
+    //       item.startDate!.isNotEmpty && item.endDate!.isNotEmpty) {
+    //     percent += 25;
+    //   }
+    //
+    // }
+    // for (var item in education) {
+    //   if (item.degree!.isNotEmpty && item.field!.isNotEmpty
+    //       && item.grade!.isNotEmpty &&
+    //       item.degree!.isNotEmpty &&
+    //       item.from!.isNotEmpty && item.to!.isNotEmpty) {
+    //     percent += 25;
+    //   }
+    // }
+    // for (var item in skills) {
+    //   if (item.name!.isNotEmpty) {
+    //     percent += 25;
+    //   }
+    // }
+    // for (var item in projects) {
+    //   if (item.name!.isNotEmpty && item.description!.isNotEmpty &&
+    //      item!) {
+    //     percent += 25;
+    //   }
+    // }
+  }
+
 
   deleteWorkExperience({required String id})async{
     var token = await storage.read(key: 'uid');
@@ -248,6 +327,8 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       emit(AddProjectsErrorState());
     });
   }
+
+
 
 
 

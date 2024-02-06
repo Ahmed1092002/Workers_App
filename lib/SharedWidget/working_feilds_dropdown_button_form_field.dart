@@ -94,7 +94,10 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
       items: job
           .map((e) => DropdownMenuItem(
 
-        child:   Text(e,style: Theme.of(context!).textTheme.bodySmall,),
+        child:   Text(e,style: TextStyle(
+          color: greenColor,
+          fontWeight: FontWeight.bold,
+        ),),
         value: e,
         onTap: (){
           selectedIndex=jobList.indexOf(e);
@@ -104,18 +107,22 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
       ))
           .toList(),
 
-      hint:      Text('$hint',style: Theme.of(context!).textTheme.bodySmall),
+      hint:      Text('$hint',style: TextStyle(
+        color: greenColor,
+
+        fontWeight: FontWeight.bold,
+      )),
 
 
       decoration: InputDecoration(
         prefixIcon: Icon(icon,color: greenColor,),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10),
         ),
         isDense: true,
         isCollapsed: true,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             color: greenColor,
           ),
@@ -123,7 +130,7 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
 
         contentPadding: EdgeInsets.all(12),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             color: greenColor,
 

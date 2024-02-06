@@ -292,15 +292,23 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
                 setState(() {
                   educationModel!.from = formatter.format(startDate!);
                   educationModel!.to = formatter.format(endDate!);
-                  if (widget.educationModel == null) {
-                        widget.onAddItem!(educationModel!);
-                      }
-if (widget.educationModel != null) {
-  widget.onEdit!(widget.educationModel!);
-}
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content:widget.educationModel == null ? Text('Add') : Text('Edit'),
-                  ));
+                  if (_nameController.text == '' || _degreeController.text == '' || _fieldController.text == '' || _descriptionController.text == '' || _gradeController.text == '' || startDate == null || endDate == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Please fill all fields'),
+                    ));
+                    return;
+                  }else {
+                    if (widget.educationModel == null) {
+                      widget.onAddItem!(educationModel!);
+                    }
+                    if (widget.educationModel != null) {
+                      widget.onEdit!(widget.educationModel!);
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:widget.educationModel == null ? Text('Add') : Text('Edit'),
+                    ));
+                  }
+
                 });
               }, child:widget.educationModel != null ? Text('Edit',style: TextStyle(color: Colors.white),):  Text('Add',style: TextStyle(color: Colors.white),)),
               ElevatedButton(onPressed: (){

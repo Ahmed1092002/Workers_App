@@ -94,10 +94,11 @@ List<Education> education = [];
                        color: Colors.white,
                        borderRadius: BorderRadius.only(
                          topLeft: Radius.circular(10),
+                         bottomRight: Radius.circular(10),
                          bottomLeft: Radius.circular(10),
                        ),
                        border: Border.all(
-                         color: Colors.green,
+                         color: greenColor,
                          width: 2,
                        )),
                    child: Padding(

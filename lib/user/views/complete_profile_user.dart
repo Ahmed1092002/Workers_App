@@ -140,7 +140,7 @@ class _CompleteProfileUserState extends State<CompleteProfileUser> {
                                 cubit.addEducation( education);
                               } else if (current == 3) {
                                 cubit.addSkills( skills);
-                              } else   if (current < 3) {
+                              } else   if (current > 3) {
                                 cubit.addProjects(projects);
 
                                 navigateToScreenAndExit(

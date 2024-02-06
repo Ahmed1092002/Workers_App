@@ -11,18 +11,36 @@ import '../../company/blocs/JopCubit/jop_cubit.dart';
 import '../../main.dart';
 import '../../utils/consatants.dart';
 
-class SearchBody extends StatelessWidget {
+class SearchBody extends StatefulWidget {
    SearchBody({Key? key}) : super(key: key);
+
+  @override
+  State<SearchBody> createState() => _SearchBodyState();
+}
+
+class _SearchBodyState extends State<SearchBody> {
   TextEditingController jopTitleController = TextEditingController();
+
   TextEditingController jopLocationController = TextEditingController();
+
   TextEditingController jopTypeController = TextEditingController();
+
   TextEditingController jopSalaryController = TextEditingController();
+
   TextEditingController jopFieldController = TextEditingController();
+
 TextEditingController jopExperienceController = TextEditingController();
+
 var box = Hive.box(boxName);
+  var userType ;
 
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     userType =  box.get('userType');
 
-
+}
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,20 +50,29 @@ var box = Hive.box(boxName);
   create: (context) => JopCubit(),
   child: BlocConsumer<JopCubit, JopState>(
   listener: (context, state) {
+
     // TODO: implement listener
+    if (state is SearchJopFilterSuccessState) {
+      navigateToScreen(context, ResultSearchWidget(
+        jops: JopCubit.get(context).jops,
+        userType: userType,
+      ));
+
+    }
   },
   builder: (context, state) {
+
     return Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).viewInsets.bottom == 0
               ? MediaQuery.of(context).size.height / 1.35
               : MediaQuery.of(context).size.height / 0.8,
-        
+
           decoration: BoxDecoration(
            border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(20),
           ),
-        
+
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -141,7 +168,6 @@ Row(
 
 
 
-
                 CustomButton(
                   buttonName: 'Search',
                   onPressed: () async {
@@ -150,43 +176,23 @@ Row(
 print (salaryText);
 print (jopSalaryController.text);
 
-                    var userType = await box.get('userType');
                     print (userType);
-                    if (userType == 'company') {
-                     JopCubit.get(context).searchMyJopsFilter(
-                        jopTitle: jopTitleController.text,
-                        jopLocation: jopLocationController.text,
-                        jopType: jopTypeController.text,
-                        jopSalary: jopSalaryController.text,
-                        jopExperience: jopExperienceController.text,
-                        jopField: jopFieldController.text,
-                      ).whenComplete(() {
-                        navigateToScreen(context, ResultSearchWidget(
-                          jops: JopCubit.get(context).jops,
-                        ));
-                      });
-                    }else{
+                    JopCubit.get(context).searchJopFilter(
+                      jopTitle: jopTitleController.text,
+                      jopLocation: jopLocationController.text,
+                      jopType: jopTypeController.text,
+                      jopSalary: jopSalaryController.text,
+                      userType: userType,
 
-                      JopCubit.get(context).searchJopFilter(
-                        jopTitle: jopTitleController.text,
-                        jopLocation: jopLocationController.text,
-                        jopType: jopTypeController.text,
-                        jopSalary: jopSalaryController.text,
-                        jopExperience: jopExperienceController.text,
-                        jopField: jopFieldController.text,
+                      jopExperience: jopExperienceController.text,
 
-
-                      ).whenComplete(() {
-                        navigateToScreen(context, ResultSearchWidget(
-                          jops: JopCubit.get(context).jops,
-                        ));
-                      });
-                    }
+                      jopField: jopFieldController.text,
+                    );
 
                   },
                 )
-        
-        
+
+
               ],
             ),
           ),

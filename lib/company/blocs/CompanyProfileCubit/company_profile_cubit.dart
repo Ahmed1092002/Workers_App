@@ -66,7 +66,7 @@ class CompanyProfileCubit extends Cubit<CompanyProfileState> {
   }
 
 
-  getProfileData()async{
+  getProfileData({Function(UserModel)? usermodel})async{
     String? uid = await storage.read(key: 'uid');
     String userType = await box.get('userType').toString();
     emit(GetProfileDataLoadingState());
@@ -77,6 +77,7 @@ class CompanyProfileCubit extends Cubit<CompanyProfileState> {
         .then((value) {
 print (value.data());
       user = UserModel.fromJson(value.data()!);
+      usermodel!(user!);
 //       box.put('name', user!.name);
 //       box.put('image', user!.image);
 //       box.put('email', user!.email);
@@ -127,6 +128,15 @@ print (value.data());
     }).then((value)  async {
       await box.put( 'name', name);
       await box.put( 'image', image);
+      await box.put( 'email', user!.email);
+      await box.put( 'phone', phone);
+      await box.put( 'address', address);
+      await box.put( 'uid', uid);
+      await box.put( 'country', country);
+      await box.put( 'workingField', workingField);
+      await box.put( 'jobField', jobField);
+      await box.put( 'date', user!.date);
+
       emit(UpdateProfileDataSuccessState());
     }).catchError((error) {
       emit(UpdateProfileDataErrorState());

@@ -32,11 +32,11 @@ maxLines: hint=='Job Description'? 5:1,
         decoration: InputDecoration(
           hintText: hint,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(10),
 
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
               color: greenColor,
             ),

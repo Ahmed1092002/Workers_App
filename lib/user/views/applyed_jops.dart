@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:untitled10/user/views/details_jop_and_applyed_screan.dart';
+import 'package:untitled10/user/widget/job_container.dart';
+import 'package:untitled10/utils/navigator.dart';
 
 import '../../SharedWidget/NewJopContainer.dart';
 import '../../company/blocs/JopCubit/jop_cubit.dart';
@@ -13,12 +16,22 @@ class ApplyedJops extends StatefulWidget {
 }
 
 class _ApplyedJopsState extends State<ApplyedJops> {
+  bool isApplied = false;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
       JopCubit()
-        ..getAllApplyedJops(),
+        ..getAllApplyedJops(
+          isApplyed: (bool){
+            setState(() {
+              isApplied = bool;
+              print('isApplied $isApplied');
+              print('bool $bool');
+            });
+          },
+
+        ),
       child:  Scaffold(
             appBar: AppBar(
               title: Text('Applyed Jops'),
@@ -51,6 +64,13 @@ class _ApplyedJopsState extends State<ApplyedJops> {
                     ),
                   );
                 }
+                if (state is GetAllApplyedJopsLoadingState) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: greenColor,
+                    ),
+                  );
+                }
 
 
                 return Column(
@@ -71,14 +91,25 @@ class _ApplyedJopsState extends State<ApplyedJops> {
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: NewJopContainer(
-                                jopField: cubit.jops[index].jopField,
-                                jopType: cubit.jops[index].jopType,
+                              child: JobContainer(
+                                title: cubit.jops[index].title,
+                                companyLogo: cubit.jops[index].companyImageUrl,
                                 companyName: cubit.jops[index].companyname,
+                                Country: cubit.jops[index].country,
+                                jobShift: cubit.jops[index].jobShift,
                                 location: cubit.jops[index].location,
-                                experience: cubit.jops[index].Experience,
-                                name: cubit.jops[index].title,
-//todo;fix this
+                                level: cubit.jops[index].jobLevel,
+                                jobType: cubit.jops[index].jopType,
+                                experience:   cubit.jops[index].Experience,
+                                salary: cubit.jops[index].Salary,
+                                isSaved: cubit.jops[index].isSaved,
+
+                                isApplied: cubit.jops[index].isApplied,
+
+                                screenName: 'Applyed Jops',
+
+
+
 
                               ),
                             );

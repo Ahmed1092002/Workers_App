@@ -279,19 +279,39 @@ class _AddOrEditExperienceModelBottomSheetState
                   workExperienceModel!.startDate = formatter.format(startDate!);
                   workExperienceModel!.endDate = formatter.format(endDate!);
 
-if (widget.workExperienceModel != null) {
-  widget.onEdit!(workExperienceModel!);
 
-}
-if(widget.workExperienceModel == null){
-  widget.onAdd!(workExperienceModel!);
+                  if (companyController.text.isEmpty ||
+                      positionController.text.isEmpty ||
+                       startDate == null ||
+                      endDate == null ||
+                      periodController.text.isEmpty ||
+                      descriptionController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Please fill all fields'),
+                    ));
 
-}
+                  }else {
 
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: widget.workExperienceModel == null ? Text('Added') : Text('Edited'),
-                  ));
+                    if (widget.workExperienceModel != null) {
+                      widget.onEdit!(workExperienceModel!);
+
+                    }
+                    if(widget.workExperienceModel == null){
+                      widget.onAdd!(workExperienceModel!);
+
+                    }
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: widget.workExperienceModel == null ? Text('Added') : Text('Edited'),
+                    ));
+
+
+                  }
+
+
                 });
+
+
               }, child: widget.workExperienceModel == null ? Text('Add',style: TextStyle(color: Colors.white),) : Text('Edit',style: TextStyle(color: Colors.white),)),
               ElevatedButton(onPressed: (){
                 Navigator.pop(context);

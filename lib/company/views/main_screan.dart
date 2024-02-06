@@ -11,6 +11,7 @@ import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:untitled10/SharedViews/chat_bpdy.dart';
 import 'package:untitled10/SharedViews/login_screan.dart';
 import 'package:untitled10/company/views/add_new_jop_container.dart';
@@ -25,22 +26,23 @@ import 'home_body.dart';
 
 const List<TabItem> items = [
   TabItem(
-    icon: Icons.home,
+    icon: Ionicons.home,
     title: 'Home',
   ),
   TabItem(
-    icon: Icons.chat,
+    icon: Ionicons.chatbox,
     title: 'chat',
   ),
   TabItem(
-    icon: Icons.search,
+    icon: Ionicons.search,
     title: 'Search',
   ),
   TabItem(
-    icon: Icons.person,
+    icon: Ionicons.person,
     title: 'Profile',
   ),
 ];
+
 
 class CompanyMainScrean extends StatefulWidget {
   const CompanyMainScrean({Key? key}) : super(key: key);
@@ -114,52 +116,8 @@ class _CompanyMainScreanState extends State<CompanyMainScrean> {
                 useRootNavigator: true,
                 color: backgroundColor,
                 items: [
-                  // PopupMenuItem(
-                  //   child: Column(
-                  //     children: [
-                  //       Row(
-                  //
-                  //         children: [
-                  //           Text('Switch Mode'),
-                  //           AdvancedSwitch(
-                  //             activeChild: Icon(
-                  //               Icons.terrain,
-                  //               color: Colors.blue,
-                  //             ),
-                  //
-                  //             inactiveChild: Icon(Icons.cloud),
-                  //             activeColor: Colors.yellowAccent,
-                  //             inactiveColor: Colors.deepPurple,
-                  //             width: 60,
-                  //             borderRadius: BorderRadius.circular(5),
-                  //
-                  //             controller: _controller15,
-                  //           ),
-                  //
-                  //
-                  //         ],
-                  //       ),
-                  //       Divider(
-                  //         color: grayColor,
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
-                  PopupMenuItem(
-                      onTap: () {
-                        navigateToScreen(context, EditProfileCompany());
-                      },
-                      child: Column(
-                        children: [
-                          Text(
-                            'Edit profile',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          Divider(
-                            color: grayColor,
-                          )
-                        ],
-                      )),
+
+
                   PopupMenuItem(
                       child: Column(
                     children: [
@@ -203,13 +161,10 @@ class _CompanyMainScreanState extends State<CompanyMainScrean> {
                   ),
                 ]);
           },
-          icon: Icon(Icons.menu),
+          icon: Icon(Ionicons.menu_outline),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.notifications),
-          ),
+
           IconButton(
             onPressed: () {
               navigateToScreen(
@@ -218,7 +173,7 @@ class _CompanyMainScreanState extends State<CompanyMainScrean> {
                     title: 'Add New Jop',
                   ));
             },
-            icon: Icon(Icons.add),
+            icon: Icon(Ionicons.add_circle_outline, color: greenColor),
           ),
         ],
       ),

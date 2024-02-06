@@ -43,6 +43,28 @@ class ProfileImagePickedErrorState extends JopState {}
 class uploadProfileImageLoadingState extends JopState {}
 class uploadProfileImageSuccessState extends JopState {}
 class uploadProfileImageErrorState extends JopState {}
+class SaveJopLoadingState extends JopState {}
+class SaveJopSuccessState extends JopState {}
+class SaveJopErrorState extends JopState {}
+class UnSaveJopLoadingState extends JopState {}
+class UnSaveJopSuccessState extends JopState {}
+class UnSaveJopErrorState extends JopState {}
+class GetSavedJopsLoadingState extends JopState {}
+class GetSavedJopsSuccessState extends JopState {}
+class GetSavedJopsErrorState extends JopState {}
+class AcceptUserLoadingState extends JopState {}
+class AcceptUserSuccessState extends JopState {}
+class AcceptUserErrorState extends JopState {}
+class RejectUserLoadingState extends JopState {}
+class RejectUserSuccessState extends JopState {}
+class RejectUserErrorState extends JopState {}
+class GetAllWorkingFieldJopsLoadingState extends JopState {}
+class GetAllWorkingFieldJopsSuccessState extends JopState {}
+class GetAllWorkingFieldJopsErrorState extends JopState {}
+class GetAllJobFieldJopsErrorState extends JopState {}
+class GetAllJobFieldJopsLoadingState extends JopState {}
+class GetAllJobFieldJopsSuccessState extends JopState {}
+
 
 
 

@@ -18,6 +18,9 @@ class JopsModel {
     String ? companyInfo;
 String ? date;
 String ?country;
+bool ? isSaved;
+bool ? isApplied;
+
 
 
 
@@ -42,7 +45,9 @@ String ?country;
     this.workingField,
     this.date,
     this.jopType,
-    this.country
+    this.country,
+
+    this.isApplied
 
   });
 
@@ -66,6 +71,9 @@ String ?country;
     workingField = json['workingField'];
     date = json['date'];
     country = json['country'];
+
+    isSaved = json['isSaved']??false;
+    isApplied = json['isAccepted'];
   }
 
 

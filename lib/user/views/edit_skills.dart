@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 
 import '../../src/app_root.dart';
 import '../blocs/UserProfileCubit/user_profile_cubit.dart';
@@ -67,23 +68,34 @@ class EditSkills extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.4,
+                    height: MediaQuery.of(context).size.height * 0.05,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: Colors.green,
+                        color: greenColor,
                         width: 2,
                       ),
                     ),
                     alignment: Alignment.center,
                     child: Row(
                       children: [
-                        IconButton(onPressed: (){
-                          cubit.deleteSkills(id: skill.id!);
-                          cubit.skills.clear();
-                          cubit.getSkills();
-                        }, icon: Icon(Icons.delete,color: Colors.red,)),
-                        VerticalDivider(color: greenColor ,thickness: 2),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5),
+                              bottomLeft: Radius.circular(5),
+                            ),
+
+                            color: greenColor,
+                          ),
+                          child: IconButton(onPressed: (){
+                            cubit.deleteSkills(id: skill.id!);
+                            cubit.skills.clear();
+                            cubit.getSkills();
+                          }, icon: Icon(Ionicons.close,color: Colors.red,)),
+                        ),
+                        SizedBox(width: 10,),
                         Flexible(child: Text('Skill  : ${skill.name}')),
                       ],
                     ),

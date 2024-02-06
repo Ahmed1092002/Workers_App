@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
+
+import '../src/app_root.dart';
 
 class TitleOfComponantRow extends StatelessWidget {
   String? title;
@@ -18,13 +21,14 @@ class TitleOfComponantRow extends StatelessWidget {
             title!,
             style: TextStyle(
               fontSize: 20,
+              color: greenColor,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
         IconButton(
           onPressed: () {},
-          icon: Icon(Icons.arrow_forward_ios),
+          icon: Icon(Ionicons.chevron_forward_outline),
           color: Colors.black,
         ),
       ],

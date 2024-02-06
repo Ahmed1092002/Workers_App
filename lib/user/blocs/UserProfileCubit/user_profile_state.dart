@@ -56,6 +56,7 @@ class AddSkillsErrorState extends UserProfileState {}
 class AddProjectsLoadingState extends UserProfileState {}
 class AddProjectsSuccessState extends UserProfileState {}
 class AddProjectsErrorState extends UserProfileState {}
+class CompleteProfileSuccessState extends UserProfileState {}
 
 
 

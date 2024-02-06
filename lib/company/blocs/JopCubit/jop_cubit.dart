@@ -18,6 +18,8 @@ import 'package:untitled10/data/users/work_experience.dart';
 import 'package:untitled10/main.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import '../../../utils/dio_helper.dart';
+
 part 'jop_state.dart';
 
 class JopCubit extends Cubit<JopState> {
@@ -63,7 +65,7 @@ required String JopField,
       jobLevel:jobLevel ,
       jobShift: jobShift,
       title: jopTitle,
-      workingField: userType,
+      workingField: box.get('workingField'),
       jopField: JopField,
       jopid: jopid,
       userEmail: box.get('email'),
@@ -211,7 +213,7 @@ required String JopField,
           Salary: jopSalary,
           Skills: jopSkills,
           title: jopTitle,
-          workingField: userType,
+          workingField: box.get('workingField'),
           companyInfo: await box.get('info'),
           userEmail: box.get('email')
 
@@ -266,17 +268,19 @@ required String JopField,
       });
 
     }
-    GetAllJops ()async{
+    GetAlNewlJops ({Function(bool)? isSaved})async{
       DateTime now = DateTime.now();
       DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
       DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
+      String? uid = await storage.read(key: 'uid');
       emit(GetAllJopsLoadingState());
       await FirebaseFirestore.instance
           .collection('jops')
-          // .where('date', isGreaterThanOrEqualTo: startOfWeek.toString())
-          // .where('date', isLessThanOrEqualTo: endOfWeek.toString())
+          .where('date', isGreaterThanOrEqualTo: startOfWeek.toString())
+          .where('date', isLessThanOrEqualTo: endOfWeek.toString())
           .get()
           .then((value) {
+        jops.clear();
         value.docs.forEach((element) {
           print (element.data());
           jops.add(JopsModel.fromJson(element.data(), element.id));
@@ -285,73 +289,136 @@ required String JopField,
       }).catchError((error) {
         emit(GetAllJopsErrorState());
       });
+      for (JopsModel jop in jops){
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('savedJops')
+            .doc(jop.jopid)
+            .get()
+            .then((value) {
+          if (value.exists) {
+            isSaved!(true);
+          }
+          else{
+            isSaved!(false);
+          }
+        });
+      }
+
 
     }
+    List<JopsModel> workingFieldJobs = [];
+    getJobOfWorkingField({Function(bool)? isSaved})async{
+      String? workingField = await box.get('workingField');
+      String? uid = await storage.read(key: 'uid');
+
+      emit(GetAllWorkingFieldJopsLoadingState());
+      await FirebaseFirestore.instance
+          .collection('jops')
+          .where('workingField',isEqualTo: workingField)
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          print (element.data());
+          workingFieldJobs.add(JopsModel.fromJson(element.data(), element.id));
+        });
+        emit(GetAllWorkingFieldJopsSuccessState());
+      }).catchError((error) {
+        emit(GetAllWorkingFieldJopsErrorState());
+      });
+      for (JopsModel jop in workingFieldJobs){
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('savedJops')
+            .doc(jop.jopid)
+            .get()
+            .then((value) {
+          if (value.exists) {
+            isSaved!(true);
+          }
+          else{
+            isSaved!(false);
+          }
+        });
+      }
+
+    }
+    List<JopsModel> jobsFields = [];
+  getJobOfMyJobField({Function(bool)? isSaved})async{
+    String? jobField = await box.get('jobField');
+    String? uid = await storage.read(key: 'uid');
+    emit(GetAllJobFieldJopsLoadingState());
+    await FirebaseFirestore.instance
+        .collection('jops')
+        .where('jobField',isEqualTo: jobField)
+        .get()
+        .then((value) {
+      jobsFields.clear();
+      value.docs.forEach((element) {
+        print (element.data());
+        jobsFields.add(JopsModel.fromJson(element.data(), element.id));
+      });
+      emit(GetAllJobFieldJopsSuccessState());
+    }).catchError((error) {
+      emit(GetAllJobFieldJopsErrorState());
+    });
+    for (JopsModel jop in jobsFields){
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('savedJops')
+          .doc(jop.jopid)
+          .get()
+          .then((value) {
+        if (value.exists) {
+          isSaved!(true);
+        }
+        else{
+          isSaved!(false);
+        }
+      });
+    }
+
+  }
 
   Future  applyingjop({
 
-      required String jopid,
+      required JopsModel jop,
 
       required String companyUid,
+    Function(bool)? isApplyed
 
 })
    async {
-      String? UserUid = await storage.read(key: 'uid');
+
+
+      String? userUid = await storage.read(key: 'uid');
       emit(ApplyingJopLoadingState());
-      // await FirebaseFirestore.instance.collection('users')
-      // .doc(UserUid)
-      // .collection('applyedJops')
-      // .doc(jopid)
-      // .get()
-      //     .then((value) {
-      //   if (value.exists) {
-      //     emit(ApplyingJopErrorState());
-      //   } else {
-      //     emit(ApplyingJopSuccessState());
-      //   }
-      // }).catchError((error) {
-      //   emit(ApplyingJopErrorState());
-      // });
-      //
 
+      var userJobDoc = FirebaseFirestore.instance.collection('users').doc(userUid).collection('applyedJops').doc(jop.jopid);
+      var companyJobDoc = FirebaseFirestore.instance.collection('users').doc(companyUid).collection('jops').doc(jop.jopid).collection('applyedUsers').doc(userUid);
 
-
-
-      await FirebaseFirestore.instance
-          .collection('users')
-      .doc(companyUid)
-          .collection('jops')
-          .doc(jopid)
-          .collection('applyedUsers')
-          .doc(UserUid)
-          .set({
-            'uid':UserUid
-          }).then((value) {
-            emit(ApplyingJopSuccessState());
-          }).catchError((error) {
-            emit(ApplyingJopErrorState());
-          });
-      await FirebaseFirestore.instance
-   .collection('users')
-          .doc(UserUid)
-          .collection('applyedJops')
-          .doc(jopid)
-          .set({
-        'jopid':jopid
-      }).then((value) {
-        emit(ApplyingJopSuccessState());
-      }).catchError((error) {
+      if ((await userJobDoc.get()).exists) {
+        isApplyed!(true);
         emit(ApplyingJopErrorState());
-      });
-
-
+      } else {
+        await Future.wait([
+          userJobDoc.set(jop.toJson()),
+          companyJobDoc.set({'uid': userUid})
+        ]);
+        emit(ApplyingJopSuccessState());
+      }
 
 
 
     }
 
 
-    getAllApplyedJops()async{
+    getAllApplyedJops({
+    Function(bool)? isApplyed
+})async{
       String? UserUid = await storage.read(key: 'uid');
       List<String> jopids = [];
 jops.clear();
@@ -363,26 +430,35 @@ jops.clear();
           .get()
           .then((value) {
         value.docs.forEach((element) {
-          print(element.data());
+          jops.add(JopsModel.fromJson(element.data() as Map <String, dynamic>, element.id));
+print (element.data());
           jopids.add(element.id);
         });
+        emit(GetAllApplyedJopsSuccessState());
 
-        });
-      for(String jopid in jopids) {
-        await FirebaseFirestore.instance
-            .collection('jops')
-            .doc(jopid)
-            .get()
-            .then((value) {
-          print(value.data());
-          jops.add(JopsModel.fromJson(value.data() as Map <String, dynamic>, value.id));
-          emit(GetAllApplyedJopsSuccessState());
-        }).catchError(
-              (error) {
-            emit(GetAllApplyedJopsErrorState());
-          },
-        );
-      }
+        }).catchError((error) {
+        emit(GetAllApplyedJopsErrorState());
+      });
+      // for(String jopid in jopids) {
+      //   await FirebaseFirestore.instance
+      //       .collection('jops')
+      //       .doc(jopid)
+      //       .get()
+      //       .then((value) {
+      //     print(value.data());
+      //     jops.add(JopsModel.fromJson(value.data() as Map <String, dynamic>, value.id));
+      //
+      //     emit(GetAllApplyedJopsSuccessState());
+      //   }).catchError(
+      //         (error) {
+      //       emit(GetAllApplyedJopsErrorState());
+      //     },
+      //   );
+      //   // for (int i = 0; i <jops.length;i++){
+      //   //  print (jops[i].);
+      //   //
+      //   // }
+      // }
 
 
 
@@ -392,7 +468,7 @@ jops.clear();
 List<UserModel> applyedUsers = [];
 
 
-    getApplyedUsers({required String jopid})async{
+    getApplyedUsers({required String jopid,Function(bool)? isApplyed,Function(bool)? isWatch,})async{
       String? companyUid = await storage.read(key: 'uid');
       List<String> users = [];
       emit(GetApplyedUsersLoadingState());
@@ -405,9 +481,17 @@ List<UserModel> applyedUsers = [];
           .get()
           .then((value) {
         value.docs.forEach((element) {
-          print(element.data());
+      if (element.data()['isAccepted'] == true) {
+        isApplyed!(true);
+      }
+      if (element.data()['isWatched'] == true) {
+        isApplyed!(true);
+      }
+
+
           users.add(element.id);
         });
+        emit(GetApplyedUsersSuccessState());
 
       }).catchError((error) {
         emit(GetApplyedUsersErrorState());
@@ -493,212 +577,235 @@ List<UserModel> applyedUsers = [];
      String? jopLocation ,
      String? jopType
     , String? jopSalary,
+     String ?userType,
      String? jopField,
      String? jopExperience})async{
       emit(SearchJopFilterLoadingState());
-      Query<Map<String, dynamic>> query = FirebaseFirestore.instance.collection('jops');
+      String? uid = await storage.read(key: 'uid');
+      Query<Map<String, dynamic>> query;
+      if(userType == 'company') {
 
-      if (jopTitle!=null|| jopTitle!.isEmpty ){
-      query = query.where('title',isEqualTo: jopTitle);
+      query = FirebaseFirestore.instance.collection('users').doc(uid).collection('jops');
       }
-      else if (jopLocation!=null){
-        query = query.where('location',isEqualTo: jopLocation);
-      }
-      else if (jopType!=null){
-        query = query.where('jopType',isEqualTo: jopType);
-      }
-      else if (jopSalary!=null){
-        query = query.where('Salary',isEqualTo: jopSalary);
-      }
-      else if (jopField!=null){
-        query = query.where('jopField',isEqualTo: jopField);
-      }
-     else if (jopExperience!=null){
-        query = query.where('Experience',isEqualTo: jopExperience);
-      }
-      //jop title
-      else if (jopTitle!=null&&jopLocation!=null){
-        query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation);
-      }
-     else if (jopTitle!=null&&jopLocation!=null&&jopType!=null){
-        query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType);
-      }
-     else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null){
-        query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
-      }
-     else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null){
-        query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
-      }
-     else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null){
-        query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isLessThanOrEqualTo: jopSalary).where('jopField',isEqualTo: jopField).where('Experience',isEqualTo: jopExperience);
-      }
-      //jop Location
-     else if ( jopLocation!=null&&jopType!=null){
-        query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType);
-      }
-     else if (jopLocation!=null&&jopType!=null&&jopSalary!=null){
-        query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
-      }
-     else if (jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null){
-        query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
-      }
-     else if (jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null) {
-        query = query.where('location', isEqualTo: jopLocation).where(
-            'jopType', isEqualTo: jopType)
-            .where('Salary',isEqualTo: jopSalary)
-            .where('jopField', isEqualTo: jopField)
-            .where('Experience', isEqualTo: jopExperience);
-      }
-      // jopType
-    else  if (jopType!=null&&jopSalary!=null){
-        query = query.where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
-      }
-    else  if (jopType!=null&&jopSalary!=null&&jopField!=null){
-        query = query.where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
-      }
-     else if (jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null) {
-        query = query.where('jopType', isEqualTo: jopType)
-            .where('Salary',isEqualTo: jopSalary)
-            .where('jopField', isEqualTo: jopField)
-            .where('Experience', isEqualTo: jopExperience);
-      }
-      //jop Salary
-     else if (jopSalary!=null&&jopField!=null){
-        query = query.where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
-      }
-     else if (jopSalary!=null&&jopField!=null&&jopExperience!=null) {
-        query = query.where('Salary',isEqualTo: jopSalary)
-            .where('jopField', isEqualTo: jopField)
-            .where('Experience', isEqualTo: jopExperience);
-      }
-      //jop Field
-    else  if (jopField!=null&&jopExperience!=null) {
-        query = query.where('jopField', isEqualTo: jopField)
-            .where('Experience', isEqualTo: jopExperience);
-      }
-      //jop Experience
-     else if (jopExperience!=null) {
-        query = query.where('Experience', isEqualTo: jopExperience);
+      else {
+         query = FirebaseFirestore.instance
+            .collection('jops');
       }
 
-      query.get().then((value) {
+      Map<String, String?> conditions = {
+        'title': jopTitle,
+        'location': jopLocation,
+        'jopType': jopType,
+        'Salary': jopSalary,
+        'jopField': jopField,
+        'Experience': jopExperience
+      };
+      for (var condition in conditions.entries) {
+        if (condition.value != null && condition.value!.isNotEmpty) {
+          query = query.where(condition.key, isEqualTo: condition.value);
+        }
+      }
+      query.get().then((value) async{
         jops.clear();
-        value.docs.forEach((element) {
+        value.docs.forEach((element)  {
           jops.add(JopsModel.fromJson(element.data(), element.id));
+          print(element.data());
         });
+        if (userType == 'users') {
+          for (int i = 0; i < jops.length; i++) {
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(uid)
+                .collection('savedJops')
+                .doc(jops[i].jopid)
+                .get()
+                .then((value) {
+              if (value.exists) {
+                jops[i].isSaved = true;
+
+              } else {
+                jops[i].isSaved = false;
+              }
+            });
+          }
+        }
         emit(SearchJopFilterSuccessState());
       }).catchError((error) {
         emit(SearchJopFilterErrorState());
       });
 
+
+
     }
 
 
 
-  Future searchMyJopsFilter({ String? jopTitle,
-    String? jopLocation ,
-    String? jopType
-    , String? jopSalary,
-    String? jopField,
-    String? jopExperience})async{
-     String? uid = await storage.read(key: 'uid');
-    emit(SearchJopFilterLoadingState());
+  saveJop({required JopsModel jop})async{
+    String? uid = await storage.read(key: 'uid');
+    emit(SaveJopLoadingState());
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('savedJops')
+        .doc(jop.jopid)
+        .set(jop.toJson())
+        .then((value) {
 
-    Query<Map<String, dynamic>> query = FirebaseFirestore.instance.collection('users').doc(uid).collection('jops');
-
-    if (jopTitle!=null|| jopTitle!.isEmpty ){
-      query = query.where('title',isEqualTo: jopTitle);
-    }
-    else if (jopLocation!=null){
-      query = query.where('location',isEqualTo: jopLocation);
-    }
-    else if (jopType!=null){
-      query = query.where('jopType',isEqualTo: jopType);
-    }
-    else if (jopSalary!=null){
-      query = query.where('Salary',isEqualTo: jopSalary);
-    }
-    else if (jopField!=null){
-      query = query.where('jopField',isEqualTo: jopField);
-    }
-    else if (jopExperience!.isNotEmpty){
-      query = query.where('Experience',isEqualTo: jopExperience);
-    }
-    //jop title
-    else if (jopTitle!=null&&jopLocation!=null){
-      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation);
-    }
-    else if (jopTitle!=null&&jopLocation!=null&&jopType!=null){
-      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType);
-    }
-    else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null){
-      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
-    }
-    else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null){
-      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
-    }
-    else if (jopTitle!=null&&jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null){
-      query = query.where('title',isEqualTo: jopTitle).where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField).where('Experience',isEqualTo: jopExperience);
-    }
-    //jop Location
-    else if ( jopLocation!=null&&jopType!=null){
-      query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType);
-    }
-    else if (jopLocation!=null&&jopType!=null&&jopSalary!=null){
-      query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
-    }
-    else if (jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null){
-      query = query.where('location',isEqualTo: jopLocation).where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
-    }
-    else if (jopLocation!=null&&jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null) {
-      query = query.where('location', isEqualTo: jopLocation).where(
-          'jopType', isEqualTo: jopType)
-          .where('Salary',isEqualTo: jopSalary)
-          .where('jopField', isEqualTo: jopField)
-          .where('Experience', isEqualTo: jopExperience);
-    }
-    // jopType
-    else  if (jopType!=null&&jopSalary!=null){
-      query = query.where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary);
-    }
-    else  if (jopType!=null&&jopSalary!=null&&jopField!=null){
-      query = query.where('jopType',isEqualTo: jopType).where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
-    }
-    else if (jopType!=null&&jopSalary!=null&&jopField!=null&&jopExperience!=null) {
-      query = query.where('jopType', isEqualTo: jopType)
-          .where('Salary',isEqualTo: jopSalary)
-          .where('jopField', isEqualTo: jopField)
-          .where('Experience', isEqualTo: jopExperience);
-    }
-    //jop Salary
-    else if (jopSalary!=null&&jopField!=null){
-      query = query.where('Salary',isEqualTo: jopSalary).where('jopField',isEqualTo: jopField);
-    }
-    else if (jopSalary!=null&&jopField!=null&&jopExperience!=null) {
-      query = query.where('Salary',isEqualTo: jopSalary)
-          .where('jopField', isEqualTo: jopField)
-          .where('Experience', isEqualTo: jopExperience);
-    }
-    //jop Field
-    else  if (jopField!=null&&jopExperience!=null) {
-      query = query.where('jopField', isEqualTo: jopField)
-          .where('Experience', isEqualTo: jopExperience);
-    }
-    //jop Experience
-    else if (jopExperience!=null) {
-      query = query.where('Experience', isEqualTo: jopExperience);
-    }
-
-    query.get().then((value) {
-      jops.clear();
-      value.docs.forEach((element) {
-        jops.add(JopsModel.fromJson(element.data(), element.id));
-        print(element.data());
-      });
-      emit(SearchJopFilterSuccessState());
-    }).catchError((error) {
-      emit(SearchJopFilterErrorState());
     });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('savedJops')
+        .doc(jop.jopid)
+        .update({'isSaved': true}).then((value) {
+
+      emit(SaveJopSuccessState());
+    }).catchError((error) {
+      emit(SaveJopErrorState());
+    });
+
+  }
+  unSaveJop({required String jopid})async{
+    String? uid = await storage.read(key: 'uid');
+    emit(UnSaveJopLoadingState());
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('savedJops')
+        .doc(jopid)
+        .delete().then((value) {
+      emit(UnSaveJopSuccessState());
+    }).catchError((error) {
+      emit(UnSaveJopErrorState());
+    });
+
+
+  }
+  getSavedJops(Function(bool)? isSaved)async{
+    String? uid = await storage.read(key: 'uid');
+    emit(GetSavedJopsLoadingState());
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('savedJops')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        print (element.data());
+        jops.add(JopsModel.fromJson(element.data(), element.id));
+        if (element.data()['isSaved'] == true) {
+          isSaved!(true);
+        }
+      });
+      emit(GetSavedJopsSuccessState());
+    }).catchError((error) {
+      emit(GetSavedJopsErrorState());
+    });
+
+  }
+  acceptUser({required String jopid,required UserModel userUid})async {
+    String? companyUid = await storage.read(key: 'uid');
+    emit(AcceptUserLoadingState());
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(companyUid)
+        .collection('jops')
+        .doc(jopid)
+        .collection('applyedUsers')
+        .doc(userUid.id)
+        .update({'isAccepted': true}).then((value) {
+      emit(AcceptUserSuccessState());
+    }).catchError((error) {
+      emit(AcceptUserErrorState());
+    });
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userUid.id)
+        .collection('applyedJops')
+        .doc(jopid)
+        .update({'isAccepted': true}).then((value) async {
+          fcmToken(
+              fcmTokenDevice: userUid.fcmToken,
+              title: 'Jop Accepted',
+              body: 'Your jop has been accepted',
+              text: 'Jop Accepted',
+          );
+      emit(AcceptUserSuccessState());
+    }).catchError((error) {
+      emit(AcceptUserErrorState());
+    });
+
+
+  }
+  rejectUser({required String jopid,required UserModel userUid})async {
+    String? companyUid = await storage.read(key: 'uid');
+    emit(RejectUserLoadingState());
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(companyUid)
+        .collection('jops')
+        .doc(jopid)
+        .collection('applyedUsers')
+        .doc(userUid.id)
+        .update({'isAccepted': false}).then((value) {
+      emit(RejectUserSuccessState());
+    }).catchError((error) {
+      emit(RejectUserErrorState());
+    });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userUid.id)
+        .collection('applyedJops')
+        .doc(jopid)
+        .update({'isAccepted': false}).then((value) {
+          fcmToken(
+              fcmTokenDevice: userUid.fcmToken,
+              title: 'Jop Rejected',
+              body: 'Your jop has been rejected',
+              text: 'Jop Rejected',
+          );
+      emit(RejectUserSuccessState());
+    }).catchError((error) {
+      emit(RejectUserErrorState());
+    });
+  }
+
+    fcmToken({
+      String ?fcmTokenDevice,
+      String ?title,
+      String ?body,
+      String ?text,
+
+    })async{
+      DioHelper.postData(
+          url: 'fcm/send',
+          data: {
+            "to":"$fcmTokenDevice",
+
+            "notification": {
+              "title": title,
+              "text": text,
+              "body": body,
+              "sound": "default",
+
+              "color": "#990000"
+            },
+            "priority": "high",
+            "data": {
+              "click_action": "FLUTTER_NOTIFICATION_CLICK",
+              "type": "COMMENT"
+            }
+
+          }
+      ).then((value) => print(value.data)).catchError((error) {
+        print(error.toString());
+      });
+    }
+
+
+
+
 
 
 
@@ -708,4 +815,3 @@ List<UserModel> applyedUsers = [];
 
 
 
-}

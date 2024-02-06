@@ -6,6 +6,9 @@ class CustomTextField extends StatefulWidget {
   String? hint;
   IconData? icon;
   TextEditingController? controller;
+
+
+
   CustomTextField({Key? key,this.hint ='',this.icon,this.controller}) : super(key: key);
 
   @override
@@ -24,6 +27,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           controller: widget.controller,
           showCursor: true,
           enabled: true,
+
           toolbarOptions: ToolbarOptions(
             copy: true,
             cut: true,
@@ -31,6 +35,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             selectAll: true,
           ),
           cursorColor: greenColor,
+
+
 
 
 
@@ -47,6 +53,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             }
             return null;
           },
+
+
           obscureText: passwordVisible,
           decoration: InputDecoration(
 

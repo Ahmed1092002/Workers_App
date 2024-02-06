@@ -65,8 +65,7 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
                           },
                               icon: Icon(Icons.delete,color: Colors.red,)),
                         ),
-                      SizedBox(width: 10,),
-
+                        SizedBox(width: 10,),
 
                         Text(' ${skill.name}'),
 

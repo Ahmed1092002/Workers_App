@@ -93,17 +93,9 @@ class _AddNewJopContainerState extends State<AddNewJopContainer> {
   }
 
   var box = Hive.box(boxName);
-
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-  create: (context) => JopCubit(),
-  child: BlocConsumer<JopCubit, JopState>(
-  listener: (context, state) {
-
-  },
-  builder: (context, state) {
-    var cubit = JopCubit.get(context);
+  initState() {
+    super.initState();
     if (widget.title == 'Edit Jop') {
       jopTitlecontroller!.text= widget.jop!.title!;
       jopDescriptioncontroller!.text= widget.jop!.description!;
@@ -120,6 +112,19 @@ class _AddNewJopContainerState extends State<AddNewJopContainer> {
 
 
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+  create: (context) => JopCubit(),
+  child: BlocConsumer<JopCubit, JopState>(
+  listener: (context, state) {
+
+  },
+  builder: (context, state) {
+    var cubit = JopCubit.get(context);
+
     return Scaffold(
   appBar: AppBar(
           backgroundColor: greenColor,

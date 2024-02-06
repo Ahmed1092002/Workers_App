@@ -49,12 +49,19 @@ class _AddOrEditSkillsBottomModelSheetState extends State<AddOrEditSkillsBottomM
         TextButton(onPressed: (){ Navigator.pop(context);}, child: Text('Cancel',style: TextStyle(color: Colors.red),)),
         TextButton(onPressed: (){
           setState(() {
-
+if (skillsModel==null) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please Select Skill')));
+  return;
+}else {
 
   widget.onAdd!(skillsModel!);
 
 
-Navigator.pop(context);
+  Navigator.pop(context);
+
+}
+
+
 
           });
 
