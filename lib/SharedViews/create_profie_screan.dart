@@ -9,6 +9,7 @@ import 'package:untitled10/SharedWidget/custoButton.dart';
 import 'package:untitled10/SharedWidget/custom_text_field.dart';
 import 'package:untitled10/user/views/complete_profile_user.dart';
 import 'package:untitled10/utils/navigator.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../SharedWidget/working_feilds_dropdown_button_form_field.dart';
 
@@ -196,7 +197,7 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
                                    ? CircleAvatar(
                                  radius: 42,
                                  backgroundColor: greenColor,
-                                 child: Icon(Icons.add, color: Colors.white, size: 50),
+                                 child: Icon(Ionicons.add, color: Colors.white, size: 50),
                                )
                                    : CircleAvatar(
                                  radius: 42,
@@ -240,12 +241,12 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
                   if (widget.phoneNumber==null||widget.phoneNumber!.isEmpty)
                   CustomTextField(
                     hint: 'phone',
-                    icon: Icons.phone,
+                    icon: Ionicons.call,
                     controller: phoneController,
                   ),
                   CustomTextField(
                     hint: 'address',
-                    icon: Icons.location_on,
+                    icon: Ionicons.location,
                     controller: addressController,
                   ),
                   // CustomTextField(
@@ -258,7 +259,7 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
                         ? 'Select Date'
                         : date,
                     onTap: _presentDatePicker,
-                    icon: Icons.date_range,
+                    icon: Ionicons.calendar,
               
                   ),
                   WorkingFeildsDropdownButtonFormField(
@@ -272,6 +273,7 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
                       workingFieldController=value;
                       print (workingFieldController!);
                     },
+
                     onJob: (value){
                      jobField=value;
                      print (jobField);
@@ -308,25 +310,21 @@ class _CreateProfieScreanState extends State<CreateProfieScrean> {
                   if(widget.userType=='company')
                     CustomTextField(
                       hint: 'Company Information',
-                      icon: Icons.info,
+                      icon:Ionicons.information,
                       controller: infoController,
                     ),
                   if(widget.userType=='users')
                     CustomTextField(
                       hint: 'Your Information',
-                      icon: Icons.info,
+                      icon: Ionicons.information,
                       controller: infoController,
                     ),
 
 
                   if (state is uploadProfileImageLoadingState || state is RegisterLoadingState||state is UserCreateLoadingState)
-                    LinearProgressIndicator(
-                      color: greenColor,
-                      minHeight: 10,
-              
-              
-              
-                    )
+    LoadingAnimationWidget.staggeredDotsWave(
+    color: greenColor,
+    size: 20)
                   else
                     CustomButton(
                     buttonName: 'Confirm',

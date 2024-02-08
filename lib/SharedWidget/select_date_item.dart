@@ -39,7 +39,7 @@ decoration: BoxDecoration(
               Text(date!,
                 style: TextStyle(
                   fontSize: 17,
-                  color: grayColor,
+                  color: greenColor,
                 ),),
                 SizedBox(
                   width: 10,

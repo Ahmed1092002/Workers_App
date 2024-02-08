@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:untitled10/SharedWidget/select_date_item.dart';
 import 'package:untitled10/data/users/education.dart';
 import 'package:untitled10/user/widget/add_or_edit_education_model_bottom_sheet.dart';
@@ -197,13 +198,13 @@ List<Education> education = [];
                                    );
                                  });
                            });
-                         }, icon: Icon(Icons.edit,color: Colors.white,)),
+                         }, icon: Icon(Ionicons.create,color: Colors.white,)),
                          IconButton(onPressed: (){
                            setState(() {
                              education.removeAt(i);
                              widget.onAdd!(education);
                            });
-                         }, icon: Icon(Icons.delete,color: Colors.white,)),
+                         }, icon: Icon(Ionicons.close,color: Colors.red,)),
                        ],
                      ),
                    ),
@@ -242,7 +243,7 @@ List<Education> education = [];
 
               },
                   color: Colors.white,
-                  icon: Icon(Icons.add,  color: Colors.white,)),
+                  icon: Icon(Ionicons.add,  color: Colors.white,)),
 
             ),
           ],

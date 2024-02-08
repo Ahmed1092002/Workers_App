@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
 import '../src/app_root.dart';
 import '../utils/consatants.dart';
@@ -40,7 +41,7 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
           hint:   'Working Feilds',
           context: context,
 
-          icon: Icons.work,
+          icon: Ionicons.briefcase,
           jobString: workFeilds,
           Function: (  value){
             onWorkFeilds!(value);
@@ -51,7 +52,7 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
         getDropDownButtonFormField(
           job: Jobs,
           hint:   'Job Field',
-          icon: Icons.work,
+          icon: Ionicons.briefcase,
           jobString: job,
           context: context,
           Function: (  value){
@@ -63,7 +64,7 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
           getDropDownButtonFormField(
           job: country,
           hint:   'Country',
-          icon: Icons.flag,
+          icon: Ionicons.earth,
           jobString: countryString,
             context: context,
           Function: (  value){

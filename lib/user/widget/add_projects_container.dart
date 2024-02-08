@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:untitled10/data/users/projects.dart';
 import 'package:untitled10/src/app_root.dart';
 import 'package:untitled10/user/widget/add_or_edit_projects.dart';
@@ -38,6 +39,7 @@ class _AddProjectsContainerState extends State<AddProjectsContainer> {
              Padding(
                padding: const EdgeInsets.all(8.0),
                child: Row(
+                 crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
                    Container(
                      width: MediaQuery.of(context).size.width*0.79 ,
@@ -57,6 +59,7 @@ class _AddProjectsContainerState extends State<AddProjectsContainer> {
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
 
                             Text('Project Name :',style: TextStyle(
@@ -122,12 +125,12 @@ class _AddProjectsContainerState extends State<AddProjectsContainer> {
                                      projectsModel: projects[i],
                                    );});
                            });
-                         }, icon: Icon(Icons.edit,color: Colors.white,)),
+                         }, icon: Icon(Ionicons.create,color: Colors.white,)),
                          IconButton(onPressed: (){
                            setState(() {
                               projects.removeAt(i);
                            });
-                         }, icon: Icon(Icons.delete,color: Colors.white,)),
+                         }, icon: Icon(Ionicons.close,color: Colors.red,)),
                        ],
                      ),
                    ),
@@ -137,7 +140,7 @@ class _AddProjectsContainerState extends State<AddProjectsContainer> {
              ),
             CircleAvatar(
               radius: 20,
-              backgroundColor: Colors.green,
+              backgroundColor: greenColor,
 
               child: IconButton(onPressed: (){
                 showDialog(context: context, builder: (context){
@@ -156,7 +159,7 @@ class _AddProjectsContainerState extends State<AddProjectsContainer> {
                 });
     },
                   color: greenColor,
-                  icon: Icon(Icons.add, color: Colors.white)),
+                  icon: Icon(Ionicons.add, color: Colors.white)),
             ),
 
 

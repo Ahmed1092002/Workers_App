@@ -155,7 +155,7 @@ List workExperience = [];
                            workExperience.removeAt(i);
                            widget.onAdd!(workExperience);
                          });
-                       }, icon: Icon(Icons.delete,color: Colors.white,)),
+                       }, icon: Icon(Icons.delete,color: Colors.red,)),
                      ],
                    ),
                  ),

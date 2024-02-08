@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 
 import '../../data/users/work_experience.dart';
 import '../../src/app_root.dart';
@@ -87,6 +88,7 @@ class _AddOrEditExperienceModelBottomSheetState
 
 
   }
+  bool? iscompleted=true;
   DateTime?startDate;
   DateTime?endDate;
   @override
@@ -218,7 +220,6 @@ class _AddOrEditExperienceModelBottomSheetState
                   workExperienceModel = WorkExperience();
                 }
                 workExperienceModel!.description = value;
-                widget.workExperienceModel!.description = value;
               },
             ),
           ),
@@ -230,7 +231,7 @@ class _AddOrEditExperienceModelBottomSheetState
               Text('Start Date',style: TextStyle(color: greenColor),),
               IconButton(
                 onPressed:_presentStartDatePicker,
-                icon: Icon(Icons.calendar_today,color: greenColor,),
+                icon: Icon(Ionicons.calendar,color: greenColor,),
               ),
               SizedBox(
                 width: 10,
@@ -253,7 +254,7 @@ class _AddOrEditExperienceModelBottomSheetState
               Text('End Date',style: TextStyle(color: greenColor),),
               IconButton(
                 onPressed:_presentEndDatePicker,
-                icon: Icon(Icons.calendar_today,color: greenColor,),
+                icon: Icon(Ionicons.calendar,color: greenColor,),
               ),
               SizedBox(
                 width: 10,
@@ -269,15 +270,18 @@ class _AddOrEditExperienceModelBottomSheetState
             ],
           ),
 
-
-
+          iscompleted==false? Row(
+  children: [
+    Icon(Ionicons.alert_circle,color: Colors.red,),
+    Text('note: Please fill all fields',style: TextStyle(color: greenColor),),
+  ],
+):Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
             children: [
               ElevatedButton(onPressed: (){
                 setState(() {
-                  workExperienceModel!.startDate = formatter.format(startDate!);
-                  workExperienceModel!.endDate = formatter.format(endDate!);
+
 
 
                   if (companyController.text.isEmpty ||
@@ -286,11 +290,16 @@ class _AddOrEditExperienceModelBottomSheetState
                       endDate == null ||
                       periodController.text.isEmpty ||
                       descriptionController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Please fill all fields'),
-                    ));
+
+
+                    iscompleted=false;
+
+
+
 
                   }else {
+                    workExperienceModel!.startDate = formatter.format(startDate!);
+                    workExperienceModel!.endDate = formatter.format(endDate!);
 
                     if (widget.workExperienceModel != null) {
                       widget.onEdit!(workExperienceModel!);

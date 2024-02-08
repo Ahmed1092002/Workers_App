@@ -68,7 +68,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> pickFilePdf() async {
 // Picking a PDF file
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['pdf'],allowMultiple: true);
     if (result != null) {
       File file = File(result.files.single.path!);
       images.add(file);
@@ -81,37 +81,71 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
 
-  Future<List<String>>  uploadProfileImage() async {
-
+  // Future<List<String>>  uploadProfileImage() async {
+  //
+  //   if (images.isNotEmpty) {
+  //     emit(uploadProfileImageLoadingState());
+  //     for (var element in images) {
+  //       firebase_storage.FirebaseStorage.instance
+  //           .ref()
+  //           .child('users/${Uri.file(element.path).pathSegments.last}')
+  //           .putFile(element)
+  //           .then((value) async {
+  //
+  //         await value.ref.getDownloadURL().then((value) {
+  //
+  //           imagesLink.add(value);
+  //           print(value);
+  //         });
+  //       })
+  //           .catchError((error) {
+  //         print(error);
+  //       });
+  //
+  //
+  //     }
+  //
+  //     emit(uploadProfileImageSuccessState());
+  //     return imagesLink;
+  //   } else {
+  //     print('No profile image selected.');
+  //     emit(uploadProfileImageErrorState());
+  //     return imagesLink;
+  //   }
+  //
+  //
+  //
+  //
+  // }
+  Future uploadProfileImage() async {
     if (images.isNotEmpty) {
       emit(uploadProfileImageLoadingState());
-      for (var element in images) {
-        firebase_storage.FirebaseStorage.instance
-            .ref()
-            .child('users/${Uri.file(element.path).pathSegments.last}')
-            .putFile(element)
-            .then((value) {
-          value.ref.getDownloadURL().then((value) {
-            imagesLink.add(value);
-            print(value);
+      try {
+        for (var element in images) {
+          await firebase_storage.FirebaseStorage.instance
+              .ref()
+              .child('users/${Uri.file(element.path).pathSegments.last}')
+              .putFile(element)
+              .then((value) async {
+            await value.ref.getDownloadURL().then((value) {
+              imagesLink.add(value);
+              print(value);
+            });
+          }).catchError((error) {
+            print(error);
           });
-        })
-            .catchError((error) {
-          print(error);
-        });
+        }
+        emit(uploadProfileImageSuccessState());
+      } catch (error) {
+        print(error);
+        emit(uploadProfileImageErrorState());
       }
-
-      emit(uploadProfileImageSuccessState());
       return imagesLink;
     } else {
       print('No profile image selected.');
       emit(uploadProfileImageErrorState());
       return imagesLink;
     }
-
-
-
-
   }
 
   sendMessage({
@@ -138,42 +172,10 @@ class ChatCubit extends Cubit<ChatState> {
       time: time,
     );
 
+
+
+
     emit(SendMessageLoadingState());
-    bool hasVideos = images.any((file) => file.path.endsWith('.mp4'));
-
-    if (hasVideos) {
-      for (var element in images) {
-        firebase_storage.FirebaseStorage.instance
-            .ref()
-            .child('users/${Uri.file(element.path).pathSegments.last}')
-            .putFile(element)
-            .then((value) {
-          value.ref.getDownloadURL().then((value) {
-            imagesLink.add(value);
-            print(value);
-          });
-        })
-            .catchError((error) {
-          print(error);
-        });
-      }
-
-    }
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('chats')
-        .doc(receiverId)
-        .set({
-      'receiverId': receiverId,
-      'receiverName': receiverName,
-      'senderId': uid,
-      'senderName': name,
-    }).then((value) {
-      emit(SendMessageSuccessState());
-    }).catchError((error) {
-      emit(SendMessageErrorState());
-    });
 
     FirebaseFirestore.instance
         .collection('users')
@@ -183,26 +185,28 @@ class ChatCubit extends Cubit<ChatState> {
         .collection('messages')
         .add(chatModel.toMap())
         .then((value) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('chats')
+          .doc(receiverId)
+          .set({
+        'receiverId': receiverId,
+        'receiverName': receiverName,
+        'senderId': uid,
+        'senderName': name,
+      });
       emit(SendMessageSuccessState());
     }).catchError((error) {
       emit(SendMessageErrorState());
     });
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('chats')
-        .doc(receiverId)
-        .set({
-      'receiverId': receiverId,
-      'receiverName': receiverName,
-      'senderId': uid,
-      'senderName': name,
-    }).then((value) {
-      emit(SendMessageSuccessState());
-    }).catchError((error) {
-      emit(SendMessageErrorState());
-    });
+
+
+
+
 // receiver
+
+    emit(SendMessageLoadingState());
     FirebaseFirestore.instance
         .collection('users')
         .doc(receiverId)
@@ -218,26 +222,24 @@ class ChatCubit extends Cubit<ChatState> {
         text: message,
 
       );
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(receiverId)
+          .collection('chats')
+          .doc(uid)
+          .set({
+        'receiverId': uid,
+        'receiverName': name,
+        'senderId': receiverId,
+        'senderName': receiverName,
+      });
       emit(SendMessageSuccessState());
     }).catchError((error) {
       emit(SendMessageErrorState());
     });
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(receiverId)
-        .collection('chats')
-        .doc(uid)
-        .set({
-      'receiverId': uid,
-      'receiverName': name,
-      'senderId': receiverId,
-      'senderName': receiverName,
-    }).then((value) {
-      emit(SendMessageSuccessState());
-    }).catchError((error) {
-      emit(SendMessageErrorState());
-    });
-    images = [];
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:untitled10/data/company/company_model.dart';
 import 'package:untitled10/src/app_root.dart';
@@ -35,7 +36,19 @@ class CircleAvatarImage extends StatelessWidget {
         backgroundImage: imageProvider,
         radius: 50,
       ),
-      errorWidget: (context, url, error) => Icon(Icons.error),
+      errorWidget: (context, url, error) => Container(
+        width: 100,
+        height: 100,
+        decoration: BoxDecoration(
+          color: greenColor,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Ionicons.person_outline,
+          color: Colors.white,
+          size: 50,
+        ),
+      ),
       ),
     );
   }

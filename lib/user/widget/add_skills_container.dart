@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:untitled10/data/users/skills.dart';
 import 'package:untitled10/src/app_root.dart';
 import 'package:untitled10/user/widget/add_or_edit_skills_bottom_m_odel_sheet.dart';
@@ -56,6 +57,7 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
                         Container(
                           decoration: BoxDecoration(
                             color: greenColor,
+
                           ),
                           child: IconButton(
                               onPressed: (){
@@ -63,7 +65,7 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
                               skills.remove(skill);
                             });
                           },
-                              icon: Icon(Icons.delete,color: Colors.red,)),
+                              icon: Icon(Ionicons.close,color: Colors.red,)),
                         ),
                         SizedBox(width: 10,),
 
@@ -77,7 +79,7 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
             ),
             CircleAvatar(
               radius: 20,
-              backgroundColor: Colors.green,
+              backgroundColor: greenColor,
 
 
               child: IconButton(onPressed: (){
@@ -96,7 +98,7 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
 
               },
                   color: Colors.white,
-                  icon: Icon(Icons.add)),
+                  icon: Icon(Ionicons.add,)),
 
             ),
           ],

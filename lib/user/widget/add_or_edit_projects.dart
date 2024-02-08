@@ -34,6 +34,7 @@ class _AddOrEditProjectsState extends State<AddOrEditProjects> {
     }
 
   }
+  bool? iscompleted=true;
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +122,12 @@ backgroundColor: backgroundColor,
               ),
             ),
           ),
+          iscompleted==false? Row(
+            children: [
+              Icon(Icons.info,color: Colors.red,),
+              Text('note: Please fill all fields',style: TextStyle(color: greenColor),),
+            ],
+          ):Container(),
         ],
       ),
       actions: [
@@ -129,6 +136,9 @@ backgroundColor: backgroundColor,
 
           if (nameController.text.isEmpty || urlController.text.isEmpty || descriptionController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please Fill All Fields')));
+            setState(() {
+              iscompleted = false;
+            });
             return;
           }else {
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:untitled10/SharedWidget/custoButton.dart';
 import 'package:untitled10/data/users/education.dart';
 import 'package:untitled10/data/users/skills.dart';
@@ -67,7 +68,35 @@ class _CompleteProfileUserState extends State<CompleteProfileUser> {
       ),
     ];
     Data = [workExperience, education, skills, projects];
+    pageController.addListener(() {
+      setState(() {
+        current = pageController.page!.toInt();
+      });
+    });
   }
+  PageController pageController = PageController( initialPage: 0);
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    pageController.dispose();
+  }
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    pageController.addListener(() {
+      setState(() {
+        current = pageController.page!.toInt();
+      });
+    });
+  }
+
+
+  void nextPage() {
+    pageController.nextPage(duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +119,7 @@ class _CompleteProfileUserState extends State<CompleteProfileUser> {
 
         body: BlocConsumer<CreateProfileUserCubit, CreateProfileUserState>(
   listener: (context, state) {
-    // TODO: implement listener
+
   },
   builder: (context, state) {
     var cubit = CreateProfileUserCubit.get(context);
@@ -115,24 +144,46 @@ class _CompleteProfileUserState extends State<CompleteProfileUser> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.easeIn,
+                        // AnimatedContainer(
+                        //   duration: Duration(milliseconds: 500),
+                        //   curve: Curves.easeIn,
+                        //
+                        //
+                        //
+                        //   width: MediaQuery.of(context).size.width,
+                        //   height: MediaQuery.of(context).size.height * 0.8,
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.white,
+                        //     borderRadius: BorderRadius.circular(10),
+                        //   ),
+                        //   child: widgetList[current],
+                        // ),
+                        Expanded(
+                            child: PageView.builder(
+
+                              scrollBehavior: ScrollBehavior(),
+                              physics: NeverScrollableScrollPhysics(),
+                              onPageChanged: (current1){
+                                setState(() {
+                                  current = current1;
+                                });
 
 
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: widgetList[current],
-                        ),
+                              },itemBuilder: (context, index) {
+                          return widgetList[index];
+                        }, itemCount: widgetList.length, controller: pageController,)),
+                        if(state is AddProjectsLoadingState)
+    LoadingAnimationWidget.staggeredDotsWave(
+        color: greenColor,
+        size: 20)
+                        else
                         CustomButton(
                           buttonName: 'Continue',
                           onPressed: () {
                             setState(() {
                               current++;
+                              pageController.nextPage(duration:   Duration(milliseconds: 500), curve: Curves.easeIn);
+
                               print(current);
                               if (current == 1) {
                                 cubit.addExperience(workExperience );
@@ -141,12 +192,12 @@ class _CompleteProfileUserState extends State<CompleteProfileUser> {
                               } else if (current == 3) {
                                 cubit.addSkills( skills);
                               } else   if (current > 3) {
-                                cubit.addProjects(projects);
-
-                                navigateToScreenAndExit(
-                                    context, MainScrean());
-
-
+                                cubit.addProjects(projects).whenComplete(() {
+                                  navigateToScreenAndExit(
+                                      context, MainScrean());
+                                });
+                                // navigateToScreenAndExit(
+                                //     context, MainScrean());
                               }
                             });
                           },

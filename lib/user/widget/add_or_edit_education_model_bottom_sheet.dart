@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:untitled10/data/users/education.dart';
 
 import '../../src/app_root.dart';
@@ -89,6 +90,8 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
 
 
   }
+  bool? iscompleted=true;
+
   DateTime?startDate;
   DateTime?endDate;
   @override
@@ -146,7 +149,6 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               ),
               onChanged: (value){
                 educationModel!.name = value;
-                widget.educationModel!.name = value;
 
               },
             ),
@@ -169,7 +171,6 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               controller: _degreeController,
               onChanged: (value){
                 educationModel!.degree = value;
-                widget.educationModel!.degree = value;
               },
             ),
           ),
@@ -191,7 +192,6 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               ),
               onChanged: (value){
                 educationModel!.field = value;
-                widget.educationModel!.field = value;
               },
             ),
           ),
@@ -216,7 +216,6 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               ),
               onChanged: (value){
                 educationModel!.description = value;
-                widget.educationModel!.description = value;
               },
             ),
           ),
@@ -236,7 +235,6 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               ),
               onChanged: (value){
                 educationModel!.grade = value;
-                widget.educationModel!.description = value;
               },
             ),
           ),
@@ -247,7 +245,7 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               Text('Start Date',style: TextStyle(color: greenColor),),
               IconButton(
                 onPressed:_presentStartDatePicker,
-                icon: Icon(Icons.calendar_today,color: greenColor,),
+                icon: Icon(Ionicons.calendar,color: greenColor,),
               ),
               SizedBox(
                 width: 10,
@@ -270,7 +268,7 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               Text('End Date',style: TextStyle(color: greenColor),),
               IconButton(
                 onPressed:_presentEndDatePicker,
-                icon: Icon(Icons.calendar_today,color: greenColor,),
+                icon: Icon(Ionicons.calendar,color: greenColor,),
               ),
               SizedBox(
                 width: 10,
@@ -285,19 +283,27 @@ class _AddOrEditEducationModelBottomSheetState extends State<AddOrEditEducationM
               ),
             ],
           ),
+          iscompleted==false? Row(
+            children: [
+              Icon(Ionicons.alert_circle,color: Colors.red,),
+              Text('note: Please fill all fields',style: TextStyle(color: greenColor),),
+            ],
+          ):Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
             children: [
               ElevatedButton(onPressed: (){
                 setState(() {
-                  educationModel!.from = formatter.format(startDate!);
-                  educationModel!.to = formatter.format(endDate!);
-                  if (_nameController.text == '' || _degreeController.text == '' || _fieldController.text == '' || _descriptionController.text == '' || _gradeController.text == '' || startDate == null || endDate == null) {
+
+                  if (_nameController.text.isEmpty || _degreeController.text.isEmpty || _fieldController.text.isEmpty || _descriptionController.text.isEmpty || _gradeController.text.isEmpty  || startDate == null || endDate == null) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('Please fill all fields'),
                     ));
+                    iscompleted = false;
                     return;
                   }else {
+                    educationModel!.from = formatter.format(startDate!);
+                    educationModel!.to = formatter.format(endDate!);
                     if (widget.educationModel == null) {
                       widget.onAddItem!(educationModel!);
                     }

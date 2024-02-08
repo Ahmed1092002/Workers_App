@@ -282,7 +282,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                               if (state is SendMessageLoadingState
                                                   ||
                                                   state is uploadProfileImageLoadingState)
-                                                CircularProgressIndicator(),
+                                               LoadingAnimationWidget.staggeredDotsWave(
+                                                  color: greenColor,
+                                                  size: 20),
                                               Container(
                                                 width: 200,
                                                 decoration: BoxDecoration(
@@ -368,50 +370,26 @@ class _ChatScreenState extends State<ChatScreen> {
                                           return;
                                         } else {
                                           if (cubit.images.isNotEmpty) {
-                                            bool hasVideos = cubit.images.any((file) => file.path.endsWith('.mp4'));
+
 
                                             await cubit
                                                 .uploadProfileImage()
-                                                .then((value) async {
+                                            .whenComplete(() async =>   await cubit.sendMessage(
+                                                message:
+                                                _textController.text,
+                                                receiverId:
+                                                widget.userModel!.id!,
+                                                receiverName: widget
+                                                    .userModel!.name!,
+                                                fcmTokenDevice: widget
+                                                    .userModel!.fcmToken!,
+                                                imagesLink: cubit.imagesLink,
+                                                time: DateTime.now()
+                                                    .toString()));
 
-                                                  if (hasVideos) {
+                                          }
 
-                                                    Future.delayed(Duration(seconds:15 ), () {
-                                                      CircularProgressIndicator();
-                                                      cubit.sendMessage(
-                                                          message:
-                                                          _textController.text,
-                                                          receiverId:
-                                                          widget.userModel!.id!,
-                                                          receiverName: widget
-                                                              .userModel!.name!,
-                                                          fcmTokenDevice: widget
-                                                              .userModel!.fcmToken!,
-                                                          imagesLink: value,
-                                                          time: DateTime.now()
-                                                              .toString());
-                                                    });
-                                                  }
-                                             else {
-                                                Future.delayed(
-                                                    Duration(seconds: 5), () {
-                                                  CircularProgressIndicator();
-                                                  cubit.sendMessage(
-                                                      message:
-                                                          _textController.text,
-                                                      receiverId:
-                                                          widget.userModel!.id!,
-                                                      receiverName: widget
-                                                          .userModel!.name!,
-                                                      fcmTokenDevice: widget
-                                                          .userModel!.fcmToken!,
-                                                      imagesLink: value,
-                                                      time: DateTime.now()
-                                                          .toString());
-                                                });
-                                              }
-                                            });
-                                          } else {
+                                          else {
                                             await ChatCubit.get(context)
                                                 .sendMessage(
                                               message: _textController.text,
@@ -755,8 +733,7 @@ Widget file({
   }
   if (file.path.contains('.mp4')) {
     return Container(
-      height: 50,
-      width: 50,
+
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -803,6 +780,7 @@ onTap: (){
 navigateToScreen(context!, VideoFile(urlVideo: image));
 
 },child: Container(
+
 
 margin: EdgeInsets.all(8.0),
 decoration: BoxDecoration(

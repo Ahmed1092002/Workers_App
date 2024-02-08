@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:untitled10/src/app_root.dart';
 
 class ImageScrean extends StatelessWidget {
   String image;
+
    ImageScrean({Key? key, required this.image}) : super(key: key);
 
   @override

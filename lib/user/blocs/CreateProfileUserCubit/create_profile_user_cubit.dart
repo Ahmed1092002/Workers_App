@@ -19,70 +19,92 @@ class CreateProfileUserCubit extends Cubit<CreateProfileUserState> {
 
 
   addExperience(List<WorkExperience> workExperience) async {
-     token= await storage.read(key: 'uid') ;
-for (var element in workExperience)
-  {
-    emit(AddExperienceLoadingState());
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(token)
-        .collection('workExperience')
-        .add(element.toJson())
-        .then((value) {
-      emit(AddExperienceSuccessState());
-    }).catchError((error) {
-      emit(AddExperienceErrorState());
-    });
-  }
+    try {
+      token = await storage.read(key: 'uid');
+      emit(AddExperienceLoadingState());
 
+      for (var element in workExperience) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(token)
+            .collection('workExperience')
+            .add(element.toJson())
+            .then((value) {
+          emit(AddExperienceSuccessState());
+        }).catchError((error) {
+          emit(AddExperienceErrorState());
+        });
+      }
+    } catch (error) {
+      print(error);
+      emit(AddExperienceErrorState());
+    }
   }
 
   addEducation(List<Education> education) async {
-    token = await storage.read(key: 'uid');
-    for (var element in education) {
+    try {
+      token = await storage.read(key: 'uid');
       emit(AddEducationLoadingState());
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(token)
-          .collection('education')
-          .add(element.toJson())
-          .then((value) {
-        emit(AddEducationSuccessState());
-      }).catchError((error) {
-        emit(AddEducationErrorState());
-      });
+
+      for (var element in education) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(token)
+            .collection('education')
+            .add(element.toJson())
+            .then((value) {
+          emit(AddEducationSuccessState());
+        }).catchError((error) {
+          emit(AddEducationErrorState());
+        });
+      }
+    } catch (error) {
+      print(error);
+      emit(AddEducationErrorState());
     }
   }
   addSkills(List<SKills> skills) async {
-    token = await storage.read(key: 'uid');
-    for (var element in skills) {
+    try {
+      token = await storage.read(key: 'uid');
       emit(AddSkillsLoadingState());
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(token)
-          .collection('skills')
-          .add(element.toJson())
-          .then((value) {
-        emit(AddSkillsSuccessState());
-      }).catchError((error) {
-        emit(AddSkillsErrorState());
-      });
+
+      for (var element in skills) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(token)
+            .collection('skills')
+            .add(element.toJson())
+            .then((value) {
+          emit(AddSkillsSuccessState());
+        }).catchError((error) {
+          emit(AddSkillsErrorState());
+        });
+      }
+    } catch (error) {
+      print(error);
+      emit(AddSkillsErrorState());
     }
   }
-  addProjects(List<Projects> projects) async {
-    token = await storage.read(key: 'uid');
-    for (var element in projects) {
+  Future addProjects(List<Projects> projects) async {
+    try {
+      token = await storage.read(key: 'uid');
       emit(AddProjectsLoadingState());
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(token)
-          .collection('projects')
-          .add(element.toJson())
-          .then((value) {
-        emit(AddProjectsSuccessState());
-      }).catchError((error) {
-        emit(AddProjectsErrorState());
-      });
+
+      for (var element in projects) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(token)
+            .collection('projects')
+            .add(element.toJson())
+            .then((value) {
+          emit(AddProjectsSuccessState());
+        }).catchError((error) {
+          emit(AddProjectsErrorState());
+        });
+      }
+    } catch (error) {
+      print(error);
+      emit(AddProjectsErrorState());
     }
   }
 
