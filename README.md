@@ -17,8 +17,17 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 
+## File Document (pdf)
+Download Link [Workers App.pdf](https://github.com/Ahmed1092002/Workers_App/files/14203822/Workers.App.pdf)
 
+## App Link Apk
+https://drive.google.com/drive/folders/1FSBRYiSklWfMoRLg-kbA3tJPlXtV5ALC?usp=sharing
 
+## Full Preview App (Project) in 5 min to preset 
+
+https://github.com/Ahmed1092002/Workers_App/assets/112315071/5744202a-b825-49e0-9f80-4ebaa2806888
+
+ ## Full Video to show all functions (No Sound)
 
 https://github.com/Ahmed1092002/Workers_App/assets/112315071/2e50a3c1-e1a4-4f70-9244-d80a52d48d2a
 
