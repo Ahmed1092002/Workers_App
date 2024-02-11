@@ -160,7 +160,66 @@ backgroundColor: Colors.red,
 
 
             ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => cubit.profileImage==null? CircleAvatar(
+              radius: 50,
+backgroundColor: greenColor.withOpacity(0.2),
+              child: Container(
+
+                child: Stack(
+                  children: [
+                    Align(alignment: Alignment.center,child: Icon(Ionicons.person,color: greenColor,size: 50,)),
+                    Stack(
+
+                      children: [
+                        Positioned(
+                          top: 80,
+
+                          left: MediaQuery.of(context).size.width/10,
+                          child: ElevatedButton(onPressed: (){
+                            cubit.pickProfileImage();
+                          }, child: Icon(Ionicons.add,color: backgroundColor,),
+                              style: ElevatedButton.styleFrom(
+
+                                backgroundColor: greenColor,
+                                shape:  CircleBorder(),
+                              )),),
+
+
+                      ],
+
+                    ),
+                  ],
+                ),
+              ),
+
+
+            ):CircleAvatar(
+              radius: 50,
+
+              backgroundImage: FileImage(cubit.profileImage!) as ImageProvider,
+              child: Stack(
+
+                children: [
+                  Positioned(
+                    top: 80,
+                    left: MediaQuery.of(context).size.width/10,
+                    child: ElevatedButton(onPressed: (){
+                      cubit.pickProfileImage();
+                    }, child: Icon(Icons.edit,color: backgroundColor,),
+
+                        style: ElevatedButton.styleFrom(
+
+                          backgroundColor: greenColor,
+                          shape:  CircleBorder(),
+                        )),),
+
+
+                ],
+
+              ),
+
+
+            ),
           ),
           width: 130,
           height: 130,

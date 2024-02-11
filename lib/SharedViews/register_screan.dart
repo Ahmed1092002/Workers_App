@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:untitled10/SharedViews/SelectTypeScrean.dart';
 import 'package:untitled10/SharedWidget/loginwith_google.dart';
 import 'package:untitled10/src/app_root.dart';
@@ -46,32 +47,22 @@ class RegisterScrean extends StatelessWidget {
 
               children: [
 
+                SizedBox(
+                  height: 50,
+                ),
+
                 LogoImage(),
 
                 Text(
                   'Create new account',
+                  style:TextStyle(
+                    fontSize: 20,
+                    color: greenColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
 
-                Row(
 
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      'already have an account?',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    TextButton(
-
-                      onPressed: () {
-                        navigateToScreen(context, LoginScrean());
-                      },
-                      child: Text(
-                        'Login',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                  ],
-                ),
 
                 Container(
                   width: MediaQuery.of(context).size.width * 5,
@@ -88,23 +79,23 @@ class RegisterScrean extends StatelessWidget {
                     children: [
                       CustomTextField(
                         hint: 'name',
-                        icon: Icons.person,
+                        icon: Ionicons.person,
                         controller: nameController,
                       ),
                       CustomTextField(
                         hint: 'email',
-                        icon: Icons.email,
+                        icon: Ionicons.mail,
                         controller: emailController,
                       ),
                       CustomTextField(
                         hint: 'password',
-                        icon: Icons.lock,
+                        icon: Ionicons.lock_closed,
                         controller: passwordController,
 
                       ),
                       CustomTextField(
                         hint: 'confirm password',
-                        icon: Icons.lock,
+                        icon: Ionicons.lock_closed,
                         controller: confirmPasswordController,
                       ),
 
@@ -141,39 +132,62 @@ class RegisterScrean extends StatelessWidget {
                           },
                         );
   },
-)
+),
+                      Text('or continue with'),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: BlocBuilder<RegisterCubit, RegisterState>(
+                          builder: (context, state) {
+                            return LoginwithGoogle(
+                              buttonName: 'Login with Google',
+                              onPressed: () async  {
+                                await RegisterCubit.get(context)
+                                    .signInWithGoogle( ).then((value) {
+
+                                  navigateToScreenAndExit(context,  SelectTypeScrean(
+                                    nameController: value.user!.displayName,
+                                    emailController: value.user!.email,
+                                    id: value.user!.uid,
+                                    passwordController: passwordController,
+                                    image: value.user!.photoURL,
+                                    phoneNumber: value.user!.phoneNumber,
+                                  ));
+
+                                });
+
+
+                              },
+
+                            );
+                          },
+                        ),
+                      )
+
                     ],
                   ),
                 ),
-                Text('or continue with'),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: BlocBuilder<RegisterCubit, RegisterState>(
-  builder: (context, state) {
-    return LoginwithGoogle(
-                    buttonName: 'Login with Google',
-                    onPressed: () async  {
-                      await RegisterCubit.get(context)
-                          .signInWithGoogle( ).then((value) {
+                Row(
 
-                        navigateToScreenAndExit(context,  SelectTypeScrean(
-                          nameController: value.user!.displayName,
-                          emailController: value.user!.email,
-id: value.user!.uid,
-                          passwordController: passwordController,
-                          image: value.user!.photoURL,
-                          phoneNumber: value.user!.phoneNumber,
-                        ));
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'Already have an account?',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    TextButton(
 
-                      });
+                      onPressed: () {
+                        navigateToScreen(context, LoginScrean());
+                      },
+                      child: Text(
+                        'Login',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  ],
+                ),
 
 
-                    },
-
-                  );
-  },
-),
-                )
               ],
             ),
           ),

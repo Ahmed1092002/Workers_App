@@ -323,7 +323,11 @@ class _JopDetailsScreanState extends State<JopDetailsScrean>
                                                             .name!,
                                                         style: TextStyle(
                                                           color: greenColor,
-                                                          fontSize: 20,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.05,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -339,14 +343,23 @@ class _JopDetailsScreanState extends State<JopDetailsScrean>
                                                       if (isApplyed)
                                                       Text(
                                                         'Applyed',
+                                                        style: TextStyle(
+
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.02,
+
+                                                        ),
                                                       ),
 
                                                     ],
                                                   ),
                                                   Text(cubit.applyedUsers[index]
-                                                      .email!),
+                                                      .email!,style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.03),),
                                                   Text(cubit.applyedUsers[index]
-                                                      .jobField!),
+                                                      .jobField!,style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.03)),
                                                 ],
                                               ),
                                               Spacer(),

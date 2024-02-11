@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:untitled10/SharedBloc/LoginCubit/login_cubit.dart';
 import 'package:untitled10/SharedViews/register_screan.dart';
 import 'package:untitled10/SharedWidget/check_box.dart';
@@ -64,34 +66,17 @@ class LoginScrean extends StatelessWidget {
                         LogoImage(),
 
                         Text(
-                          'Sign in to your account',
+                          'Login to your account',
+                          style: TextStyle(
+                            color: greenColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height/50,
                         ),
-                        Row(
 
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width/15,
-                            ),
-
-                            Text(
-                              'Don`t have an Account ?',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            TextButton(
-
-                              onPressed: () {
-                                navigateToScreen(context, RegisterScrean());
-                              },
-                              child: Text(
-                                'Register Now !',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                          ],
-                        ),
 
                         Container(
                           width: MediaQuery.of(context).size.width * 5,
@@ -110,18 +95,18 @@ class LoginScrean extends StatelessWidget {
                             children: [
                               CustomTextField(
                                 hint: 'email',
-                                icon: Icons.email,
+                                icon: Ionicons.mail,
                                 controller: cubit.emailController,
                               ),
                               CustomTextField(
                                 hint: 'password',
-                                icon: Icons.lock,
+                                icon: Ionicons.lock_closed,
                                 controller: cubit.passwordController,
                               ),
                               if (state is LoginLoadingState || state is GetUserDataSuccessState)
-                                CircularProgressIndicator(
-                                  color: greenColor,
-                                )
+                                LoadingAnimationWidget.staggeredDotsWave(
+                                    color: greenColor,
+                                    size: 20)
                               else
                                 CustomButton(
                                 buttonName: 'Login',
@@ -151,6 +136,13 @@ class LoginScrean extends StatelessWidget {
 SizedBox(
   height: 15,
 ),
+Text(
+  'Or',
+  style: TextStyle(
+    color: grayColor,
+    fontSize: 16,
+  ),
+),
 Padding(
   padding: const EdgeInsets.all(20.0),
   child: LoginwithGoogle(
@@ -173,6 +165,38 @@ Padding(
                           ),
 
 
+                        ),
+                        Row(
+crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width/15,
+                            ),
+
+                            Text(
+                              'Don`t have an Account ?',
+                              style: TextStyle(
+                                color: grayColor,
+                                fontSize: 12,
+
+                              ),
+                            ),
+                            TextButton(
+
+                              onPressed: () {
+                                navigateToScreen(context, RegisterScrean());
+                              },
+                              child: Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                  color: greenColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
 
 

@@ -8,16 +8,12 @@ import '../../company/views/jop_details_screan.dart';
 import '../../utils/navigator.dart';
 import 'details_jop_and_applyed_screan.dart';
 
-class ResultSearchWidget extends StatefulWidget {
+class ResultSearchWidget extends StatelessWidget {
   List<JopsModel> jops;
   String? userType;
-   ResultSearchWidget({Key? key, required this.jops, this.userType}) : super(key: key);
+  String? title = 'Result Search';
+   ResultSearchWidget({Key? key, required this.jops, this.userType,  this.title}) : super(key: key);
 
-  @override
-  State<ResultSearchWidget> createState() => _ResultSearchWidgetState();
-}
-
-class _ResultSearchWidgetState extends State<ResultSearchWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,26 +28,26 @@ class _ResultSearchWidgetState extends State<ResultSearchWidget> {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: widget.userType == 'users' ? GestureDetector(
+                child: userType == 'users' ? GestureDetector(
                   onTap: (){
                     navigateToScreen(context, DetailsJopAndApplyedScrean(
-                    jops: widget.jops[index],
-                      isSaved: widget.jops[index].isSaved!,
+                    jops: jops[index],
+                      isSaved: jops[index].isSaved!,
                     ));
                   },
                   child: JobContainer(
                    screenName: 'Result Search',
-                    salary: widget.jops[index].Salary!,
-                    experience: widget.jops[index].Experience!,
-                    level: widget.jops[index].jobLevel!,
-                    jobShift: widget.jops[index].jobShift!,
-                    Country: widget.jops[index].country!,
-                    companyName: widget.jops[index].companyname!,
-                    companyLogo: widget.jops[index].companyImageUrl!,
-                    location: widget.jops[index].location!,
-                    jobType: widget.jops[index].jopType!,
-                    title: widget.jops[index].title!,
-                    isSaved: widget.jops[index].isSaved!,
+                    salary: jops[index].Salary!,
+                    experience: jops[index].Experience!,
+                    level: jops[index].jobLevel!,
+                    jobShift: jops[index].jobShift!,
+                    Country: jops[index].country!,
+                    companyName: jops[index].companyname!,
+                    companyLogo: jops[index].companyImageUrl!,
+                    location: jops[index].location!,
+                    jobType: jops[index].jopType!,
+                    title: jops[index].title!,
+                    isSaved: jops[index].isSaved!,
 
                     onSave: (bool ){},
 
@@ -59,28 +55,32 @@ class _ResultSearchWidgetState extends State<ResultSearchWidget> {
                 ):GestureDetector(
                   onTap: (){
                     navigateToScreen(context, JopDetailsScrean(
-                     jopModel: widget.jops[index],
+                     jopModel: jops[index],
                     ));
                   },
                   child: NewJopContainer(
-                    location: widget.jops[index].location!,
-                    companyName: widget.jops[index].companyname!,
-                    companyLogo: widget.jops[index].companyImageUrl!,
-                    name: widget.jops[index].title!,
-                    experience: widget.jops[index].Experience!,
-                    jopField: widget.jops[index].jopType!,
-                    salary: widget.jops[index].Salary!,
-                    jopType: widget.jops[index].jobShift!,
+                    location: jops[index].location!,
+                    companyName: jops[index].companyname!,
+                    companyLogo: jops[index].companyImageUrl!,
+                    name: jops[index].title!,
+                    experience: jops[index].Experience!,
+                    jopField: jops[index].jopType!,
+                    salary: jops[index].Salary!,
+                    jopType: jops[index].jobShift!,
 
                   ),
                 ),
               );
             },
-            itemCount: widget.jops.length),
+            itemCount: jops.length),
       ),
 
       appBar: AppBar(
-        title: Text('Result Search'),
+        title: Text(title!, style: TextStyle(
+          color: greenColor,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),),
         backgroundColor: backgroundColor,
         titleTextStyle: TextStyle(
           color: greenColor,

@@ -67,7 +67,7 @@ class EditSkills extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     height: MediaQuery.of(context).size.height * 0.05,
                     decoration: BoxDecoration(
                       color: Colors.white,

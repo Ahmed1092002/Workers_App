@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
+import '../src/app_root.dart';
+
 class LoginwithGoogle extends StatelessWidget {
   final String?buttonName;
     Function()? onPressed;
@@ -12,15 +14,13 @@ class LoginwithGoogle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return MaterialButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-            minimumSize: Size(350, 50),
-            elevation: 5,
-            backgroundColor: Color(0xFF333333),
-
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+        color: grayColor,
+        height: 40,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10)
+        ),
         child:Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -28,7 +28,7 @@ class LoginwithGoogle extends StatelessWidget {
             SizedBox(width: 10,),
             Text(
               'Login with Google',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              style: TextStyle(fontSize: 14   , color: Colors.white),
             ),
           ],
         )

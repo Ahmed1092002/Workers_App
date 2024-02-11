@@ -77,7 +77,7 @@ class EditExperinceScrean extends StatelessWidget {
               children: [
 
                 Container(
-                  width: MediaQuery.of(context).size.width*0.84 ,
+                  width: MediaQuery.of(context).size.width*0.822 ,
 
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(

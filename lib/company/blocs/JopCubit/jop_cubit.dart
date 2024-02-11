@@ -276,8 +276,8 @@ required String JopField,
       emit(GetAllJopsLoadingState());
       await FirebaseFirestore.instance
           .collection('jops')
-          .where('date', isGreaterThanOrEqualTo: startOfWeek.toString())
-          .where('date', isLessThanOrEqualTo: endOfWeek.toString())
+          // .where('date', isGreaterThanOrEqualTo: startOfWeek.toString())
+          // .where('date', isLessThanOrEqualTo: endOfWeek.toString())
           .get()
           .then((value) {
         jops.clear();

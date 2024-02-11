@@ -129,9 +129,10 @@ mainAxisAlignment: MainAxisAlignment.start,
                         SizedBox(
                           height: 5,
                         ),
+                        if (cubit.percent!< 1.0)
                          Container(
-                            width: MediaQuery.of(context).size.width - 180,
-                            height: 70,
+                            width: MediaQuery.of(context).size.width - 150,
+
                            decoration: BoxDecoration(
                              color: Colors.white,
                              borderRadius: BorderRadius.circular(10),
@@ -147,7 +148,7 @@ mainAxisAlignment: MainAxisAlignment.start,
                                  fontWeight: FontWeight.bold,
                                ),),
                                LinearPercentIndicator(
-                                width: MediaQuery.of(context).size.width - 190,
+                                width: MediaQuery.of(context).size.width - 160,
                                 animation: true,
                                 lineHeight: 20.0,
                                 barRadius: Radius.circular(10),
@@ -168,13 +169,23 @@ mainAxisAlignment: MainAxisAlignment.start,
                                ] : [
                                  Text('Your Profile is Completed',style: TextStyle(
                                    color: greenColor,
-                                   fontWeight: FontWeight.bold,
+
                                  ),),
 
                                ]
                              ],
                            ),
                          ),
+                        if (cubit.percent==1.0)...
+              [          SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Your Profile is Completed",
+                          style: TextStyle(
+                              color: grayColor, fontWeight: FontWeight.bold),
+                        ),]
+
 
                       ],
                     ),

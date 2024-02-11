@@ -25,6 +25,7 @@ class _HomeBodyState extends State<HomeBody> {
       create: (context) => JopCubit()..GetAlNewlJops(
         isSaved: ( isSelected){
           setState(() {
+            print (isSelected);
             isSavedAllJobs = isSelected;
           });
         }
@@ -51,6 +52,7 @@ class _HomeBodyState extends State<HomeBody> {
             children: [
               TitleOfComponantRow(
                 title: 'New Jobs',
+                jops: cubit.jops,
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 3.5,
@@ -114,6 +116,7 @@ class _HomeBodyState extends State<HomeBody> {
               ),
               TitleOfComponantRow(
                 title: 'Jobs Of Your Working Field',
+                jops: cubit.workingFieldJobs,
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 3.5,
@@ -177,6 +180,7 @@ class _HomeBodyState extends State<HomeBody> {
               ),
               TitleOfComponantRow(
                 title: 'Jobs Of Your Job Field',
+                jops: cubit.jobsFields,
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 3.5,

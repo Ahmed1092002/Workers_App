@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:untitled10/SharedViews/create_profie_screan.dart';
 import 'package:untitled10/src/app_root.dart';
 import 'package:untitled10/SharedWidget/logo_image.dart';
@@ -44,16 +45,22 @@ mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width/2.5,
-                    height: MediaQuery.of(context).size.height/8,
+                    height: MediaQuery.of(context).size.height/5,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
+                      border: Border.all(color: greenColor,width: 2),
                       borderRadius: BorderRadius.circular(10),
 
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                      Icon(Icons.work,color: greenColor),
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: greenColor.withOpacity(0.2),
+                          child: Icon(Ionicons.person,color: greenColor),
+
+                        ),
+
                         Text('I want a job',style: Theme.of(context).textTheme.bodyMedium,),
                       ],
                     ),
@@ -73,7 +80,7 @@ mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width/2.5,
-                    height: MediaQuery.of(context).size.height/8,
+                    height: MediaQuery.of(context).size.height/5,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
                       borderRadius: BorderRadius.circular(10),
@@ -82,8 +89,12 @@ mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                      Icon(Icons.person,color: greenColor),
-                        Text('I want an employee',style: Theme.of(context).textTheme.bodyMedium,),
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: greenColor.withOpacity(0.2),
+                          child: Icon(Icons.person,color: greenColor),
+                        ),
+                        Text('I want an employee',textAlign: TextAlign.center,style: Theme.of(context).textTheme.bodyMedium,),
                       ],
                     ),
                   ),

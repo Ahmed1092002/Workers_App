@@ -85,12 +85,12 @@ List<Education> education = [];
              Padding(
                padding: const EdgeInsets.all(8.0),
                child: Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 mainAxisAlignment: MainAxisAlignment.start,
                  crossAxisAlignment: CrossAxisAlignment.start,
 
                  children: [
                  Container(
-                   width: MediaQuery.of(context).size.width*0.79 ,
+                   width: MediaQuery.of(context).size.width*0.76,
                    decoration: BoxDecoration(
                        color: Colors.white,
                        borderRadius: BorderRadius.only(

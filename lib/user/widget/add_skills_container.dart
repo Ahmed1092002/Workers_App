@@ -40,7 +40,7 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     height: MediaQuery.of(context).size.height * 0.05,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -56,8 +56,12 @@ class _AddSkillsContainerState extends State<AddSkillsContainer> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: greenColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5),
+                              bottomLeft: Radius.circular(5),
+                            ),
 
+                            color: greenColor,
                           ),
                           child: IconButton(
                               onPressed: (){

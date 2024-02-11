@@ -51,6 +51,7 @@ class _JobContainerState extends State<JobContainer> {
   Icon? icon;
   @override
   initState() {
+    print(widget.isSaved);
     isSelected = widget.isSaved!;
     super.initState();
         if (widget.screenName == 'Applyed Jops') {
@@ -76,7 +77,7 @@ class _JobContainerState extends State<JobContainer> {
   Widget build(BuildContext context) {
     return Container(
       width: 270,
-      height: 200,
+      height: MediaQuery.of(context).size.height * 0.27,
       decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(10),

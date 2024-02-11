@@ -190,7 +190,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       backgroundImage: NetworkImage(widget.userModel!.image!),
                     ),
                     SizedBox(
-                      width: 12,
+                      width: 15,
                     ),
                     Text(
                       '${widget.userModel!.name}',
@@ -199,8 +199,11 @@ class _ChatScreenState extends State<ChatScreen> {
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
                     ),
+                    Spacer(),
                   ],
                 ),
+                backgroundColor: backgroundColor,
+                elevation: 0,
                 iconTheme: IconThemeData(
                   color: greenColor, //change your color here
                 ),
@@ -312,6 +315,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                           onPressed: () {
                                             // cubit.pickMultipleMediaImage();
                                             showModalBottomSheet(
+
                                                 context: context,
                                                 builder: (context) {
                                                   return chosenFile(
@@ -453,6 +457,7 @@ class TextFormFieldChat extends StatelessWidget {
         hintText:
             'Enter your message',
         hintStyle: TextStyle(
+          fontSize: MediaQuery.of(context).size.width / 25,
             color: greenColor),
         filled: true,
         fillColor: backgroundColor,
@@ -468,17 +473,18 @@ Widget chosenFile({
   Function()? onLocation,
 }) =>
     Container(
-        width: double.infinity,
-        height: 150,
+       height: 100,
+
         margin: EdgeInsets.all(8.0),
         decoration: BoxDecoration(
+          color: backgroundColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-                height: 80,
+
                 width: 70,
                 margin: EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
@@ -509,7 +515,7 @@ Widget chosenFile({
               width: 10,
             ),
             Container(
-                height: 80,
+
                 margin: EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -540,7 +546,7 @@ Widget chosenFile({
               width: 10,
             ),
             Container(
-                height: 80,
+
                 width: 70,
                 margin: EdgeInsets.all(8.0),
                 decoration: BoxDecoration(

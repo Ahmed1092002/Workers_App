@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:untitled10/SharedViews/ChatScreen.dart';
+import 'package:untitled10/SharedWidget/circle_avatar_image.dart';
 import 'package:untitled10/src/app_root.dart';
 import 'package:untitled10/utils/navigator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -51,29 +52,7 @@ class _AboutAndSkillsBodyState extends State<AboutAndSkillsBody> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: greenColor,
-                        width: 2,
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: "${widget.userModel!.image}",
-                      imageBuilder: (context, imageProvider) => CircleAvatar(
-                        backgroundImage: imageProvider,
-                        radius: 50,
-                      ),
-                      placeholder: (context, url) => LoadingAnimationWidget.twoRotatingArc(
-                        color: greenColor,
-                        size: 100,
-                      ),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
-                  ),
+               CircleAvatarImage(imageUrl: widget.userModel!.image!,),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

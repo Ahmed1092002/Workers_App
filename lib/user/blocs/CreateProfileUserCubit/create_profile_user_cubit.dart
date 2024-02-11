@@ -35,6 +35,8 @@ class CreateProfileUserCubit extends Cubit<CreateProfileUserState> {
           emit(AddExperienceErrorState());
         });
       }
+      emit(AddExperienceSuccessState());
+
     } catch (error) {
       print(error);
       emit(AddExperienceErrorState());
@@ -54,10 +56,14 @@ class CreateProfileUserCubit extends Cubit<CreateProfileUserState> {
             .add(element.toJson())
             .then((value) {
           emit(AddEducationSuccessState());
+
         }).catchError((error) {
           emit(AddEducationErrorState());
         });
       }
+      emit(AddEducationSuccessState());
+
+
     } catch (error) {
       print(error);
       emit(AddEducationErrorState());
@@ -80,6 +86,8 @@ class CreateProfileUserCubit extends Cubit<CreateProfileUserState> {
           emit(AddSkillsErrorState());
         });
       }
+      emit(AddSkillsSuccessState());
+
     } catch (error) {
       print(error);
       emit(AddSkillsErrorState());
@@ -102,6 +110,8 @@ class CreateProfileUserCubit extends Cubit<CreateProfileUserState> {
           emit(AddProjectsErrorState());
         });
       }
+      emit(AddProjectsSuccessState());
+
     } catch (error) {
       print(error);
       emit(AddProjectsErrorState());

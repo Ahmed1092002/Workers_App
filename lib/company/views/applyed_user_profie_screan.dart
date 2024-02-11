@@ -224,9 +224,25 @@ class _ApplyedUserProfieScreanState extends State<ApplyedUserProfieScrean>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      CustomButton(
-                        buttonName: 'Accept',
-
+                      // CustomButton(
+                      //   buttonName: 'Accept',
+                      //
+                      //   onPressed: () {
+                      //     JopCubit.get(context).acceptUser(
+                      //       jopid: widget.jopModel!.jopid!,
+                      //       userUid: widget.userModel!,
+                      //     );
+                      //     if (state is AcceptUserSuccessState) {
+                      //       ScaffoldMessenger.of(context).showSnackBar(
+                      //         SnackBar(
+                      //           backgroundColor: Colors.green,
+                      //           content: Text('User Accepted'),
+                      //         ),
+                      //       );
+                      //     }
+                      //   },
+                      // ),
+                  MaterialButton(
                         onPressed: () {
                           JopCubit.get(context).acceptUser(
                             jopid: widget.jopModel!.jopid!,
@@ -241,8 +257,18 @@ class _ApplyedUserProfieScreanState extends State<ApplyedUserProfieScrean>
                             );
                           }
                         },
+                        color: greenColor,
+                        height: 40,
+                    minWidth: MediaQuery.of(context).size.width/3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          'Accept',
+                          style: TextStyle(fontSize: 14, color: Colors.white),
+                        ),
                       ),
-                      ElevatedButton(
+                      MaterialButton(
                         onPressed: () {
                           JopCubit.get(context).rejectUser(
                             jopid: widget.jopModel!.jopid!,
@@ -257,25 +283,27 @@ class _ApplyedUserProfieScreanState extends State<ApplyedUserProfieScrean>
                             );
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                        color: Colors.red,
+                        height: 40,
+                        minWidth: MediaQuery.of(context).size.width/3,
 
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Text('Reject',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,)),
-
+                        child: Text(
+                          'Reject',
+                          style: TextStyle(fontSize: 14, color: Colors.white),
+                        ),
                       ),
+
                     ],
                   ),
                 );
               },
             ),
+          ),
+          SizedBox(
+            height: 10,
           ),
         ],
       ),

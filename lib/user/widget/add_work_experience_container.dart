@@ -45,7 +45,7 @@ List workExperience = [];
 
                children: [
                  Container(
-                    width: MediaQuery.of(context).size.width*0.79 ,
+                    width: MediaQuery.of(context).size.width*0.76 ,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(

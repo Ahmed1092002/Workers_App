@@ -97,7 +97,6 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
 
         child:   Text(e,style: TextStyle(
           color: greenColor,
-          fontWeight: FontWeight.bold,
         ),),
         value: e,
         onTap: (){
@@ -111,7 +110,6 @@ class WorkingFeildsDropdownButtonFormField extends StatelessWidget {
       hint:      Text('$hint',style: TextStyle(
         color: greenColor,
 
-        fontWeight: FontWeight.bold,
       )),
 
 
