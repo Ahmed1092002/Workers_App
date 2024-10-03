@@ -3,19 +3,32 @@
 
 A new Flutter project.
 
-## Getting Started
+## Overview
+Worker's App is a job posting platform where businesses can easily post job openings, review applicants, and communicate through chat features and notifications. This app was developed to streamline the job application process and make communication between businesses and job seekers seamless.
 
-This project is a starting point for a Flutter application.
+## Features
+- Post job openings.
+- Review job seekers' profiles.
+- In-app chat and file sharing.
+- Push notifications for updates.
 
-A few resources to get you started if this is your first Flutter project:
+## Technologies Used
+- **Flutter** for cross-platform mobile development.
+- **Dart** for core programming.
+- **Firebase** for real-time database and user authentication.
+- **Hive** for local data storage.
+- **Cubit** for state management.
+- **Dio** for API integration.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Ahmed1092002/Workers_App.git
+   cd Workers_App
+# Install dependencies:
+flutter pub get
+# Run the app:
+flutter run
 
 ## File Document (pdf)
 Download Link [Workers App.pdf](https://github.com/Ahmed1092002/Workers_App/files/14203822/Workers.App.pdf)
