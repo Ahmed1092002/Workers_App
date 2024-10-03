@@ -1,7 +1,7 @@
 # Workers App
 
 
-A new Flutter project.
+A platform for businesses to post job openings, review job seekers, and enhance communication.
 
 ## Overview
 Worker's App is a job posting platform where businesses can easily post job openings, review applicants, and communicate through chat features and notifications. This app was developed to streamline the job application process and make communication between businesses and job seekers seamless.
